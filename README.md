@@ -1,5 +1,8 @@
 The Quasar Project (Java edition)
+
 Author: Doug Chidester
+
+**NOT COMPLETE YET**
 
 Requires Java to run.
 
