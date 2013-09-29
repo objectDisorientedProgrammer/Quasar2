@@ -1,4 +1,5 @@
 The Quasar Project (Java edition)
+=================================
 
 Author: Doug Chidester (aka objectDisorientedProgrammer)
 
