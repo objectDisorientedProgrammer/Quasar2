@@ -6,27 +6,45 @@ package quasar;
 
 public class Data
 {
-	private String title;
-	private String description;
-	private String date;
-	private String keywords;
-	private int type;
+	protected String title;
+	protected String description;
+	protected String date;
+	protected String keywords;
+	protected char type;
 	
 	/**
 	 * Creates a data object with title set to 'Default'
 	 */
-	public Data() {
-		this("Default");
+	public Data()
+	{
+		this("", "", "", "", 'd');
 	}
 
 	/**
 	 * Create a data object with a title.
 	 * @param title - title for the data.
+	 * @param type - c: contact, d: document, p: picture, w: website
 	 */
-	public Data(String title) {
+	public Data(String title, char type)
+	{
+		this(title, "", "", "", type);
+	}
+
+	/**
+	 * @param title - title for the data
+	 * @param description - description of the data
+	 * @param date
+	 * @param keywords - search keywords
+	 * @param type - c: contact, d: document, p: picture, w: website
+	 */
+	public Data(String title, String description, String date, String keywords,
+			char type) {
 		super();
 		this.title = title;
-		this.type = 0;
+		this.description = description;
+		this.date = date;
+		this.keywords = keywords;
+		this.type = type;
 	}
 
 	public String getTitle() {
@@ -65,8 +83,16 @@ public class Data
 		return type;
 	}
 	
-	public void setType(int type) {
-		this.type = type;
+	public void setType(char type) {
+		switch(type)
+		{
+		case 'c':
+		case 'd':
+		case 'w':
+		case 'p':
+			this.type = type;
+			break;
+		}
+		
 	}
-
 }

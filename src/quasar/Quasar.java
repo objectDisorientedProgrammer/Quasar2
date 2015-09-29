@@ -2,13 +2,14 @@ package quasar;
 
 public class Quasar
 {
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args)
 	{
-		new MainWindow();
+		javax.swing.SwingUtilities.invokeLater(new Runnable()
+		{
+            public void run()
+            {
+            	new MainWindow();
+            }
+        });
 	}
-
 }

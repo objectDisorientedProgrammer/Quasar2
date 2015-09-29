@@ -18,7 +18,7 @@ public class Node {
 	public Node prevContact;
 
 	public Node() {
-		super();
+		this(null);
 	}
 
 	public Node(Data data) {

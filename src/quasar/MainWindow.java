@@ -27,7 +27,7 @@ public class MainWindow extends JFrame
 	public MainWindow()
 	{
 		super();
-		//nm = new NodeManager();
+		nm = new NodeManager();
 		this.editWin = new EditWindow();
 		getContentPane().setLayout(null);
 
@@ -91,12 +91,15 @@ public class MainWindow extends JFrame
 				{
 					editWinVisible = true;
 					// pass info based on selected item in list
-					Data d = new Data("test data node");
-					d.setDate("9/27/2013");
-					d.setDescription("This is a test string");
-					d.setKeywords("a, test, nodes, blah");
+					Data d = new Data("test data node", "This is a test string",
+							"9/27/2013", "a, test, nodes, blah", 'd');
 					editWin.displayNode(new Node(d));
-					editWin.setVisible(editWinVisible);	// thread this?
+					editWin.showFrame();	// thread this?
+				}
+				else
+				{
+					editWin.remove();
+					editWinVisible = false;
 				}
 			}
 		});
@@ -112,14 +115,14 @@ public class MainWindow extends JFrame
 		quitBtn.setBounds(341, 178, 89, 23);
 		quitBtn.addActionListener(new ActionListener()
 		{
-			
 			@Override
 			public void actionPerformed(ActionEvent ae)
 			{
 				// save nodes
 				//nm.saveToFile();
+				
 				if(editWinVisible)
-					editWin.dispose();
+					editWin.remove();
 				dispose();
 			}
 		});

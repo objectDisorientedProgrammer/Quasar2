@@ -9,7 +9,8 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-public class NodeManager {
+public class NodeManager
+{
 	private Node head;
 	private Node current;
 	private Node tail;
@@ -23,8 +24,10 @@ public class NodeManager {
 	/**
 	 * Creates a NodeManager with the default load/save file of Quasar.dat.
 	 */
-	public NodeManager() {
-		this("Quasar.dat");
+	public NodeManager()
+	{
+		// TODO
+		//this("Quasar.dat");
 	}
 
 	/**
@@ -51,9 +54,11 @@ public class NodeManager {
 		this.pictureCount = 0;
 		this.contactCount = 0;
 		this.totalCount = 0;
+		head = null;
+		tail = null;
 		
-		head = new Node(new Data("Head Node"));	// create head with title
-		tail = new Node(new Data("Tail Node"));			// create tail with title
+		//head = new Node(new Data("Head Node"));	// create head with title
+		//tail = new Node(new Data("Tail Node"));	// create tail with title
 	}
 
 	/**
