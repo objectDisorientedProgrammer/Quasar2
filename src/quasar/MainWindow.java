@@ -126,8 +126,11 @@ public class MainWindow
 							"9/27/2013", "a, test, nodes, blah", 'd');
 					Data d2 = new Data("test data node 2", "This is another test string",
 							"9/30/2015", "a, test, nodes, blah", 'd');
-					editWin.displayNode(new Node(d));
-					editWin.displayNode(new Node(d2));
+					
+					if(resultsList.getSelectedIndex() == 0)
+						editWin.displayNode(new Node(d));
+					else
+						editWin.displayNode(new Node(d2));
 					editWin.showFrame();	// thread this? TODO
 				}
 				else
