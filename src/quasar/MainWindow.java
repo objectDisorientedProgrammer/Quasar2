@@ -21,7 +21,7 @@ public class MainWindow
 	private static final int frameHeight = 400;
 	
 	private JFrame mainWindow;
-	private JPanel mainWindowPanel;
+	private JPanel mainPanel;
 	
 	// Variables
 	boolean editWinVisible = false;
@@ -30,6 +30,12 @@ public class MainWindow
 	private JTextField searchTF;
 	private JLabel filterLbl;
 	private JButton searchBtn;
+	private JList<String> resultsList;
+	private JComboBox<String> filterComboBox;
+	private JButton newNodeBtn;
+	private JButton editBtn;
+	private JButton saveBtn;
+	private JButton quitBtn;
 
 	public MainWindow()
 	{
@@ -43,20 +49,21 @@ public class MainWindow
 		createGUIElements();
 		
 		addGUIElements();
-		
 
-		
-		
-
-		
-		
 		mainWindow.setVisible(true);
 	}
 
 	private void addGUIElements()
 	{
-		mainWindowPanel.add(searchTF);
-		mainWindowPanel.add(searchBtn);
+		mainPanel.add(searchTF);
+		mainPanel.add(searchBtn);
+		mainPanel.add(resultsList);
+		mainPanel.add(filterLbl);
+		mainPanel.add(filterComboBox);
+		mainPanel.add(newNodeBtn);
+		mainPanel.add(editBtn);
+		mainPanel.add(saveBtn);
+		mainPanel.add(quitBtn);
 	}
 
 	private void createGUIElements()
@@ -69,7 +76,7 @@ public class MainWindow
 		searchBtn = new JButton("Search");
 		searchBtn.setBounds(341, 10, 91, 23);
 
-		JList<String> resultsList = new JList<String>();
+		resultsList = new JList<String>();
 		resultsList.setModel(new AbstractListModel<String>()
 		{
 			String[] values = new String[] { "test1", "test2" };
@@ -85,28 +92,24 @@ public class MainWindow
 			}
 		});
 		resultsList.setBounds(10, 80, 315, 188);
-		getContentPane().add(resultsList);
 
 		filterLbl = new JLabel("Search in:");
 		filterLbl.setBounds(10, 42, 80, 14);
-		getContentPane().add(filterLbl);
 
-		JComboBox<String> filterComboBox = new JComboBox<String>();
+		filterComboBox = new JComboBox<String>();
 		filterComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
 				"All", "Documents", "Websites", "Pictures", "Contacts" }));
 		filterComboBox.setSelectedIndex(0);
 		filterComboBox.setMaximumRowCount(5);
 		filterComboBox.setBounds(95, 38, 120, 22);
-		getContentPane().add(filterComboBox);
 
-		JButton newNodeBtn = new JButton("New");
+		newNodeBtn = new JButton("New");
 		newNodeBtn.setToolTipText("Create a new entry.");
 		newNodeBtn.setBounds(341, 77, 91, 23);
 		// have the node manager add a node
-		// nm.addNode();
-		getContentPane().add(newNodeBtn);
+		// nm.addNode(); // TODO
 
-		JButton editBtn = new JButton("Edit");
+		editBtn = new JButton("Edit");
 		editBtn.setToolTipText("Edit the selected entry.");
 		editBtn.setBounds(341, 111, 91, 23);
 		editBtn.addActionListener(new ActionListener()
@@ -121,8 +124,11 @@ public class MainWindow
 					// pass info based on selected item in list
 					Data d = new Data("test data node", "This is a test string",
 							"9/27/2013", "a, test, nodes, blah", 'd');
+					Data d2 = new Data("test data node 2", "This is another test string",
+							"9/30/2015", "a, test, nodes, blah", 'd');
 					editWin.displayNode(new Node(d));
-					editWin.showFrame();	// thread this?
+					editWin.displayNode(new Node(d2));
+					editWin.showFrame();	// thread this? TODO
 				}
 				else
 				{
@@ -131,22 +137,20 @@ public class MainWindow
 				}
 			}
 		});
-		getContentPane().add(editBtn);
 
-		JButton saveBtn = new JButton("Save");
+		saveBtn = new JButton("Save");
 		saveBtn.setToolTipText("Save current list.");
 		saveBtn.setBounds(341, 144, 89, 23);
-		// nm.saveToFile();
-		getContentPane().add(saveBtn);
+		// nm.saveToFile(); // TODO
 
-		JButton quitBtn = new JButton("Quit");
+		quitBtn = new JButton("Quit");
 		quitBtn.setBounds(341, 178, 89, 23);
 		quitBtn.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent ae)
 			{
-				// save nodes
+				// save nodes TODO
 				//nm.saveToFile();
 				
 				if(editWinVisible)
@@ -154,7 +158,6 @@ public class MainWindow
 				mainWindow.dispose();
 			}
 		});
-		getContentPane().add(quitBtn);
 	}
 
 	private void initializeMainWindowAndPanel()
@@ -164,8 +167,8 @@ public class MainWindow
 		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainWindow.setLocationRelativeTo(null);
 		
-		mainWindowPanel = new JPanel(null);
+		mainPanel = new JPanel(null); // TODO change layout manager
 		
-		mainWindow.add(mainWindowPanel);
+		mainWindow.add(mainPanel);
 	}
 }
