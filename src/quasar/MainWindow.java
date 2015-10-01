@@ -9,37 +9,65 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class MainWindow extends JFrame
+public class MainWindow
 {
 	private NodeManager nm;
 	private EditWindow editWin;
+	
+	private static final String author = "Doug Chidester";
+	private static final String version = " v0.96.6";
 	private static final String windowTitle = "Quasar";
-	private int frameWidth = 450;
-	private int frameHeight = 400;
+	private static final int frameWidth = 450;
+	private static final int frameHeight = 400;
+	
+	private JFrame mainWindow;
+	private JPanel mainWindowPanel;
 	
 	// Variables
 	boolean editWinVisible = false;
 	
-	// Auto-generated
+	// GUI
 	private JTextField searchTF;
 	private JLabel filterLbl;
+	private JButton searchBtn;
 
 	public MainWindow()
 	{
 		super();
-		nm = new NodeManager();
+		
+		this.nm = new NodeManager();
 		this.editWin = new EditWindow();
-		getContentPane().setLayout(null);
+		
+		initializeMainWindowAndPanel();
+		
+		createGUIElements();
+		
+		addGUIElements();
+		
 
+		
+		
+
+		
+		
+		mainWindow.setVisible(true);
+	}
+
+	private void addGUIElements()
+	{
+		mainWindowPanel.add(searchTF);
+		mainWindowPanel.add(searchBtn);
+	}
+
+	private void createGUIElements()
+	{
 		searchTF = new JTextField();
 		searchTF.setToolTipText("Search here");
 		searchTF.setBounds(10, 11, 315, 20);
-		getContentPane().add(searchTF);
 		searchTF.setColumns(10);
-
-		JButton searchBtn = new JButton("Search");
+		
+		searchBtn = new JButton("Search");
 		searchBtn.setBounds(341, 10, 91, 23);
-		getContentPane().add(searchBtn);
 
 		JList<String> resultsList = new JList<String>();
 		resultsList.setModel(new AbstractListModel<String>()
@@ -123,16 +151,21 @@ public class MainWindow extends JFrame
 				
 				if(editWinVisible)
 					editWin.remove();
-				dispose();
+				mainWindow.dispose();
 			}
 		});
 		getContentPane().add(quitBtn);
+	}
 
-		setTitle(windowTitle);
-		setSize(frameWidth, frameHeight);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-
-		setVisible(true);
+	private void initializeMainWindowAndPanel()
+	{
+		mainWindow = new JFrame(windowTitle);
+		mainWindow.setSize(frameWidth, frameHeight);
+		mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainWindow.setLocationRelativeTo(null);
+		
+		mainWindowPanel = new JPanel(null);
+		
+		mainWindow.add(mainWindowPanel);
 	}
 }
