@@ -6,8 +6,11 @@ package quasar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
+
+import com.localarea.network.doug.WebsiteTimerGUIelement;
 
 public class MainWindow
 {
@@ -173,5 +176,77 @@ public class MainWindow
 		mainPanel = new JPanel(null); // TODO change layout manager
 		
 		mainWindow.add(mainPanel);
+	}
+	
+	private void createAndAddMenuBar()
+	{
+		JMenuBar menuBar = new JMenuBar();
+		mainWindow.setJMenuBar(menuBar);
+		
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		menuBar.add(fileMenu);
+		
+		JMenuItem saveMenuItem = new JMenuItem("Save");
+		saveMenuItem.setMnemonic(KeyEvent.VK_S);
+		saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(imagePath + "save.png")));
+		saveMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//writeToFile(filenameTextfield.getText()); // File -> Save
+			}
+		});
+		fileMenu.add(saveMenuItem);
+		
+		JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(imagePath+"exit.png")));
+		quitMenuItem.setMnemonic(KeyEvent.VK_Q);
+		quitMenuItem.addActionListener(new ActionListener()
+		{
+            public void actionPerformed(ActionEvent e)
+            {
+                // save data and close program if user clicks: File -> Quit
+            	//writeToFile(filenameTextfield.getText());
+                mainWindow.dispose();
+            }
+		});
+		fileMenu.add(quitMenuItem);
+		
+		JMenu optionsMenu = new JMenu("Options");
+		optionsMenu.setMnemonic(KeyEvent.VK_O);
+		menuBar.add(optionsMenu);
+		
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic(KeyEvent.VK_H);
+		menuBar.add(helpMenu);
+		
+		JMenuItem helpMenuItem = new JMenuItem("Getting Started", new ImageIcon(this.getClass().getResource(imagePath+"help.png")));
+		helpMenuItem.setMnemonic(KeyEvent.VK_G);
+		helpMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				// show basic use instructions if user clicks: Help -> Getting Started
+                JOptionPane.showMessageDialog(null, helpMessage, "Usage",
+						JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
+			}
+		});
+		helpMenu.add(helpMenuItem);
+		
+		JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
+		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
+		aboutMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				// show author and version if user clicks: Help -> About
+				JOptionPane.showMessageDialog(null, "Created by " + author + "\nVersion " + version + source + repoWebsite, "About",
+						JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"person.png")));
+			}
+		});
+		helpMenu.add(aboutMenuItem);
 	}
 }
