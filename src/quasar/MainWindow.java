@@ -10,24 +10,25 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-import com.localarea.network.doug.WebsiteTimerGUIelement;
-
 public class MainWindow
 {
 	private NodeManager nm;
 	private EditWindow editWin;
 	
-	private static final String author = "Doug Chidester";
-	private static final String version = " v0.96.6";
-	private static final String windowTitle = "Quasar";
-	private static final int frameWidth = 450;
-	private static final int frameHeight = 400;
+	private final String author = "Douglas Chidester";
+	private final String version = " v0.96.8";
+	private final String windowTitle = "Quasar";
+	private final int frameWidth = 450;
+	private final int frameHeight = 400;
+	
+	private final String imagePath = "/images/";	// path in jar file
 	
 	private JFrame mainWindow;
 	private JPanel mainPanel;
 	
 	// Variables
 	boolean editWinVisible = false;
+	String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
 	
 	// GUI
 	private JTextField searchTF;
@@ -48,6 +49,8 @@ public class MainWindow
 		this.editWin = new EditWindow();
 		
 		initializeMainWindowAndPanel();
+		
+		createAndAddMenuBar();
 		
 		createGUIElements();
 		
@@ -100,8 +103,7 @@ public class MainWindow
 		filterLbl.setBounds(10, 42, 80, 14);
 
 		filterComboBox = new JComboBox<String>();
-		filterComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
-				"All", "Documents", "Websites", "Pictures", "Contacts" }));
+		filterComboBox.setModel(new DefaultComboBoxModel<String>(dataTypeList));
 		filterComboBox.setSelectedIndex(0);
 		filterComboBox.setMaximumRowCount(5);
 		filterComboBox.setBounds(95, 38, 120, 22);
@@ -195,6 +197,7 @@ public class MainWindow
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				// TODO save to file
 				//writeToFile(filenameTextfield.getText()); // File -> Save
 			}
 		});
@@ -206,6 +209,7 @@ public class MainWindow
 		{
             public void actionPerformed(ActionEvent e)
             {
+            	// TODO save to file then quit
                 // save data and close program if user clicks: File -> Quit
             	//writeToFile(filenameTextfield.getText());
                 mainWindow.dispose();
@@ -213,9 +217,11 @@ public class MainWindow
 		});
 		fileMenu.add(quitMenuItem);
 		
+		/* TODO is there a need for an 'options' menu?
 		JMenu optionsMenu = new JMenu("Options");
 		optionsMenu.setMnemonic(KeyEvent.VK_O);
 		menuBar.add(optionsMenu);
+		*/
 		
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -229,7 +235,7 @@ public class MainWindow
 			public void actionPerformed(ActionEvent e)
 			{
 				// show basic use instructions if user clicks: Help -> Getting Started
-                JOptionPane.showMessageDialog(null, helpMessage, "Usage",
+                JOptionPane.showMessageDialog(null, "helpful message", "Usage",
 						JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
 			}
 		});
@@ -243,7 +249,7 @@ public class MainWindow
 			public void actionPerformed(ActionEvent e)
 			{
 				// show author and version if user clicks: Help -> About
-				JOptionPane.showMessageDialog(null, "Created by " + author + "\nVersion " + version + source + repoWebsite, "About",
+				JOptionPane.showMessageDialog(null, "Created by " + author + "\nVersion " + version, "About",
 						JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"person.png")));
 			}
 		});
