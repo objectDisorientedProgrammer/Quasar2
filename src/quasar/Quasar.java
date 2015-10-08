@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)
+
 package quasar;
 
 public class Quasar
