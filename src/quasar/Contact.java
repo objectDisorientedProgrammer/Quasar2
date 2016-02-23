@@ -1,5 +1,7 @@
 /*
  * Created: May 28, 2013
+ * 
+ * Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)
  */
 
 package quasar;
