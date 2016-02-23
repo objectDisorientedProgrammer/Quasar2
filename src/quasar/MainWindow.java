@@ -127,6 +127,7 @@ public class MainWindow
 				{
 					editWinVisible = true;
 					// pass info based on selected item in list
+					// TODO remove these test cases...
 					Data d = new Data("test data node", "This is a test string",
 							"9/27/2013", "a, test, nodes, blah", 'd');
 					Data d2 = new Data("test data node 2", "This is another test string",
@@ -151,21 +152,21 @@ public class MainWindow
 		saveBtn.setBounds(341, 144, 89, 23);
 		// nm.saveToFile(); // TODO
 
-		quitBtn = new JButton("Quit");
-		quitBtn.setBounds(341, 178, 89, 23);
-		quitBtn.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent ae)
-			{
-				// save nodes TODO
-				//nm.saveToFile();
-				
-				if(editWinVisible)
-					editWin.remove();
-				mainWindow.dispose();
-			}
-		});
+//		quitBtn = new JButton("Quit");
+//		quitBtn.setBounds(341, 178, 89, 23);
+//		quitBtn.addActionListener(new ActionListener()
+//		{
+//			@Override
+//			public void actionPerformed(ActionEvent ae)
+//			{
+//				// save nodes TODO
+//				//nm.saveToFile();
+//				
+//				if(editWinVisible)
+//					editWin.remove();
+//				mainWindow.dispose();
+//			}
+//		});
 	}
 
 	private void initializeMainWindowAndPanel()
