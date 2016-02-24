@@ -18,7 +18,7 @@ public class MainWindow
 	private EditWindow editWin;
 	
 	private final String author = "Douglas Chidester";
-	private final String version = " v0.96.8";
+	private final String version = " v0.6.8";
 	private final String windowTitle = "Quasar";
 	private final int frameWidth = 450;
 	private final int frameHeight = 400;
@@ -41,7 +41,7 @@ public class MainWindow
 	private JButton newNodeBtn;
 	private JButton editBtn;
 	private JButton saveBtn;
-	private JButton quitBtn;
+//	private JButton quitBtn;
 
 	public MainWindow()
 	{
@@ -71,7 +71,7 @@ public class MainWindow
 		mainPanel.add(newNodeBtn);
 		mainPanel.add(editBtn);
 		mainPanel.add(saveBtn);
-		mainPanel.add(quitBtn);
+//		mainPanel.add(quitBtn);
 	}
 
 	private void createGUIElements()

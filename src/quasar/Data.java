@@ -6,6 +6,9 @@
 
 package quasar;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 public class Data
 {
 	protected String title;
@@ -88,12 +91,15 @@ public class Data
 	public void setType(char type) {
 		switch(type)
 		{
-		case 'c':
-		case 'd':
-		case 'w':
-		case 'p':
-			this.type = type;
-			break;
+			case 'c':
+			case 'd':
+			case 'w':
+			case 'p':
+				this.type = type;
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "Error undefined type.", "Tyoe Error",
+						JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
