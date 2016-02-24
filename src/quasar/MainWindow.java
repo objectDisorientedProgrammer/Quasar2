@@ -8,6 +8,7 @@ package quasar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
@@ -16,17 +17,20 @@ public class MainWindow
 	private NodeManager nm;
 	private EditWindow editWin;
 	
-	private static final String author = "Doug Chidester";
-	private static final String version = " v0.96.6";
-	private static final String windowTitle = "Quasar";
-	private static final int frameWidth = 450;
-	private static final int frameHeight = 400;
+	private final String author = "Douglas Chidester";
+	private final String version = " v0.6.8";
+	private final String windowTitle = "Quasar";
+	private final int frameWidth = 450;
+	private final int frameHeight = 400;
+	
+	private final String imagePath = "/images/";	// path in jar file
 	
 	private JFrame mainWindow;
 	private JPanel mainPanel;
 	
 	// Variables
 	boolean editWinVisible = false;
+	String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
 	
 	// GUI
 	private JTextField searchTF;
@@ -37,7 +41,7 @@ public class MainWindow
 	private JButton newNodeBtn;
 	private JButton editBtn;
 	private JButton saveBtn;
-	private JButton quitBtn;
+//	private JButton quitBtn;
 
 	public MainWindow()
 	{
@@ -47,6 +51,8 @@ public class MainWindow
 		this.editWin = new EditWindow();
 		
 		initializeMainWindowAndPanel();
+		
+		createAndAddMenuBar();
 		
 		createGUIElements();
 		
@@ -65,7 +71,7 @@ public class MainWindow
 		mainPanel.add(newNodeBtn);
 		mainPanel.add(editBtn);
 		mainPanel.add(saveBtn);
-		mainPanel.add(quitBtn);
+//		mainPanel.add(quitBtn);
 	}
 
 	private void createGUIElements()
@@ -99,8 +105,7 @@ public class MainWindow
 		filterLbl.setBounds(10, 42, 80, 14);
 
 		filterComboBox = new JComboBox<String>();
-		filterComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
-				"All", "Documents", "Websites", "Pictures", "Contacts" }));
+		filterComboBox.setModel(new DefaultComboBoxModel<String>(dataTypeList));
 		filterComboBox.setSelectedIndex(0);
 		filterComboBox.setMaximumRowCount(5);
 		filterComboBox.setBounds(95, 38, 120, 22);
@@ -124,6 +129,7 @@ public class MainWindow
 				{
 					editWinVisible = true;
 					// pass info based on selected item in list
+					// TODO remove these test cases...
 					Data d = new Data("test data node", "This is a test string",
 							"9/27/2013", "a, test, nodes, blah", 'd');
 					Data d2 = new Data("test data node 2", "This is another test string",
@@ -148,21 +154,21 @@ public class MainWindow
 		saveBtn.setBounds(341, 144, 89, 23);
 		// nm.saveToFile(); // TODO
 
-		quitBtn = new JButton("Quit");
-		quitBtn.setBounds(341, 178, 89, 23);
-		quitBtn.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent ae)
-			{
-				// save nodes TODO
-				//nm.saveToFile();
-				
-				if(editWinVisible)
-					editWin.remove();
-				mainWindow.dispose();
-			}
-		});
+//		quitBtn = new JButton("Quit");
+//		quitBtn.setBounds(341, 178, 89, 23);
+//		quitBtn.addActionListener(new ActionListener()
+//		{
+//			@Override
+//			public void actionPerformed(ActionEvent ae)
+//			{
+//				// save nodes TODO
+//				//nm.saveToFile();
+//				
+//				if(editWinVisible)
+//					editWin.remove();
+//				mainWindow.dispose();
+//			}
+//		});
 	}
 
 	private void initializeMainWindowAndPanel()
@@ -175,5 +181,81 @@ public class MainWindow
 		mainPanel = new JPanel(null); // TODO change layout manager
 		
 		mainWindow.add(mainPanel);
+	}
+	
+	private void createAndAddMenuBar()
+	{
+		JMenuBar menuBar = new JMenuBar();
+		mainWindow.setJMenuBar(menuBar);
+		
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		menuBar.add(fileMenu);
+		
+		JMenuItem saveMenuItem = new JMenuItem("Save");
+		saveMenuItem.setMnemonic(KeyEvent.VK_S);
+		saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(imagePath + "save.png")));
+		saveMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				// TODO save to file
+				//writeToFile(filenameTextfield.getText()); // File -> Save
+			}
+		});
+		fileMenu.add(saveMenuItem);
+		
+		JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(imagePath+"exit.png")));
+		quitMenuItem.setMnemonic(KeyEvent.VK_Q);
+		quitMenuItem.addActionListener(new ActionListener()
+		{
+            public void actionPerformed(ActionEvent e)
+            {
+            	// TODO save to file then quit
+                // save data and close program if user clicks: File -> Quit
+            	//writeToFile(filenameTextfield.getText());
+                mainWindow.dispose();
+            }
+		});
+		fileMenu.add(quitMenuItem);
+		
+		/* TODO is there a need for an 'options' menu?
+		JMenu optionsMenu = new JMenu("Options");
+		optionsMenu.setMnemonic(KeyEvent.VK_O);
+		menuBar.add(optionsMenu);
+		*/
+		
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic(KeyEvent.VK_H);
+		menuBar.add(helpMenu);
+		
+		JMenuItem helpMenuItem = new JMenuItem("Getting Started", new ImageIcon(this.getClass().getResource(imagePath+"help.png")));
+		helpMenuItem.setMnemonic(KeyEvent.VK_G);
+		helpMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				// show basic use instructions if user clicks: Help -> Getting Started
+                JOptionPane.showMessageDialog(null, "helpful message", "Usage",
+						JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
+			}
+		});
+		helpMenu.add(helpMenuItem);
+		
+		JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
+		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
+		aboutMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				// show author and version if user clicks: Help -> About
+				JOptionPane.showMessageDialog(null, "Created by " + author + "\nVersion " + version, "About",
+						JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"person.png")));
+			}
+		});
+		helpMenu.add(aboutMenuItem);
 	}
 }
