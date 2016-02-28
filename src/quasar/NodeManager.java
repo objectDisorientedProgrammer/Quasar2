@@ -8,6 +8,9 @@ package quasar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+
+import javax.swing.ListModel;
 
 import org.apache.commons.io.FileUtils;
 
@@ -22,12 +25,16 @@ public class NodeManager
 	private int contactCount;
 	private int totalCount;
 	private String dataFile;
+	private HashMap<Integer, Data> dataContainer;
 
 	/**
 	 * Creates a NodeManager with the default load/save file of Quasar.dat.
 	 */
 	public NodeManager()
 	{
+		super();
+		this.dataContainer = new HashMap<Integer, Data>();
+		initializeVariables();
 		// TODO
 		//this("Quasar.dat");
 	}
@@ -38,6 +45,7 @@ public class NodeManager
 	 */
 	public NodeManager(String dataFile) {
 		super();
+		this.dataContainer = new HashMap<Integer, Data>();
 		this.dataFile = dataFile;
 		initializeVariables();
 		try {
@@ -85,8 +93,13 @@ public class NodeManager
 	 * 
 	 * @param Node
 	 */
-	public void addNode(int Node) {
+	public void addNode(Data rawData) {
 		throw new UnsupportedOperationException();
+	}
+	
+	public void createEntry(Data rawData)
+	{
+		dataContainer.put(rawData.hashCode(), rawData);
 	}
 
 	public void goFirst() {
@@ -110,7 +123,11 @@ public class NodeManager
 	}
 
 	public boolean isEmpty() {
-		throw new UnsupportedOperationException();
+		return dataContainer.isEmpty();
+	}
+
+	public String getAllData() {
+		return dataContainer.toString();
 	}
 
 }

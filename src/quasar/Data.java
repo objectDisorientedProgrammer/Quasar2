@@ -6,7 +6,6 @@
 
 package quasar;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class Data
@@ -24,21 +23,21 @@ public class Data
 	{
 		this("", "", "", "", 'd');
 	}
-
-	/**
-	 * Create a data object with a title.
-	 * @param title - title for the data.
-	 * @param type - c: contact, d: document, p: picture, w: website
-	 */
-	public Data(String title, char type)
-	{
-		this(title, "", "", "", type);
-	}
+//
+//	/**
+//	 * Create a data object with a title.
+//	 * @param title - title for the data.
+//	 * @param type - c: contact, d: document, p: picture, w: website
+//	 */
+//	public Data(String title, char type)
+//	{
+//		this(title, "", "", "", type);
+//	}
 
 	/**
 	 * @param title - title for the data
 	 * @param description - description of the data
-	 * @param date
+	 * @param date - relevant date
 	 * @param keywords - search keywords
 	 * @param type - c: contact, d: document, p: picture, w: website
 	 */

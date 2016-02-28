@@ -36,7 +36,8 @@ public class MainWindow
 	private JTextField searchTF;
 	private JLabel filterLbl;
 	private JButton searchBtn;
-	private JList<String> resultsList;
+//	private JList<String> resultsList;
+	private JTextArea dataList;
 	private JComboBox<String> filterComboBox;
 	private JButton newNodeBtn;
 	private JButton editBtn;
@@ -64,7 +65,7 @@ public class MainWindow
 	{
 		mainPanel.add(searchTF);
 		mainPanel.add(searchBtn);
-		mainPanel.add(resultsList);
+		mainPanel.add(dataList);
 		mainPanel.add(filterLbl);
 		mainPanel.add(filterComboBox);
 		mainPanel.add(newNodeBtn);
@@ -81,23 +82,28 @@ public class MainWindow
 		
 		searchBtn = new JButton("Search");
 		searchBtn.setBounds(341, 10, 91, 23);
-
-		resultsList = new JList<String>();
-		resultsList.setModel(new AbstractListModel<String>()
-		{
-			String[] values = new String[] { "test1", "test2" };
-
-			public int getSize()
-			{
-				return values.length;
-			}
-
-			public String getElementAt(int index)
-			{
-				return values[index];
-			}
-		});
-		resultsList.setBounds(10, 80, 315, 188);
+		
+		//String[] values = new String[10];
+		dataList = new JTextArea();
+		if(nm.isEmpty())
+			dataList.setText("");
+		else
+			dataList.setText(nm.getAllData());
+//		resultsList.setModel(new AbstractListModel<String>()
+//		{
+//			
+//
+//			public int getSize()
+//			{
+//				return values.length;
+//			}
+//
+//			public String getElementAt(int index)
+//			{
+//				return values[index];
+//			}
+//		});
+		dataList.setBounds(10, 80, 315, 188);
 
 		filterLbl = new JLabel("Search in:");
 		filterLbl.setBounds(10, 42, 80, 14);
@@ -105,14 +111,21 @@ public class MainWindow
 		filterComboBox = new JComboBox<String>();
 		filterComboBox.setModel(new DefaultComboBoxModel<String>(dataTypeList));
 		filterComboBox.setSelectedIndex(0);
-		filterComboBox.setMaximumRowCount(5);
+		filterComboBox.setMaximumRowCount(dataTypeList.length);
 		filterComboBox.setBounds(95, 38, 120, 22);
 
 		newNodeBtn = new JButton("New");
 		newNodeBtn.setToolTipText("Create a new entry.");
+		newNodeBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arrrrg) {
+				// have the node manager add a node
+				//new Thread().start() {
+					new NewEntryFrame(nm, dataTypeList);
+				//};
+			}
+		});
 		newNodeBtn.setBounds(341, 77, 91, 23);
-		// have the node manager add a node
-		// nm.addNode(); // TODO
 
 		editBtn = new JButton("Edit");
 		editBtn.setToolTipText("Edit the selected entry.");
@@ -128,16 +141,16 @@ public class MainWindow
 					editWinVisible = true;
 					// pass info based on selected item in list
 					// TODO remove these test cases...
-					Data d = new Data("test data node", "This is a test string",
-							"9/27/2013", "a, test, nodes, blah", 'd');
-					Data d2 = new Data("test data node 2", "This is another test string",
-							"9/30/2015", "a, test, nodes, blah", 'd');
+//					Data d = new Data("test data node", "This is a test string",
+//							"9/27/2013", "a, test, nodes, blah", 'd');
+//					Data d2 = new Data("test data node 2", "This is another test string",
+//							"9/30/2015", "a, test, nodes, blah", 'd');
 					
-					if(resultsList.getSelectedIndex() == 0)
-						editWin.displayNode(new Node(d));
-					else
-						editWin.displayNode(new Node(d2));
-					editWin.showFrame();	// thread this? TODO
+//					if(resultsList.getSelectedIndex() == 0)
+//						editWin.displayNode(new Node(d));
+//					else
+//						editWin.displayNode(new Node(d2));
+					editWin.showFrame();	// thread this TODO issue #9
 				}
 				else
 				{
