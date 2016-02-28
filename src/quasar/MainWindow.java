@@ -41,7 +41,6 @@ public class MainWindow
 	private JButton newNodeBtn;
 	private JButton editBtn;
 	private JButton saveBtn;
-//	private JButton quitBtn;
 
 	public MainWindow()
 	{
@@ -71,7 +70,6 @@ public class MainWindow
 		mainPanel.add(newNodeBtn);
 		mainPanel.add(editBtn);
 		mainPanel.add(saveBtn);
-//		mainPanel.add(quitBtn);
 	}
 
 	private void createGUIElements()
@@ -153,22 +151,6 @@ public class MainWindow
 		saveBtn.setToolTipText("Save current list.");
 		saveBtn.setBounds(341, 144, 89, 23);
 		// nm.saveToFile(); // TODO
-
-//		quitBtn = new JButton("Quit");
-//		quitBtn.setBounds(341, 178, 89, 23);
-//		quitBtn.addActionListener(new ActionListener()
-//		{
-//			@Override
-//			public void actionPerformed(ActionEvent ae)
-//			{
-//				// save nodes TODO
-//				//nm.saveToFile();
-//				
-//				if(editWinVisible)
-//					editWin.remove();
-//				mainWindow.dispose();
-//			}
-//		});
 	}
 
 	private void initializeMainWindowAndPanel()
