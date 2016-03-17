@@ -36,8 +36,8 @@ public class MainWindow
 	private JTextField searchTF;
 	private JLabel filterLbl;
 	private JButton searchBtn;
-//	private JList<String> resultsList;
-	private JTextArea dataList;
+	private JList<String> dataList;
+//	private JTextArea dataList;
 	private JComboBox<String> filterComboBox;
 	private JButton newNodeBtn;
 	private JButton editBtn;
@@ -55,6 +55,8 @@ public class MainWindow
 		createAndAddMenuBar();
 		
 		createGUIElements();
+		
+		updateListDisplay();
 		
 		addGUIElements();
 
@@ -84,11 +86,9 @@ public class MainWindow
 		searchBtn.setBounds(341, 10, 91, 23);
 		
 		//String[] values = new String[10];
-		dataList = new JTextArea();
-		if(nm.isEmpty())
-			dataList.setText("");
-		else
-			dataList.setText(nm.getAllData());
+//		dataList = new JTextArea();
+		
+		dataList = new JList<String>();
 //		resultsList.setModel(new AbstractListModel<String>()
 //		{
 //			
@@ -122,6 +122,7 @@ public class MainWindow
 				// have the node manager add a node
 				//new Thread().start() {
 					new NewEntryFrame(nm, dataTypeList);
+					updateListDisplay(); // TODO move this to run() so it will update regularly
 				//};
 			}
 		});
@@ -136,37 +137,11 @@ public class MainWindow
 			@Override
 			public void actionPerformed(ActionEvent ae)
 			{
-				if(!nm.isEmpty())
-				{
-					editBtn.setEnabled(true);
-					// launch the edit window
-					if(!editWinVisible)
-					{
-						editWinVisible = true;
-						// pass info based on selected item in list
-						// TODO remove these test cases...
-//						Data d = new Data("test data node", "This is a test string",
-//								"9/27/2013", "a, test, nodes, blah", 'd');
-//						Data d2 = new Data("test data node 2", "This is another test string",
-//								"9/30/2015", "a, test, nodes, blah", 'd');
-						
-//						if(resultsList.getSelectedIndex() == 0)
-//							editWin.displayNode(new Node(d));
-//						else
-//							editWin.displayNode(new Node(d2));
-						editWin.showFrame();	// thread this TODO issue #9
-					}
-					else
-					{
-						editWin.remove();
-						editWinVisible = false;
-					}
-				}
-				else
-				{
-					editBtn.setEnabled(false);
-				}
-				
+				// thread this TODO issue #9
+				// Display selected entry in an edit window
+				EditWindow ew = new EditWindow();
+				ew.displayEntry(nm.getEntry(dataList.getSelectedValue()));
+				ew.showFrame();
 			}
 		});
 
@@ -174,6 +149,23 @@ public class MainWindow
 		saveBtn.setToolTipText("Save current list.");
 		saveBtn.setBounds(341, 144, 89, 23);
 		// nm.saveToFile(); // TODO
+	}
+
+	private void updateListDisplay()
+	{
+		if(nm.isEmpty())
+		{	
+			dataList.setListData(new String[] {});
+			editBtn.setEnabled(false);
+		}
+		else
+		{
+			dataList.setListData(nm.getAllData());
+			editBtn.setEnabled(true);
+		}
+		
+		// select the first item
+		dataList.setSelectedIndex(0);
 	}
 
 	private void initializeMainWindowAndPanel()
@@ -263,4 +255,5 @@ public class MainWindow
 		});
 		helpMenu.add(aboutMenuItem);
 	}
+
 }

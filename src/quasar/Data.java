@@ -14,20 +14,20 @@ public class Data
 	protected String description;
 	protected String date;
 	protected String keywords;
-	protected char type;
+	protected char type; // c: contact, d: document, p: picture, w: website, u: unassigned
 	
 	/**
 	 * Creates a data object with title set to 'Default'
 	 */
 	public Data()
 	{
-		this("", "", "", "", 'd');
+		this("", "", "", "", 'u');
 	}
 //
 //	/**
 //	 * Create a data object with a title.
 //	 * @param title - title for the data.
-//	 * @param type - c: contact, d: document, p: picture, w: website
+//	 * @param type - c: contact, d: document, p: picture, w: website, u: unassigned
 //	 */
 //	public Data(String title, char type)
 //	{
@@ -90,10 +90,11 @@ public class Data
 	public void setType(char type) {
 		switch(type)
 		{
-			case 'c':
-			case 'd':
-			case 'w':
-			case 'p':
+			case 'c':	// contact
+			case 'd':	// document
+			case 'w':	// website
+			case 'p':	// photo
+			case 'u':	// unassigned
 				this.type = type;
 				break;
 			default:
@@ -101,5 +102,10 @@ public class Data
 						JOptionPane.ERROR_MESSAGE);
 		}
 		
+	}
+	
+	public String toString()
+	{
+		return title + " " + description + " " + date + " " + keywords + " " + type;
 	}
 }
