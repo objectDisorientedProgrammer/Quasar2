@@ -130,33 +130,43 @@ public class MainWindow
 		editBtn = new JButton("Edit");
 		editBtn.setToolTipText("Edit the selected entry.");
 		editBtn.setBounds(341, 111, 91, 23);
+		editBtn.setEnabled(false);
 		editBtn.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent ae)
 			{
-				// launch the edit window
-				if(!editWinVisible)
+				if(!nm.isEmpty())
 				{
-					editWinVisible = true;
-					// pass info based on selected item in list
-					// TODO remove these test cases...
-//					Data d = new Data("test data node", "This is a test string",
-//							"9/27/2013", "a, test, nodes, blah", 'd');
-//					Data d2 = new Data("test data node 2", "This is another test string",
-//							"9/30/2015", "a, test, nodes, blah", 'd');
-					
-//					if(resultsList.getSelectedIndex() == 0)
-//						editWin.displayNode(new Node(d));
-//					else
-//						editWin.displayNode(new Node(d2));
-					editWin.showFrame();	// thread this TODO issue #9
+					editBtn.setEnabled(true);
+					// launch the edit window
+					if(!editWinVisible)
+					{
+						editWinVisible = true;
+						// pass info based on selected item in list
+						// TODO remove these test cases...
+//						Data d = new Data("test data node", "This is a test string",
+//								"9/27/2013", "a, test, nodes, blah", 'd');
+//						Data d2 = new Data("test data node 2", "This is another test string",
+//								"9/30/2015", "a, test, nodes, blah", 'd');
+						
+//						if(resultsList.getSelectedIndex() == 0)
+//							editWin.displayNode(new Node(d));
+//						else
+//							editWin.displayNode(new Node(d2));
+						editWin.showFrame();	// thread this TODO issue #9
+					}
+					else
+					{
+						editWin.remove();
+						editWinVisible = false;
+					}
 				}
 				else
 				{
-					editWin.remove();
-					editWinVisible = false;
+					editBtn.setEnabled(false);
 				}
+				
 			}
 		});
 

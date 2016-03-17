@@ -87,7 +87,7 @@ public class NewEntryFrame extends JFrame {
 
 	private void setUpFrame() {
 		this.setSize(frameWidth, frameHeight);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 	}
 }
