@@ -1,7 +1,6 @@
 package quasar;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,6 +21,7 @@ public class NewEntryFrame extends JFrame {
 	private JPanel documentPane;
 	private NodeManager manager;
 	private String[] possibleEntries;
+	private MainWindow mwReference;
 	
 	private JComboBox<String> dataTypeSelector;
 	private JTextField title;
@@ -31,10 +31,11 @@ public class NewEntryFrame extends JFrame {
 	
 	private JButton addButton;
 	
-	public NewEntryFrame(NodeManager mngr, String[] entryTypes)
+	public NewEntryFrame(NodeManager mngr, String[] entryTypes, MainWindow mw)
 	{
 		this.manager = mngr;
 		this.possibleEntries = entryTypes;
+		this.mwReference = mw;
 		setUpFrame();
 		createPanes();
 		
@@ -44,7 +45,7 @@ public class NewEntryFrame extends JFrame {
 		
 		addPanes();
 		
-		this.setVisible(true);
+		//this.setVisible(true);
 	}
 
 	private void addPanes() {
@@ -102,12 +103,14 @@ public class NewEntryFrame extends JFrame {
 					entryType = 'u';
 					break;
 				}
-//				manager.createEntry(new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), entryType));
-				
+
 				// for debugging TODO remove this
-				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), entryType);
+				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()].charAt(0));
 				manager.createEntry(d);
 				System.out.println("in NewEntryFrame.addButton - adding: " + d.toString());
+				mwReference.requestListDisplayUpdate();
+				
+				clearAllTextfields();
 			}
 		});
 		
@@ -130,6 +133,14 @@ public class NewEntryFrame extends JFrame {
 		selectorPane.add(keywords);
 		selectorPane.add(Box.createVerticalGlue());
 		selectorPane.add(addButton);
+	}
+	
+	private void clearAllTextfields()
+	{
+		title.setText("");
+		description.setText("");
+		date.setText("");
+		keywords.setText("");
 	}
 
 	private void setUpFrame() {

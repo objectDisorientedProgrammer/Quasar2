@@ -29,8 +29,8 @@ public class MainWindow
 	private JPanel mainPanel;
 	
 	// Variables
-	boolean editWinVisible = false;
-	String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
+	private boolean editWinVisible = false;
+	private final String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
 	
 	// GUI
 	private JTextField searchTF;
@@ -116,13 +116,14 @@ public class MainWindow
 
 		newNodeBtn = new JButton("New");
 		newNodeBtn.setToolTipText("Create a new entry.");
+		final NewEntryFrame nef = new NewEntryFrame(nm, dataTypeList, this);
 		newNodeBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arrrrg) {
 				// have the node manager add a node
 				//new Thread().start() {
-					new NewEntryFrame(nm, dataTypeList);
-					updateListDisplay(); // TODO move this to run() so it will update regularly
+				nef.setVisible(true);
+					//updateListDisplay(); // TODO move this to run() so it will update regularly
 				//};
 			}
 		});
@@ -149,6 +150,11 @@ public class MainWindow
 		saveBtn.setToolTipText("Save current list.");
 		saveBtn.setBounds(341, 144, 89, 23);
 		// nm.saveToFile(); // TODO
+	}
+	
+	public void requestListDisplayUpdate()
+	{
+		updateListDisplay();
 	}
 
 	private void updateListDisplay()
