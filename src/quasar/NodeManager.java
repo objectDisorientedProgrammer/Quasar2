@@ -8,6 +8,9 @@ package quasar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 
@@ -22,12 +25,16 @@ public class NodeManager
 	private int contactCount;
 	private int totalCount;
 	private String dataFile;
+	private HashMap<String, Data> dataContainer;
 
 	/**
 	 * Creates a NodeManager with the default load/save file of Quasar.dat.
 	 */
 	public NodeManager()
 	{
+		super();
+		this.dataContainer = new HashMap<String, Data>();
+		initializeVariables();
 		// TODO
 		//this("Quasar.dat");
 	}
@@ -38,6 +45,7 @@ public class NodeManager
 	 */
 	public NodeManager(String dataFile) {
 		super();
+		this.dataContainer = new HashMap<String, Data>();
 		this.dataFile = dataFile;
 		initializeVariables();
 		try {
@@ -81,12 +89,17 @@ public class NodeManager
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param Node
-	 */
-	public void addNode(int Node) {
-		throw new UnsupportedOperationException();
+//	/**
+//	 * 
+//	 * @param Node
+//	 */
+//	public void addNode(Data rawData) {
+//		throw new UnsupportedOperationException();
+//	}
+	
+	public void createEntry(Data rawData)
+	{
+		dataContainer.put(rawData.getTitle(), rawData);
 	}
 
 	public void goFirst() {
@@ -110,7 +123,26 @@ public class NodeManager
 	}
 
 	public boolean isEmpty() {
-		throw new UnsupportedOperationException();
+		return dataContainer.isEmpty();
+	}
+
+	public String[] getAllData()
+	{
+//		StringBuilder sb = new StringBuilder();
+		String[] items = new String[dataContainer.size()];
+		
+		Iterator<Entry<String, Data>> it = dataContainer.entrySet().iterator();
+		for(int i = 0; i < items.length && it.hasNext(); ++i)
+		{
+			items[i] = it.next().getValue().title;
+		}
+//		return sb.toString();
+		return items;
+	}
+
+	public Data getEntry(String title)
+	{
+		return dataContainer.get(title);
 	}
 
 }

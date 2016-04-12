@@ -113,17 +113,32 @@ public class EditWindow
 		pane.add(keywordsTextField);
 	}
 
+//	/**
+//	 * Display a node's data in the edit window.
+//	 * @param n - the node to display
+//	 */
+//	public void displayNode(Node n)
+//	{
+//		// take a node's data and put it in the correct fields
+//		titleTextField.setText(n.getData().getTitle());
+//		descriptionTextField.setText(n.getData().getDescription());
+//		dateTextField.setText(n.getData().getDate());
+//		keywordsTextField.setText(n.getData().getKeywords());
+//	}
+	
 	/**
-	 * Display a node's data in the edit window.
-	 * @param n - the node to display
+	 * Display an entry's data in the edit window.
+	 * @param d - the entry to display
 	 */
-	public void displayNode(Node n)
+	public void displayEntry(Data d)
 	{
-		// take a node's data and put it in the correct fields
-		titleTextField.setText(n.getData().getTitle());
-		descriptionTextField.setText(n.getData().getDescription());
-		dateTextField.setText(n.getData().getDate());
-		keywordsTextField.setText(n.getData().getKeywords());
+		titleTextField.setText(d.getTitle());
+		descriptionTextField.setText(d.getDescription());
+		dateTextField.setText(d.getDate());
+		keywordsTextField.setText(d.getKeywords());
+		
+		// TODO switch on type
+		// display type specific info
 	}
 
 	public void showFrame() {

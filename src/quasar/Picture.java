@@ -10,8 +10,8 @@ public class Picture extends Data
 {
 	private String path;
 	private String photographer;
-	private int width;
-	private int height;
+	private int imageWidth;
+	private int imageHeight;
 	
 	/**
 	 * Width and height set to -1 to indicate absence.
@@ -55,8 +55,8 @@ public class Picture extends Data
 		super();
 		this.path = path;
 		this.photographer = photographer;
-		this.width = w;
-		this.height = h;
+		this.imageWidth = w;
+		this.imageHeight = h;
 	}
 
 	public String getPath() {
@@ -76,20 +76,20 @@ public class Picture extends Data
 	}
 
 	public int getWidth() {
-		return width;
+		return imageWidth;
 	}
 
 	public void setWidth(int w) {
 		if(w >= 0)
-			this.width = w;
+			this.imageWidth = w;
 	}
 
 	public int getHeight() {
-		return height;
+		return imageHeight;
 	}
 
 	public void setHeight(int h) {
 		if(h >= 0)
-			this.height = h;
+			this.imageHeight = h;
 	}
 }
