@@ -14,21 +14,22 @@ public class Data
 	protected String description = null;
 	protected String date = null;
 	protected String keywords = null;
-	protected char type = 'u'; // c: contact, d: document, p: picture, w: website, u: unassigned
+	protected String type = "all"; // c: contact, d: document, p: picture, w: website, u: unassigned
+	private final String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
 	
 	/**
 	 * Creates a data object with title set empty
 	 */
 	public Data()
 	{
-		this("", "", "", "", 'u');
+		this("", "", "", "", "all");
 	}
 
 	/**
 	 * Create a data object with a type.
 	 * @param type - c: contact, d: document, p: picture, w: website, u: unassigned
 	 */
-	public Data(char type)
+	public Data(String type)
 	{
 		this("", "", "", "", type);
 	}
@@ -41,7 +42,7 @@ public class Data
 	 * @param type - c: contact, d: document, p: picture, w: website
 	 */
 	public Data(String title, String description, String date, String keywords,
-			char type) {
+			String type) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -82,46 +83,28 @@ public class Data
 		this.keywords = keywords;
 	}
 	
-	public int getType() {
+	public String getType() {
 		return type;
 	}
 	
 	/**
 	 * Case insensitive type setter.
-	 * @param type
+	 * @param type - a valid type of data
 	 */
-	public void setType(char type) {
-		switch(type)
-		{
-			case 'c':	// contact
-			case 'C':
-				this.type = 'c';
-				break;
-			case 'd':	// document
-			case 'D':
-				this.type = 'd';
-				break;
-			case 'w':	// website
-			case 'W':
-				this.type = 'w';
-				break;
-			case 'p':	// photo
-			case 'P':
-				this.type = 'p';
-				break;
-			case 'u':	// unassigned
-			case 'U':
-			case 'a':
-			case 'A':
-				this.type = 'u';
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Error undefined type.", "Type Error",
-						JOptionPane.ERROR_MESSAGE);
-		}
-		
+	public void setType(String type) {
+		if(!isValidType(type))
+			JOptionPane.showMessageDialog(null, "Error undefined type.", "Data Type Error", JOptionPane.ERROR_MESSAGE);
+		else
+			this.type = type;
 	}
 	
+	private boolean isValidType(String str) {
+		for(String s : dataTypeList)
+			if(str.equalsIgnoreCase(s))
+				return true;
+		return false;
+	}
+
 	/**
 	 * Convert a Data object to a String object.
 	 * @return a string with all populated fields
@@ -157,7 +140,7 @@ public class Data
 				sb.append(keywords);
 		}
 		
-		if(sb.length() > 0)
+		if(type != null && sb.length() > 0)
 			sb.append(" " + type);
 		else
 			sb.append(type);
