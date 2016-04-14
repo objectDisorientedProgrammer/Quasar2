@@ -84,28 +84,8 @@ public class NewEntryFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				char entryType = 'u';
-				//"All", "Documents", "Websites", "Pictures", "Contacts"
-				// c: contact, d: document, p: picture, w: website, u: unassigned
-				switch(possibleEntries[dataTypeSelector.getSelectedIndex()])
-				{
-				case "All":			entryType = 'u';
-					break;
-				case "Documents":	entryType = 'd';
-					break;
-				case "Websites":	entryType = 'w';
-					break;
-				case "Pictures":	entryType = 'p';
-					break;
-				case "Contacts":	entryType = 'c';
-					break;
-				default:
-					entryType = 'u';
-					break;
-				}
-
 				// for debugging TODO remove this
-				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()].charAt(0));
+				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()]);
 				manager.createEntry(d);
 				System.out.println("in NewEntryFrame.addButton - adding: " + d.toString());
 				mwReference.requestListDisplayUpdate();
