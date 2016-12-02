@@ -15,7 +15,7 @@ import javax.swing.*;
 public class MainWindow
 {
 	private NodeManager nm;
-	private EditWindow editWin;
+	private EditWindow editWindow;
 	
 	private final String author = "Douglas Chidester";
 	private final String version = " v0.6.8";
@@ -48,7 +48,7 @@ public class MainWindow
 		super();
 		
 		this.nm = new NodeManager();
-		this.editWin = new EditWindow();
+		this.editWindow = new EditWindow(this);
 		
 		initializeMainWindowAndPanel();
 		
@@ -140,9 +140,8 @@ public class MainWindow
 			{
 				// thread this TODO issue #9
 				// Display selected entry in an edit window
-				EditWindow ew = new EditWindow();
-				ew.displayEntry(nm.getEntry(dataList.getSelectedValue()));
-				ew.showFrame();
+				editWindow.displayEntry(nm.getEntry(dataList.getSelectedValue()));
+				editWindow.showFrame();
 			}
 		});
 
