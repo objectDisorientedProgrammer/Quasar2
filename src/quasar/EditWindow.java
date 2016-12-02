@@ -38,8 +38,12 @@ public class EditWindow
 	private int textfieldWidth = frameWidth - (textfieldXcoord + 18); // text fields extend to end of frame on creation
 	
 	private JButton saveButton;
+	
+	private JButton editButton;
+	private boolean editable = false;
+	
 	private JButton cancelButton;
-	private int buttonWidth = 70;
+	private int buttonWidth = 75;
 	
 	
 	public EditWindow(MainWindow main)
@@ -55,6 +59,7 @@ public class EditWindow
 		
 		createAndAddGUI();
 		addGUIElements(frame.getContentPane());
+		setEditingEntry(editable);
 	}
 	
 	/**
@@ -76,8 +81,9 @@ public class EditWindow
 		pane.add(keywordsLabel);
 		pane.add(keywordsTextField);
 		
-		pane.add(saveButton);
+		pane.add(editButton);
 		pane.add(cancelButton);
+		pane.add(saveButton);
 	}
 
 	/**
@@ -133,17 +139,41 @@ public class EditWindow
 		keywordsTextField.setBounds(textfieldXcoord, 130, textfieldWidth, 20);
 		keywordsTextField.setColumns(10);
 		
-		saveButton = new JButton("Save");
-		saveButton.setBounds(textfieldXcoord, 160, buttonWidth, 34);
-		
-		cancelButton = new JButton("Exit");
-		cancelButton.setBounds(textfieldXcoord + buttonWidth + 6, 160, 70, 34);
+		cancelButton = new JButton("Close");
+		cancelButton.setBounds(textfieldXcoord, 160, buttonWidth, 34);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				hideFrame();
 			}
 		});
+		
+		saveButton = new JButton("Save");
+		saveButton.setBounds(textfieldXcoord + buttonWidth + 6, 160, buttonWidth, 34);
+		
+		editButton = new JButton("Edit");
+		editButton.setBounds(textfieldXcoord + ((buttonWidth + 6) * 2), 160, buttonWidth, 34);
+		editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editable = !editable;
+				setEditingEntry(editable);
+			}
+		});
+	}
+	
+	/**
+	 * Enable or disable editing a node.
+	 * @param enable - set true to enable editing, set false to disable editing
+	 */
+	private void setEditingEntry(boolean enable)
+	{
+		titleTextField.setEditable(enable);
+		descriptionTextField.setEditable(enable);
+		dateTextField.setEditable(enable);
+		keywordsTextField.setEditable(enable);
+		
+		// TODO node specific data
 	}
 
 //	/**
