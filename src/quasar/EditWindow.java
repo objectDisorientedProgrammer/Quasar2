@@ -158,6 +158,7 @@ public class EditWindow
 			public void actionPerformed(ActionEvent e) {
 				editable = !editable;
 				setEditingEntry(editable);
+				frame.getContentPane().repaint();
 			}
 		});
 	}
