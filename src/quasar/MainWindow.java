@@ -129,8 +129,8 @@ public class MainWindow
 		});
 		newNodeBtn.setBounds(341, 77, 91, 23);
 
-		editBtn = new JButton("Edit");
-		editBtn.setToolTipText("Edit the selected entry.");
+		editBtn = new JButton("View");
+		editBtn.setToolTipText("View and edit the selected entry.");
 		editBtn.setBounds(341, 111, 91, 23);
 		editBtn.setEnabled(false);
 		editBtn.addActionListener(new ActionListener()
