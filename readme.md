@@ -1,4 +1,4 @@
-# The Quasar Project (Java edition)
+# The Quasar Project v2
 This is the replacement for the original [Quasar](https://github.com/objectDisorientedProgrammer/Quasar). The goal of this version is to be cross platform and more user friendly.
 
 Author: Doug Chidester (aka objectDisorientedProgrammer)
