@@ -38,8 +38,14 @@ public class EditWindow
 	private int textfieldWidth = frameWidth - (textfieldXcoord + 18); // text fields extend to end of frame on creation
 	
 	private JButton saveButton;
+	
+	private JButton editButton;
+	private boolean editable = false;
+	
 	private JButton cancelButton;
-	private int buttonWidth = 70;
+	private int buttonWidth = 90;
+	
+	private Data localDataCopy;
 	
 	
 	public EditWindow(MainWindow main)
@@ -55,6 +61,7 @@ public class EditWindow
 		
 		createAndAddGUI();
 		addGUIElements(frame.getContentPane());
+		setEditingEntry(editable);
 	}
 	
 	/**
@@ -76,8 +83,9 @@ public class EditWindow
 		pane.add(keywordsLabel);
 		pane.add(keywordsTextField);
 		
-		pane.add(saveButton);
+		pane.add(editButton);
 		pane.add(cancelButton);
+		pane.add(saveButton);
 	}
 
 	/**
@@ -133,31 +141,103 @@ public class EditWindow
 		keywordsTextField.setBounds(textfieldXcoord, 130, textfieldWidth, 20);
 		keywordsTextField.setColumns(10);
 		
-		saveButton = new JButton("Save");
-		saveButton.setBounds(textfieldXcoord, 160, buttonWidth, 34);
-		
-		cancelButton = new JButton("Exit");
-		cancelButton.setBounds(textfieldXcoord + buttonWidth + 6, 160, 70, 34);
+		cancelButton = new JButton("Cancel");
+		cancelButton.setBounds(textfieldXcoord, 160, buttonWidth, 34);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
+				if(editable == true)
+				{
+					editable = !editable; // toggle edit status
+					setEditingEntry(editable); // disable editing
+					editButton.setEnabled(true); // enable clicking 'edit' again
+					saveButton.setEnabled(false); // disable saving
+				}
 				hideFrame();
 			}
 		});
+		
+		saveButton = new JButton("Save");
+		saveButton.setBounds(textfieldXcoord + buttonWidth + 6, 160, buttonWidth, 34);
+		saveButton.setEnabled(false); // disable by default until user wants to edit
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(editable == true)
+				{
+					editable = !editable; // toggle edit status
+					setEditingEntry(editable); // disable editing
+					editButton.setEnabled(true); // enable clicking 'edit' again
+					saveButton.setEnabled(false); // disable saving
+					
+					updateDataValues(); // save changes
+					
+					frame.getContentPane().repaint(); // redraw the frame
+				}
+			}
+		});
+		
+		editButton = new JButton("Edit");
+		editButton.setBounds(textfieldXcoord + ((buttonWidth + 6) * 2), 160, buttonWidth, 34);
+		editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(editable == false)
+				{
+					editable = !editable; // toggle edit status
+					setEditingEntry(editable); // enable editing
+					editButton.setEnabled(false); // disable clicking 'edit' again
+					saveButton.setEnabled(true); // allow saving
+					frame.getContentPane().repaint(); // redraw the frame
+				}
+			}
+		});
 	}
-
-//	/**
-//	 * Display a node's data in the edit window.
-//	 * @param n - the node to display
-//	 */
-//	public void displayNode(Node n)
-//	{
-//		// take a node's data and put it in the correct fields
-//		titleTextField.setText(n.getData().getTitle());
-//		descriptionTextField.setText(n.getData().getDescription());
-//		dateTextField.setText(n.getData().getDate());
-//		keywordsTextField.setText(n.getData().getKeywords());
-//	}
+	
+	/**
+	 * Enable or disable editing a node.
+	 * @param enable - set true to enable editing, set false to disable editing
+	 */
+	private void setEditingEntry(boolean enable)
+	{
+		titleTextField.setEditable(enable);
+		descriptionTextField.setEditable(enable);
+		dateTextField.setEditable(enable);
+		keywordsTextField.setEditable(enable);
+		
+		// TODO node specific data
+	}
+	
+	/**
+	 * Save all changes made to data.
+	 */
+	private void updateDataValues()
+	{
+		// could change this to see if text has changed before trying to set new,
+		// but it might be more efficient to just overwrite.
+		String newValue = titleTextField.getText();
+		
+		// TODO check for valid 'newValue' in all cases
+		titleTextField.setText(newValue);
+		frame.setTitle(newValue); // update window title
+		this.localDataCopy.title = newValue;
+		
+		newValue = descriptionTextField.getText();
+		descriptionTextField.setText(newValue);
+		this.localDataCopy.description = newValue;
+		
+		newValue = dateTextField.getText();
+		//if(verifyDate(newValue))
+		dateTextField.setText(newValue);
+		this.localDataCopy.date = newValue;
+		//else -> create error message window
+		
+		newValue = keywordsTextField.getText();
+		keywordsTextField.setText(newValue);
+		this.localDataCopy.keywords = newValue;
+		
+		// TODO node specific data
+	}
 	
 	/**
 	 * Display an entry's data in the edit window.
@@ -165,13 +245,19 @@ public class EditWindow
 	 */
 	public void displayEntry(Data d)
 	{
-		titleTextField.setText(d.getTitle());
-		descriptionTextField.setText(d.getDescription());
-		dateTextField.setText(d.getDate());
-		keywordsTextField.setText(d.getKeywords());
+		this.localDataCopy = d;
+		frame.setTitle(this.localDataCopy.getTitle()); // update window title
+		// fill in fields
+		titleTextField.setText(this.localDataCopy.getTitle());
+		descriptionTextField.setText(this.localDataCopy.getDescription());
+		dateTextField.setText(this.localDataCopy.getDate());
+		keywordsTextField.setText(this.localDataCopy.getKeywords());
 		
 		// TODO switch on type
 		// display type specific info
+		//if(localDataCopy instanceof Picture)
+		//else if(localDataCopy instanceof Document)
+		// ...
 	}
 
 	/**
