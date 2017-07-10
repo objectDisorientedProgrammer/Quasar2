@@ -18,7 +18,7 @@ public class MainWindow
 	private EditWindow editWindow;
 	
 	private final String author = "Douglas Chidester";
-	private final String version = " v0.6.8";
+	private final String version = " v0.6.10";
 	private final String windowTitle = "Quasar";
 	private final int frameWidth = 450;
 	private final int frameHeight = 400;
@@ -84,6 +84,13 @@ public class MainWindow
 		
 		searchBtn = new JButton("Search");
 		searchBtn.setBounds(341, 10, 91, 23);
+		searchBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Search not implemented yet.", "Error",
+						JOptionPane.ERROR_MESSAGE, null);
+			}
+		});
 		
 		//String[] values = new String[10];
 //		dataList = new JTextArea();

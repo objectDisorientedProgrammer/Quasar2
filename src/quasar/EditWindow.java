@@ -218,9 +218,13 @@ public class EditWindow
 		String newValue = titleTextField.getText();
 		
 		// TODO check for valid 'newValue' in all cases
-		titleTextField.setText(newValue);
-		frame.setTitle(newValue); // update window title
-		this.localDataCopy.title = newValue;
+		if(newValue.compareTo(this.localDataCopy.title) != 0) // if title changed
+		{
+			titleTextField.setText(newValue);
+			frame.setTitle(newValue); // update window title
+			this.localDataCopy.title = newValue;
+			this.mwReference.requestListDisplayUpdate(); // update the display list
+		}
 		
 		newValue = descriptionTextField.getText();
 		descriptionTextField.setText(newValue);

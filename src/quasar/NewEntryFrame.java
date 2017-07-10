@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 
 public class NewEntryFrame extends JFrame {
 	
+	private boolean EnableDebug = true; // toggle this to print debugging console output
+	
 	private final int frameWidth = 350;
 	private final int frameHeight = 300;
 	private Container selectorPane;
@@ -87,10 +89,12 @@ public class NewEntryFrame extends JFrame {
 				// for debugging TODO remove this
 				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()]);
 				manager.createEntry(d);
-				System.out.println("in NewEntryFrame.addButton - adding: " + d.toString());
+				if(EnableDebug)
+					System.out.println("in NewEntryFrame.addButton - adding: " + d.toString());
 				mwReference.requestListDisplayUpdate();
 				
 				clearAllTextfields();
+				hideFrame();
 			}
 		});
 		
@@ -127,5 +131,10 @@ public class NewEntryFrame extends JFrame {
 		this.setSize(frameWidth, frameHeight);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+	}
+	
+	private void hideFrame()
+	{
+		this.setVisible(false);
 	}
 }
