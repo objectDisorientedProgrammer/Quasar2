@@ -43,7 +43,7 @@ public class EditWindow
 	private boolean editable = false;
 	
 	private JButton cancelButton;
-	private int buttonWidth = 75;
+	private int buttonWidth = 90;
 	
 	private Data localDataCopy;
 	
@@ -141,7 +141,7 @@ public class EditWindow
 		keywordsTextField.setBounds(textfieldXcoord, 130, textfieldWidth, 20);
 		keywordsTextField.setColumns(10);
 		
-		cancelButton = new JButton("Close");
+		cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(textfieldXcoord, 160, buttonWidth, 34);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
@@ -151,6 +151,7 @@ public class EditWindow
 					editable = !editable; // toggle edit status
 					setEditingEntry(editable); // disable editing
 					editButton.setEnabled(true); // enable clicking 'edit' again
+					saveButton.setEnabled(false); // disable saving
 				}
 				hideFrame();
 			}
@@ -158,6 +159,7 @@ public class EditWindow
 		
 		saveButton = new JButton("Save");
 		saveButton.setBounds(textfieldXcoord + buttonWidth + 6, 160, buttonWidth, 34);
+		saveButton.setEnabled(false); // disable by default until user wants to edit
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -166,6 +168,7 @@ public class EditWindow
 					editable = !editable; // toggle edit status
 					setEditingEntry(editable); // disable editing
 					editButton.setEnabled(true); // enable clicking 'edit' again
+					saveButton.setEnabled(false); // disable saving
 					
 					updateDataValues(); // save changes
 					
@@ -184,6 +187,7 @@ public class EditWindow
 					editable = !editable; // toggle edit status
 					setEditingEntry(editable); // enable editing
 					editButton.setEnabled(false); // disable clicking 'edit' again
+					saveButton.setEnabled(true); // allow saving
 					frame.getContentPane().repaint(); // redraw the frame
 				}
 			}
