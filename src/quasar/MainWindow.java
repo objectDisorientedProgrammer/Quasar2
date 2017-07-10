@@ -148,6 +148,7 @@ public class MainWindow
 		saveBtn = new JButton("Save");
 		saveBtn.setToolTipText("Save current list.");
 		saveBtn.setBounds(341, 144, 89, 23);
+		saveBtn.setEnabled(false);
 		// nm.saveToFile(); // TODO
 	}
 	
