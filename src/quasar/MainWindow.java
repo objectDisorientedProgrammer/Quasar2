@@ -1,7 +1,27 @@
 /*
  * Created: May 28, 2013
  * 
- * Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)
+	The MIT License (MIT)
+	
+	Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
  */
 
 package quasar;
@@ -22,6 +42,24 @@ public class MainWindow
 	private final String windowTitle = "Quasar";
 	private final int frameWidth = 450;
 	private final int frameHeight = 400;
+	
+	private final String license = "The MIT License (MIT)\n\n" +
+			"Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)\n\n" +
+			"Permission is hereby granted, free of charge, to any person obtaining a copy\n" +
+			"of this software and associated documentation files (the \"Software\"), to deal\n" +
+			"in the Software without restriction, including without limitation the rights\n" +
+			"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n" +
+			"copies of the Software, and to permit persons to whom the Software is\n" +
+			"furnished to do so, subject to the following conditions:\n\n" +
+			"The above copyright notice and this permission notice shall be included in\n" +
+			"all copies or substantial portions of the Software.\n\n" +
+			"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" +
+			"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" +
+			"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" +
+			"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" +
+			"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
+			"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n" +
+			"THE SOFTWARE.";
 	
 	private final String imagePath = "/images/";	// path in jar file
 	
@@ -248,11 +286,23 @@ public class MainWindow
 			public void actionPerformed(ActionEvent e)
 			{
 				// show basic use instructions if user clicks: Help -> Getting Started
-                JOptionPane.showMessageDialog(null, "helpful message", "Usage",
+                JOptionPane.showMessageDialog(null, "Something helpful...", "Usage",
 						JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
 			}
 		});
 		helpMenu.add(helpMenuItem);
+		
+		JMenuItem licenseMenuItem = new JMenuItem("License"); // TODO add image?
+		licenseMenuItem.setMnemonic(KeyEvent.VK_L);
+		licenseMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// display the license
+				JOptionPane.showMessageDialog(null, license, "License",
+						JOptionPane.PLAIN_MESSAGE, null/*new ImageIcon(this.getClass().getResource(imagePath+"todo.png"))*/);
+			}
+		});
+		helpMenu.add(licenseMenuItem);
 		
 		JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
 		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
