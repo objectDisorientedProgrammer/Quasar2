@@ -152,7 +152,6 @@ public class EditWindow
 		dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
 		dateDisplay.setToolTipText("YYYY-MM-DD");
 		dateDisplay.setBounds(textfieldXcoord, 100, textfieldWidth, 20);
-//		dateDisplay.setColumns(10);
 
 		keywordsLabel = new JLabel("Keywords:");
 		keywordsLabel.setLabelFor(keywordsTextField);

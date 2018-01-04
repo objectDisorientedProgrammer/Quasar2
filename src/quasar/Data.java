@@ -135,42 +135,35 @@ public class Data
 		// Only add populated strings to return string
 		if(title != null && title.length() > 0)
 		{
-			sb.append('<');
-			sb.append(title);
-			sb.append('>');
+			sb.append("<" + title + ">");
 		}
 		
 		if(description != null && description.length() > 0)
 		{
-			
 			if(sb.length() > 0)
 				sb.append(" ");
-			sb.append('<');
-			sb.append(description);
-			sb.append('>');
+			sb.append("<" + description + ">");
 		}
 		
 		if(date != null && date.length() > 0)
 		{
 			if(sb.length() > 0)
 				sb.append(" ");
-			sb.append(date);
+			sb.append("<" + date + ">");
 		}
 		
 		if(keywords != null && keywords.length() > 0)
 		{
 			if(sb.length() > 0)
 				sb.append(" ");
-			sb.append('<');
-			sb.append(keywords);
-			sb.append('>');
+			sb.append("<" + keywords + ">");
 		}
 		
 		if(type != null)
 		{
 			if(sb.length() > 0)
 				sb.append(" ");
-			sb.append(type);
+			sb.append("<" + type + ">");
 		}
 		
 		return sb.toString();
