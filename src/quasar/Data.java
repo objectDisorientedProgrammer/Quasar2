@@ -134,36 +134,37 @@ public class Data
 		StringBuilder sb = new StringBuilder();
 		// Only add populated strings to return string
 		if(title != null && title.length() > 0)
-			sb.append(title);
+		{
+			sb.append("<" + title + ">");
+		}
 		
 		if(description != null && description.length() > 0)
 		{
 			if(sb.length() > 0)
-				sb.append(" " + description);
-			else
-				sb.append(description);
+				sb.append(" ");
+			sb.append("<" + description + ">");
 		}
 		
 		if(date != null && date.length() > 0)
 		{
 			if(sb.length() > 0)
-				sb.append(" " + date);
-			else
-				sb.append(date);
+				sb.append(" ");
+			sb.append("<" + date + ">");
 		}
 		
 		if(keywords != null && keywords.length() > 0)
 		{
 			if(sb.length() > 0)
-				sb.append(" " + keywords);
-			else
-				sb.append(keywords);
+				sb.append(" ");
+			sb.append("<" + keywords + ">");
 		}
 		
-		if(type != null && sb.length() > 0)
-			sb.append(" " + type);
-		else
-			sb.append(type);
+		if(type != null)
+		{
+			if(sb.length() > 0)
+				sb.append(" ");
+			sb.append("<" + type + ">");
+		}
 		
 		return sb.toString();
 	}

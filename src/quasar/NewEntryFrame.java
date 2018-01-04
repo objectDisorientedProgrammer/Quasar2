@@ -31,12 +31,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 public class NewEntryFrame extends JFrame {
 	
@@ -53,7 +56,7 @@ public class NewEntryFrame extends JFrame {
 	private JComboBox<String> dataTypeSelector;
 	private JTextField title;
 	private JTextField description;
-	private JTextField date;
+	private JFormattedTextField date;
 	private JTextField keywords;
 	
 	private JButton addButton;
@@ -86,10 +89,30 @@ public class NewEntryFrame extends JFrame {
 		
 //		documentPane = new JPanel(new BoxLayout(documentPane, BoxLayout.PAGE_AXIS));
 	}
+	
+	// FIXME this method exists here and in EditWindow...need to consolidate these...
+	// stolen from https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
+	protected MaskFormatter createFormatter(String s) {
+	    MaskFormatter formatter = null;
+	    try {
+	        formatter = new MaskFormatter(s);
+	    } catch (java.text.ParseException exc) {
+	        System.err.println("formatter is bad: " + exc.getMessage());
+	    }
+	    return formatter;
+	}
 
 	private void createGUI() {
+		JLabel categoryTitle = new JLabel("Category:");
+		categoryTitle.setLabelFor(dataTypeSelector);
+		categoryTitle.setToolTipText("What kind of entry is this?");
+		
+		DefaultListCellRenderer dlcr = new DefaultListCellRenderer(); 
+		dlcr.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
+		
 		dataTypeSelector = new JComboBox<String>(possibleEntries);
 		dataTypeSelector.setSelectedIndex(0);
+		dataTypeSelector.setRenderer(dlcr);
 		
 		JLabel dataTitle = new JLabel("Title:");
 		title = new JTextField();
@@ -98,12 +121,13 @@ public class NewEntryFrame extends JFrame {
 		JLabel dataDescription = new JLabel("Description:");
 		description = new JTextField();
 		
-		JLabel dataDate = new JLabel("Date:");
-		date = new JTextField();
+		JLabel dataDate = new JLabel("Date (YYYY-MM-DD)");
+		date = new JFormattedTextField(createFormatter("####-##-##"));
+		date.setToolTipText("Format: YYYY-MM-DD");
 		
 		JLabel dataKeywords = new JLabel("Keywords:");
 		keywords = new JTextField();
-		keywords.setToolTipText("Any keywords or tags to identify this entry");
+		keywords.setToolTipText("Keywords and tags that help identify this entry.");
 		
 		addButton = new JButton("Add Entry");
 		addButton.addActionListener(new ActionListener()
@@ -114,8 +138,10 @@ public class NewEntryFrame extends JFrame {
 				// for debugging TODO remove this
 				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()]);
 				manager.createEntry(d);
+				
 				if(EnableDebug)
 					System.out.println("in NewEntryFrame.addButton - adding: " + d.toString());
+				
 				mwReference.requestListDisplayUpdate();
 				
 				clearAllTextfields();
@@ -123,6 +149,7 @@ public class NewEntryFrame extends JFrame {
 			}
 		});
 		
+		selectorPane.add(categoryTitle);
 		selectorPane.add(dataTypeSelector);
 		selectorPane.add(Box.createVerticalGlue());
 		selectorPane.add(dataTitle);
