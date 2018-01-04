@@ -134,36 +134,44 @@ public class Data
 		StringBuilder sb = new StringBuilder();
 		// Only add populated strings to return string
 		if(title != null && title.length() > 0)
+		{
+			sb.append('<');
 			sb.append(title);
+			sb.append('>');
+		}
 		
 		if(description != null && description.length() > 0)
 		{
+			
 			if(sb.length() > 0)
-				sb.append(" " + description);
-			else
-				sb.append(description);
+				sb.append(" ");
+			sb.append('<');
+			sb.append(description);
+			sb.append('>');
 		}
 		
 		if(date != null && date.length() > 0)
 		{
 			if(sb.length() > 0)
-				sb.append(" " + date);
-			else
-				sb.append(date);
+				sb.append(" ");
+			sb.append(date);
 		}
 		
 		if(keywords != null && keywords.length() > 0)
 		{
 			if(sb.length() > 0)
-				sb.append(" " + keywords);
-			else
-				sb.append(keywords);
+				sb.append(" ");
+			sb.append('<');
+			sb.append(keywords);
+			sb.append('>');
 		}
 		
-		if(type != null && sb.length() > 0)
-			sb.append(" " + type);
-		else
+		if(type != null)
+		{
+			if(sb.length() > 0)
+				sb.append(" ");
 			sb.append(type);
+		}
 		
 		return sb.toString();
 	}

@@ -125,8 +125,8 @@ public class MainWindow
 		searchBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Search not implemented yet.", "Error",
-						JOptionPane.ERROR_MESSAGE, null);
+				JOptionPane.showMessageDialog(null, "Search not implemented yet.", "Unavailable",
+						JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
 		

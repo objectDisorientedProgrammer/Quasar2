@@ -32,10 +32,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.MaskFormatter;
 
 public class EditWindow
 {
@@ -50,7 +52,7 @@ public class EditWindow
 	private JLabel descriptionLabel;
 	private JTextField descriptionTextField;
 	private JLabel dateLabel;
-	private JTextField dateTextField;
+	private JFormattedTextField dateDisplay;
 	private JLabel keywordsLabel;
 	private JTextField keywordsTextField;
 	private int textfieldXcoord = 95;  // (X, y, width, height)
@@ -98,7 +100,7 @@ public class EditWindow
 		pane.add(descriptionTextField);
 		
 		pane.add(dateLabel);
-		pane.add(dateTextField);
+		pane.add(dateDisplay);
 		
 		pane.add(keywordsLabel);
 		pane.add(keywordsTextField);
@@ -113,6 +115,8 @@ public class EditWindow
 	 */
 	private void createAndAddGUI()
 	{
+		Font defaultLabelFont = new Font("Tahoma", Font.PLAIN, 12);
+		
 		propertiesLabel = new JLabel("Properties");
 		propertiesLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		propertiesLabel.setBounds(10, 11, 97, 18);
@@ -120,7 +124,7 @@ public class EditWindow
 		titleLabel = new JLabel("Title:");
 		titleLabel.setLabelFor(titleTextField);
 		titleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		titleLabel.setFont(defaultLabelFont);
 		titleLabel.setBounds(10, 42, labelWidth, 14);
 
 		titleTextField = new JTextField();
@@ -130,7 +134,7 @@ public class EditWindow
 
 		descriptionLabel = new JLabel("Description:");
 		descriptionLabel.setLabelFor(descriptionTextField);
-		descriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		descriptionLabel.setFont(defaultLabelFont);
 		descriptionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		descriptionLabel.setBounds(10, 72, labelWidth, 14);
 
@@ -140,20 +144,20 @@ public class EditWindow
 		descriptionTextField.setColumns(10);
 		
 		dateLabel = new JLabel("Date:");
-		dateLabel.setLabelFor(dateTextField);
-		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		dateLabel.setLabelFor(dateDisplay);
+		dateLabel.setFont(defaultLabelFont);
 		dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		dateLabel.setBounds(10, 102, labelWidth, 14);
 
-		dateTextField = new JTextField();
-		dateTextField.setToolTipText("Date");
-		dateTextField.setBounds(textfieldXcoord, 100, textfieldWidth, 20);
-		dateTextField.setColumns(10);
+		dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
+		dateDisplay.setToolTipText("YYYY-MM-DD");
+		dateDisplay.setBounds(textfieldXcoord, 100, textfieldWidth, 20);
+//		dateDisplay.setColumns(10);
 
 		keywordsLabel = new JLabel("Keywords:");
 		keywordsLabel.setLabelFor(keywordsTextField);
 		keywordsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		keywordsLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		keywordsLabel.setFont(defaultLabelFont);
 		keywordsLabel.setBounds(10, 132, labelWidth, 14);
 
 		keywordsTextField = new JTextField();
@@ -214,6 +218,17 @@ public class EditWindow
 		});
 	}
 	
+	// stolen from https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
+	protected MaskFormatter createFormatter(String s) {
+	    MaskFormatter formatter = null;
+	    try {
+	        formatter = new MaskFormatter(s);
+	    } catch (java.text.ParseException exc) {
+	        System.err.println("formatter is bad: " + exc.getMessage());
+	    }
+	    return formatter;
+	}
+	
 	/**
 	 * Enable or disable editing a node.
 	 * @param enable - set true to enable editing, set false to disable editing
@@ -222,7 +237,7 @@ public class EditWindow
 	{
 		titleTextField.setEditable(enable);
 		descriptionTextField.setEditable(enable);
-		dateTextField.setEditable(enable);
+		dateDisplay.setEditable(enable);
 		keywordsTextField.setEditable(enable);
 		
 		// TODO node specific data
@@ -250,9 +265,9 @@ public class EditWindow
 		descriptionTextField.setText(newValue);
 		this.localDataCopy.description = newValue;
 		
-		newValue = dateTextField.getText();
+		newValue = dateDisplay.getText();
 		//if(verifyDate(newValue))
-		dateTextField.setText(newValue);
+		dateDisplay.setText(newValue);
 		this.localDataCopy.date = newValue;
 		//else -> create error message window
 		
@@ -274,7 +289,7 @@ public class EditWindow
 		// fill in fields
 		titleTextField.setText(this.localDataCopy.getTitle());
 		descriptionTextField.setText(this.localDataCopy.getDescription());
-		dateTextField.setText(this.localDataCopy.getDate());
+		dateDisplay.setText(this.localDataCopy.getDate());
 		keywordsTextField.setText(this.localDataCopy.getKeywords());
 		
 		// TODO switch on type
