@@ -128,24 +128,7 @@ public class MainWindow
 			}
 		});
 		
-		//String[] values = new String[10];
-//		dataList = new JTextArea();
-		
 		dataList = new JList<String>();
-//		resultsList.setModel(new AbstractListModel<String>()
-//		{
-//			
-//
-//			public int getSize()
-//			{
-//				return values.length;
-//			}
-//
-//			public String getElementAt(int index)
-//			{
-//				return values[index];
-//			}
-//		});
 		dataList.setBounds(10, 80, 315, 188);
 
 		filterLbl = new JLabel("Search in:");
@@ -208,7 +191,7 @@ public class MainWindow
 		}
 		else
 		{
-			dataList.setListData(nm.getAllData());
+			dataList.setListData(nm.getAllDataTitles());
 			editBtn.setEnabled(true);
 			// select the first item
 			dataList.setSelectedIndex(0);

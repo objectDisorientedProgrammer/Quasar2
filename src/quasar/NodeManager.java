@@ -28,9 +28,7 @@ package quasar;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 
@@ -45,7 +43,8 @@ public class NodeManager
 	private int contactCount;
 	private int totalCount;
 	private String dataFile;
-	private HashMap<String, Data> dataContainer;
+	//private HashMap<Data, String> dataContainer = new HashMap<Data, String>();
+	private ArrayList<Data> dataContainer = new ArrayList<Data>();
 
 	/**
 	 * Creates a NodeManager with the default load/save file of Quasar.dat.
@@ -53,9 +52,8 @@ public class NodeManager
 	public NodeManager()
 	{
 		super();
-		this.dataContainer = new HashMap<String, Data>();
 		initializeVariables();
-		// TODO
+		// TODO load database on program start
 		//this("Quasar.dat");
 	}
 
@@ -65,14 +63,18 @@ public class NodeManager
 	 */
 	public NodeManager(String dataFile) {
 		super();
-		this.dataContainer = new HashMap<String, Data>();
 		this.dataFile = dataFile;
 		initializeVariables();
-		try {
-			loadFile();
-		} catch (IOException e) {
-			e.printStackTrace();
+		
+		if(this.dataFile != null || !this.dataFile.isEmpty())
+		{
+			try {
+				loadFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		
 	}
 
 	/**
@@ -119,7 +121,7 @@ public class NodeManager
 	
 	public void createEntry(Data rawData)
 	{
-		dataContainer.put(rawData.getTitle(), rawData);
+		dataContainer.add(rawData);
 	}
 
 	public void goFirst() {
@@ -146,23 +148,31 @@ public class NodeManager
 		return dataContainer.isEmpty();
 	}
 
-	public String[] getAllData()
+	public String[] getAllDataTitles()
 	{
-//		StringBuilder sb = new StringBuilder();
 		String[] items = new String[dataContainer.size()];
+		int i = 0;
 		
-		Iterator<Entry<String, Data>> it = dataContainer.entrySet().iterator();
-		for(int i = 0; i < items.length && it.hasNext(); ++i)
-		{
-			items[i] = it.next().getValue().title;
+		for (Data data : dataContainer) {
+			items[i] = data.title;
+			++i;
 		}
-//		return sb.toString();
+
 		return items;
 	}
 
 	public Data getEntry(String title)
 	{
-		return dataContainer.get(title);
+		Data v = null;
+		//return dataContainer.get(title);
+		for (Data data : dataContainer) {
+			if(data.title.equalsIgnoreCase(title))
+			{
+				v = data;
+				break;
+			}
+		}
+		return v;
 	}
 
 }
