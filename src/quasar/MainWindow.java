@@ -67,7 +67,6 @@ public class MainWindow
 	private JPanel mainPanel;
 	
 	// Variables
-	private boolean editWinVisible = false;
 	private final String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
 	
 	// GUI
@@ -75,7 +74,6 @@ public class MainWindow
 	private JLabel filterLbl;
 	private JButton searchBtn;
 	private JList<String> dataList;
-//	private JTextArea dataList;
 	private JComboBox<String> filterComboBox;
 	private JButton newNodeBtn;
 	private JButton editBtn;
@@ -193,7 +191,7 @@ public class MainWindow
 		saveBtn = new JButton("Save");
 		saveBtn.setToolTipText("Save current list.");
 		saveBtn.setBounds(341, 144, 89, 23);
-		saveBtn.setEnabled(false);
+		saveBtn.setEnabled(false); // TODO ...might remove this and implement periodic background saving instead
 		// nm.saveToFile(); // TODO
 	}
 	
@@ -206,17 +204,17 @@ public class MainWindow
 	{
 		if(nm.isEmpty())
 		{	
-			dataList.setListData(new String[] {});
 			editBtn.setEnabled(false);
 		}
 		else
 		{
 			dataList.setListData(nm.getAllData());
 			editBtn.setEnabled(true);
+			// select the first item
+			dataList.setSelectedIndex(0);
 		}
 		
-		// select the first item
-		dataList.setSelectedIndex(0);
+		
 	}
 
 	private void initializeMainWindowAndPanel()
