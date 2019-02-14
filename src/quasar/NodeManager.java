@@ -44,7 +44,7 @@ public class NodeManager
 	private int totalCount;
 	private String dataFile;
 	//private HashMap<Data, String> dataContainer = new HashMap<Data, String>();
-	private ArrayList<Data> dataContainer = new ArrayList<Data>();
+	private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
 
 	/**
 	 * Creates a NodeManager with the default load/save file of Quasar.dat.
