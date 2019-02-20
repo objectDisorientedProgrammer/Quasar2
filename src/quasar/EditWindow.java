@@ -67,7 +67,7 @@ public class EditWindow
 	private JButton cancelButton;
 	private int buttonWidth = 90;
 	
-	private Data localDataCopy;
+	private Data localDataCopy = null;
 	
 	
 	public EditWindow(MainWindow main)
@@ -164,7 +164,7 @@ public class EditWindow
 		keywordsTextField.setBounds(textfieldXcoord, 130, textfieldWidth, 20);
 		keywordsTextField.setColumns(10);
 		
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton("Close");
 		cancelButton.setBounds(textfieldXcoord, 160, buttonWidth, 34);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
