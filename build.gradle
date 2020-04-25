@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+// change compiler flags here
+compileJava {
+    options.compilerArgs += ["-Xlint:deprecation"]
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // remote dependency of apache commons-io v2.6
+    implementation 'commons-io:commons-io:2.6'
+}
+
+jar {
+    baseName = 'Quasar'
+    manifest {
+        attributes 'Main-Class': 'quasar.Quasar'
+    }
+}
+
+task run(type: JavaExec) {
+    main = "-jar";
+    args jar.archivePath
+}
+
