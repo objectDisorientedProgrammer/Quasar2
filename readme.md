@@ -8,7 +8,7 @@ This project is still in its infancy and requires much more work to be at the sa
 
 ## Dependencies
 * Java 11
-* gradle 4.4.1
+* gradle 4.4.1+
 
 ## Building
 This project uses Gradle as a build system.
