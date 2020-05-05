@@ -74,8 +74,7 @@ public class EditWindow
 	{
 		super();
 		this.mwReference = main;
-		frame = new JFrame();
-		frame.setTitle(windowTitle);
+		frame = new JFrame(windowTitle);
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
@@ -90,7 +89,8 @@ public class EditWindow
 	 * Add GUI elements to a container.
 	 * @param pane - the container to add components to.
 	 */
-	private void addGUIElements(Container pane) {
+	private void addGUIElements(Container pane)
+	{
 		pane.add(propertiesLabel);
 		
 		pane.add(titleLabel);

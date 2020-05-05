@@ -67,7 +67,7 @@ public class MainWindow
 	private JPanel mainPanel;
 	
 	// Variables
-	private final String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
+	private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
 	
 	// GUI
 	private JTextField searchTF;
