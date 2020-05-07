@@ -25,7 +25,9 @@
  */
 package quasar;
 
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -47,7 +49,8 @@ public class NewEntryFrame extends JFrame {
 	
 	private final int frameWidth = 350;
 	private final int frameHeight = 300;
-	private Container selectorPane;
+	private Container descriptionsPane; // holds the labels
+	private Container inputsPane; // holds the textfields
 	private JPanel documentPane;
 	private NodeManager manager;
 	private String[] possibleEntries;
@@ -73,19 +76,33 @@ public class NewEntryFrame extends JFrame {
 		createGUI();
 		
 		
-		addPanes();
+		addPanesToFrame();
 		
 		//this.setVisible(true);
 	}
 
-	private void addPanes() {
-		this.getContentPane().add(selectorPane);//, BorderLayout.PAGE_START);
+	private void addPanesToFrame()
+	{
+		// set the layout for this frame's underlying container
+		this.getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
+		// add sub-containers
+		this.getContentPane().add(descriptionsPane);
+		//this.getContentPane().add(Box.createHorizontalGlue());
+		this.getContentPane().add(inputsPane);
+		//this.getContentPane().add(Box.createHorizontalGlue());
+		
 //		this.getContentPane().add(documentPane, BorderLayout.PAGE_END);
 	}
 
-	private void createPanes() {
-		selectorPane = new Container();
-		selectorPane.setLayout(new BoxLayout(selectorPane, BoxLayout.PAGE_AXIS));
+	private void createPanes()
+	{
+		// create container object and set box layout to have vertical layout
+		descriptionsPane = new Container();
+		descriptionsPane.setLayout(new BoxLayout(descriptionsPane, BoxLayout.PAGE_AXIS));
+		// create container object and set box layout to have vertical layout
+		inputsPane = new Container();
+		inputsPane.setLayout(new BoxLayout(inputsPane, BoxLayout.PAGE_AXIS));
+		
 		
 //		documentPane = new JPanel(new BoxLayout(documentPane, BoxLayout.PAGE_AXIS));
 	}
@@ -101,33 +118,64 @@ public class NewEntryFrame extends JFrame {
 	    }
 	    return formatter;
 	}
+	
+	private void addLabel(Container c, String title, String tooltip)
+	{
+		JLabel label = new JLabel(title);
+		label.setToolTipText(tooltip);
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		c.add(label);
+		c.add(Box.createVerticalStrut(30));
+	}
+	
+	private void addTextField(Container c, JTextField tf, String tooltip)
+	{
+		tf = new JTextField();
+		tf.setToolTipText(tooltip);
+		
+		c.add(tf);
+	}
 
-	private void createGUI() {
-		JLabel categoryTitle = new JLabel("Category:");
-		categoryTitle.setLabelFor(dataTypeSelector);
-		categoryTitle.setToolTipText("What kind of entry is this?");
+	private void createGUI()
+	{
+		addLabel(descriptionsPane, "Category", "What type of entry is this?");
+//		JLabel categoryTitle = new JLabel("Category");
+//		//categoryTitle.setLabelFor(dataTypeSelector);
+//		categoryTitle.setToolTipText("What type of entry is this?");
+//		categoryTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		DefaultListCellRenderer dlcr = new DefaultListCellRenderer(); 
 		dlcr.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
-		
 		dataTypeSelector = new JComboBox<String>(possibleEntries);
 		dataTypeSelector.setSelectedIndex(0);
 		dataTypeSelector.setRenderer(dlcr);
+		inputsPane.add(dataTypeSelector);
 		
-		JLabel dataTitle = new JLabel("Title:");
-		title = new JTextField();
-		title.setToolTipText("Entry title");
+		addLabel(descriptionsPane, "Title", "Memorable and descriptive title.");
+//		JLabel dataTitle = new JLabel("Title");
+		addTextField(inputsPane, title, "Entry title");
+//		title = new JTextField();
+//		title.setToolTipText("Entry title");
+//		inputsPane.add(title);
 		
-		JLabel dataDescription = new JLabel("Description:");
-		description = new JTextField();
+		addLabel(descriptionsPane, "Description", "");
+//		JLabel dataDescription = new JLabel("Description");
+		addTextField(inputsPane, description, "");
+//		description = new JTextField();
 		
-		JLabel dataDate = new JLabel("Date (YYYY-MM-DD)");
+		
+		addLabel(descriptionsPane, "Date", "yyyy-mm-dd");
+//		JLabel dataDate = new JLabel("Date (YYYY-MM-DD)");
 		date = new JFormattedTextField(createFormatter("####-##-##"));
 		date.setToolTipText("Format: YYYY-MM-DD");
+		inputsPane.add(date);
 		
-		JLabel dataKeywords = new JLabel("Keywords:");
-		keywords = new JTextField();
-		keywords.setToolTipText("Keywords and tags that help identify this entry.");
+		addLabel(descriptionsPane, "Keywords", "");
+//		JLabel dataKeywords = new JLabel("Keywords");
+		addTextField(inputsPane, keywords, "Keywords and tags that help identify this entry. Separate with spaces.");
+//		keywords = new JTextField();
+//		keywords.setToolTipText("Keywords and tags that help identify this entry. Separate with spaces.");
 		
 		addButton = new JButton("Add Entry");
 		addButton.addActionListener(new ActionListener()
@@ -135,7 +183,7 @@ public class NewEntryFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				// for debugging TODO remove this
+				// Object created for debugging. TODO this could be done inline if desired.
 				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()]);
 				manager.createEntry(d);
 				
@@ -149,26 +197,28 @@ public class NewEntryFrame extends JFrame {
 			}
 		});
 		
-		selectorPane.add(categoryTitle);
-		selectorPane.add(dataTypeSelector);
-		selectorPane.add(Box.createVerticalGlue());
-		selectorPane.add(dataTitle);
-		selectorPane.add(Box.createHorizontalStrut(10));
-		selectorPane.add(title);
-		selectorPane.add(Box.createVerticalGlue());
-		selectorPane.add(dataDescription);
-		selectorPane.add(Box.createHorizontalStrut(10));
-		selectorPane.add(description);
-		selectorPane.add(Box.createVerticalGlue());
-		selectorPane.add(dataDate);
-		selectorPane.add(Box.createHorizontalStrut(10));
-		selectorPane.add(date);
-		selectorPane.add(Box.createVerticalGlue());
-		selectorPane.add(dataKeywords);
-		selectorPane.add(Box.createHorizontalStrut(10));
-		selectorPane.add(keywords);
-		selectorPane.add(Box.createVerticalGlue());
-		selectorPane.add(addButton);
+//		descriptionsPane.add(categoryTitle);
+//		
+//		descriptionsPane.add(Box.createVerticalGlue());
+//		descriptionsPane.add(dataTitle);
+//		//descriptionsPane.add(Box.createHorizontalStrut(10));
+//		inputsPane.add(title);
+//		descriptionsPane.add(Box.createVerticalGlue());
+//		descriptionsPane.add(dataDescription);
+//		//descriptionsPane.add(Box.createHorizontalStrut(10));
+//		inputsPane.add(description);
+//		descriptionsPane.add(Box.createVerticalGlue());
+//		descriptionsPane.add(dataDate);
+//		//descriptionsPane.add(Box.createHorizontalStrut(10));
+//		inputsPane.add(date);
+//		descriptionsPane.add(Box.createVerticalGlue());
+//		descriptionsPane.add(dataKeywords);
+//		//descriptionsPane.add(Box.createHorizontalStrut(10));
+//		inputsPane.add(keywords);
+//		descriptionsPane.add(Box.createVerticalGlue());
+		
+		descriptionsPane.add(addButton);
+		inputsPane.add(new JButton("Clear"));
 	}
 	
 	private void clearAllTextfields()
