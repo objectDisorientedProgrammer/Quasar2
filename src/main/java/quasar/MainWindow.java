@@ -77,6 +77,7 @@ public class MainWindow
 	private JButton editBtn;
 	private JButton saveBtn;
 	private String licenseMenuText = "Licenses";
+	private String databaseFilePath;
 
 	public MainWindow()
 	{
@@ -321,7 +322,8 @@ public class MainWindow
 	            if (returnVal == JFileChooser.APPROVE_OPTION)
 	            {
 	                try {
-						nm.loadFile(fileWindow.getSelectedFile().getAbsolutePath());
+	                	databaseFilePath = fileWindow.getSelectedFile().getAbsolutePath();
+						nm.loadFile(databaseFilePath);
 					} catch (IOException e1) {
 						// TODO display an error window
 						e1.printStackTrace();
