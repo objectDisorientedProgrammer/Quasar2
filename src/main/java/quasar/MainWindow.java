@@ -65,6 +65,7 @@ public class MainWindow
 	private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
 	private String commonsIoLicenseText = "commons-io";
 	private String commonsIoLicenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt";
+	private String urlErrorWindowTitle = "Error openning URL";
 	
 	// GUI
 	private JTextField searchTF;
@@ -248,7 +249,8 @@ public class MainWindow
 				try {
 			        Desktop.getDesktop().browse(new URI(quasarLicenseUrl));
 			    } catch (IOException | URISyntaxException e1) {
-			        e1.printStackTrace();
+			    	JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+							JOptionPane.ERROR_MESSAGE, null);
 			    }
 			}
 		});
@@ -275,7 +277,8 @@ public class MainWindow
 				try {
 			        Desktop.getDesktop().browse(new URI(commonsIoLicenseUrl));
 			    } catch (IOException | URISyntaxException e1) {
-			        e1.printStackTrace();
+			    	JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+							JOptionPane.ERROR_MESSAGE, null);
 			    }
 			}
 		});
