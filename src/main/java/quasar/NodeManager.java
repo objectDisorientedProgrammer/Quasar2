@@ -100,7 +100,7 @@ public class NodeManager
 	 * @throws IOException
 	 */
 	private void loadFile() throws IOException {
-		String file = FileUtils.readFileToString(new File(dataFile));
+		String file = FileUtils.readFileToString(new File(dataFile), "UTF-8");
 		String[] fileLines = file.split("\n");
 	}
 
