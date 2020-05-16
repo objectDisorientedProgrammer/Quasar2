@@ -27,6 +27,8 @@ package quasar;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,10 +49,10 @@ public class NewEntryFrame extends JFrame {
 	
 	private boolean EnableDebug = true; // toggle this to print debugging console output
 	
-	private final int frameWidth = 350;
-	private final int frameHeight = 300;
-	private Container descriptionsPane; // holds the labels
-	private Container inputsPane; // holds the textfields
+	private Container commonAttributePane; // holds the common data entry UI elements
+	private final int commonPaneRows = 8;
+	private final int commonPaneCols = 2;
+	
 	private JPanel documentPane;
 	private NodeManager manager;
 	private String[] possibleEntries;
@@ -62,7 +64,8 @@ public class NewEntryFrame extends JFrame {
 	private JFormattedTextField date;
 	private JTextField keywords;
 	
-	private JButton addButton;
+	private JButton addEntryButton;
+	private JButton resetButton;
 	
 	public NewEntryFrame(NodeManager mngr, String[] entryTypes, MainWindow mw)
 	{
@@ -71,40 +74,24 @@ public class NewEntryFrame extends JFrame {
 		this.mwReference = mw;
 		setUpFrame();
 		createPanes();
-		
-		
 		createGUI();
-		
-		
 		addPanesToFrame();
-		
-		//this.setVisible(true);
+		this.pack();
 	}
 
 	private void addPanesToFrame()
 	{
 		// set the layout for this frame's underlying container
-		this.getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
+		this.getContentPane().setLayout(new FlowLayout());
 		// add sub-containers
-		this.getContentPane().add(descriptionsPane);
-		//this.getContentPane().add(Box.createHorizontalGlue());
-		this.getContentPane().add(inputsPane);
-		//this.getContentPane().add(Box.createHorizontalGlue());
-		
-//		this.getContentPane().add(documentPane, BorderLayout.PAGE_END);
+		this.getContentPane().add(commonAttributePane);
 	}
 
 	private void createPanes()
 	{
 		// create container object and set box layout to have vertical layout
-		descriptionsPane = new Container();
-		descriptionsPane.setLayout(new BoxLayout(descriptionsPane, BoxLayout.PAGE_AXIS));
-		// create container object and set box layout to have vertical layout
-		inputsPane = new Container();
-		inputsPane.setLayout(new BoxLayout(inputsPane, BoxLayout.PAGE_AXIS));
-		
-		
-//		documentPane = new JPanel(new BoxLayout(documentPane, BoxLayout.PAGE_AXIS));
+		commonAttributePane = new Container();
+		commonAttributePane.setLayout(new GridLayout(commonPaneRows, commonPaneCols));
 	}
 	
 	// FIXME this method exists here and in EditWindow...need to consolidate these...
@@ -126,12 +113,16 @@ public class NewEntryFrame extends JFrame {
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		c.add(label);
-		c.add(Box.createVerticalStrut(30));
 	}
 	
+	/**
+	 * Textfields must be created outside of this function if you want to interact with them (i.e. set/get text).
+	 * @param c
+	 * @param tf
+	 * @param tooltip
+	 */
 	private void addTextField(Container c, JTextField tf, String tooltip)
 	{
-		tf = new JTextField();
 		tf.setToolTipText(tooltip);
 		
 		c.add(tf);
@@ -139,46 +130,43 @@ public class NewEntryFrame extends JFrame {
 
 	private void createGUI()
 	{
-		addLabel(descriptionsPane, "Category", "What type of entry is this?");
-//		JLabel categoryTitle = new JLabel("Category");
-//		//categoryTitle.setLabelFor(dataTypeSelector);
-//		categoryTitle.setToolTipText("What type of entry is this?");
-//		categoryTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
+		// Category label and input
+		addLabel(commonAttributePane, "Category", "What type of entry is this?");
 		DefaultListCellRenderer dlcr = new DefaultListCellRenderer(); 
 		dlcr.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
 		dataTypeSelector = new JComboBox<String>(possibleEntries);
 		dataTypeSelector.setSelectedIndex(0);
 		dataTypeSelector.setRenderer(dlcr);
-		inputsPane.add(dataTypeSelector);
+		commonAttributePane.add(dataTypeSelector);
 		
-		addLabel(descriptionsPane, "Title", "Memorable and descriptive title.");
-//		JLabel dataTitle = new JLabel("Title");
-		addTextField(inputsPane, title, "Entry title");
-//		title = new JTextField();
-//		title.setToolTipText("Entry title");
-//		inputsPane.add(title);
+		// Title label and input
+		addLabel(commonAttributePane, "Title", "Memorable and descriptive title.");
+		title = new JTextField();
+		addTextField(commonAttributePane, title, "Entry title");
 		
-		addLabel(descriptionsPane, "Description", "");
-//		JLabel dataDescription = new JLabel("Description");
-		addTextField(inputsPane, description, "");
-//		description = new JTextField();
+		// Description label and input
+		addLabel(commonAttributePane, "Description", "");
+		description = new JTextField();
+		addTextField(commonAttributePane, description, "");
 		
-		
-		addLabel(descriptionsPane, "Date", "yyyy-mm-dd");
-//		JLabel dataDate = new JLabel("Date (YYYY-MM-DD)");
+		// Date label and input
+		addLabel(commonAttributePane, "Date", "yyyy-mm-dd");
 		date = new JFormattedTextField(createFormatter("####-##-##"));
 		date.setToolTipText("Format: YYYY-MM-DD");
-		inputsPane.add(date);
+		commonAttributePane.add(date);
 		
-		addLabel(descriptionsPane, "Keywords", "");
-//		JLabel dataKeywords = new JLabel("Keywords");
-		addTextField(inputsPane, keywords, "Keywords and tags that help identify this entry. Separate with spaces.");
-//		keywords = new JTextField();
-//		keywords.setToolTipText("Keywords and tags that help identify this entry. Separate with spaces.");
+		// Keyword label and input
+		addLabel(commonAttributePane, "Keywords", "");
+		keywords = new JTextField();
+		addTextField(commonAttributePane, keywords, "Keywords and tags that help identify this entry. Separate with spaces.");
 		
-		addButton = new JButton("Add Entry");
-		addButton.addActionListener(new ActionListener()
+		// add two labels for spacing
+		addLabel(commonAttributePane, "", "");
+		addLabel(commonAttributePane, "", "");
+		
+		// confirmation button
+		addEntryButton = new JButton("Add Entry");
+		addEntryButton.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -196,29 +184,20 @@ public class NewEntryFrame extends JFrame {
 				hideFrame();
 			}
 		});
+		commonAttributePane.add(addEntryButton);
 		
-//		descriptionsPane.add(categoryTitle);
-//		
-//		descriptionsPane.add(Box.createVerticalGlue());
-//		descriptionsPane.add(dataTitle);
-//		//descriptionsPane.add(Box.createHorizontalStrut(10));
-//		inputsPane.add(title);
-//		descriptionsPane.add(Box.createVerticalGlue());
-//		descriptionsPane.add(dataDescription);
-//		//descriptionsPane.add(Box.createHorizontalStrut(10));
-//		inputsPane.add(description);
-//		descriptionsPane.add(Box.createVerticalGlue());
-//		descriptionsPane.add(dataDate);
-//		//descriptionsPane.add(Box.createHorizontalStrut(10));
-//		inputsPane.add(date);
-//		descriptionsPane.add(Box.createVerticalGlue());
-//		descriptionsPane.add(dataKeywords);
-//		//descriptionsPane.add(Box.createHorizontalStrut(10));
-//		inputsPane.add(keywords);
-//		descriptionsPane.add(Box.createVerticalGlue());
-		
-		descriptionsPane.add(addButton);
-		inputsPane.add(new JButton("Clear"));
+		// reset button
+		resetButton = new JButton("Reset");
+		resetButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// reset all members back to default
+				dataTypeSelector.setSelectedIndex(0);
+				clearAllTextfields();
+			}
+		});
+		commonAttributePane.add(resetButton);
 	}
 	
 	private void clearAllTextfields()
@@ -230,9 +209,9 @@ public class NewEntryFrame extends JFrame {
 	}
 
 	private void setUpFrame() {
-		this.setSize(frameWidth, frameHeight);
+		this.setTitle("New Entry");
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(null); // center window on screen
 	}
 	
 	private void hideFrame()
