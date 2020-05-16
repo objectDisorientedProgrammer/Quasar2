@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
@@ -42,7 +43,8 @@ import javax.swing.text.MaskFormatter;
 public class EditWindow
 {
 	MainWindow mwReference;
-	JFrame frame;
+	private JFrame frame;
+	private JPanel panel; // TODO use this
 	private String windowTitle = "Edit";
 	private int frameWidth = 430;
 	private int frameHeight = 250;
