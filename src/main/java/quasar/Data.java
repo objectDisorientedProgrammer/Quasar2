@@ -26,28 +26,27 @@
 
 package quasar;
 
-import javax.swing.JOptionPane;
-
 public class Data
 {
 	protected String title = null;
 	protected String description = null;
 	protected String date = null;
 	protected String keywords = null;
-	protected String type = "all"; // c: contact, d: document, p: picture, w: website, u: unassigned
-	private final String[] dataTypeList = new String[]{ "All", "Documents", "Websites", "Pictures", "Contacts" };
+	protected String type = "a";
+	//                                       a: all, c: contact, d: document, p: picture, w: website, u: unassigned
+	private final String[] validDataTypes = new String[]{ "a", "d", "w", "p", "c", "u" }; // TODO these could be char or int..
 	
 	/**
 	 * Creates a data object with title set empty
 	 */
 	public Data()
 	{
-		this("", "", "", "", "all");
+		this("", "", "", "", "a");
 	}
 
 	/**
 	 * Create a data object with a type.
-	 * @param type - c: contact, d: document, p: picture, w: website, u: unassigned
+	 * @param type - one character string
 	 */
 	public Data(String type)
 	{
@@ -59,7 +58,7 @@ public class Data
 	 * @param description - description of the data
 	 * @param date - relevant date
 	 * @param keywords - search keywords
-	 * @param type - c: contact, d: document, p: picture, w: website
+	 * @param type - one character string
 	 */
 	public Data(String title, String description, String date, String keywords,
 			String type) {
@@ -92,6 +91,7 @@ public class Data
 	}
 	
 	public void setDate(String date) {
+		// TODO enforce date format
 		this.date = date;
 	}
 	
@@ -113,13 +113,13 @@ public class Data
 	 */
 	public void setType(String type) {
 		if(!isValidType(type))
-			JOptionPane.showMessageDialog(null, "Error undefined type.", "Data Type Error", JOptionPane.ERROR_MESSAGE);
+			System.err.println("Error undefined type in Data.setType(): " + type);
 		else
 			this.type = type;
 	}
 	
 	private boolean isValidType(String str) {
-		for(String s : dataTypeList)
+		for(String s : validDataTypes)
 			if(str.equalsIgnoreCase(s))
 				return true;
 		return false;
