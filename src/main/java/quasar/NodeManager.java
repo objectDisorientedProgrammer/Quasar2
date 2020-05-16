@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.io.FileUtils;
 
 public class NodeManager
@@ -70,8 +72,9 @@ public class NodeManager
 		if(this.dataFile != null || !this.dataFile.isEmpty())
 		{
 			try {
-				loadFile();
+				loadFile(this.dataFile);
 			} catch (IOException e) {
+				System.err.println("NodeManager(String) - "+e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -99,9 +102,73 @@ public class NodeManager
 	 * @param String
 	 * @throws IOException
 	 */
-	private void loadFile() throws IOException {
-		String file = FileUtils.readFileToString(new File(dataFile), "UTF-8");
+	public void loadFile(String filename) throws IOException {
+		String file = FileUtils.readFileToString(new File(filename), "UTF-8");
 		String[] fileLines = file.split("\n");
+		
+		for(String line : fileLines)
+		{
+			String[] tokens = line.split("¶");
+			Data d;
+			
+			// TODO this is a mess but works for now.
+			// somehow initialize the data object and set the common attributes...
+			switch(Integer.parseInt(tokens[0]))
+			{
+			case 1: // doc
+				d = new Document(tokens[6]);
+				d.setTitle(tokens[1]);
+				d.setDescription(tokens[2]);
+				d.setDate(tokens[3]);
+				d.setKeywords(tokens[4]);
+				d.setType(tokens[5]);
+				
+				System.out.println("Adding" + d.toString());
+				
+				createEntry(d);
+				break;
+			case 2: // web
+				d = new Website(tokens[6]);
+				d.setTitle(tokens[1]);
+				d.setDescription(tokens[2]);
+				d.setDate(tokens[3]);
+				d.setKeywords(tokens[4]);
+				d.setType(tokens[5]);
+				
+				System.out.println("Adding" + d.toString());
+				
+				createEntry(d);
+				break;
+			case 4: // pic
+				d = new Picture(tokens[6]);
+				d.setTitle(tokens[1]);
+				d.setDescription(tokens[2]);
+				d.setDate(tokens[3]);
+				d.setKeywords(tokens[4]);
+				d.setType(tokens[5]);
+				
+				System.out.println("Adding" + d.toString());
+				
+				createEntry(d);
+				
+				break;
+			case 8: // contact
+				d = new Contact(tokens[6], tokens[7], tokens[8], tokens[9]);
+				d.setTitle(tokens[1]);
+				d.setDescription(tokens[2]);
+				d.setDate(tokens[3]);
+				d.setKeywords(tokens[4]);
+				d.setType(tokens[5]);
+				
+				System.out.println("Adding " + d.toString());
+				
+				createEntry(d);
+				break;
+			default:
+				System.out.println("Unknown: " + line);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -120,9 +187,9 @@ public class NodeManager
 //		throw new UnsupportedOperationException();
 //	}
 	
-	public void createEntry(Data rawData)
+	public void createEntry(Data d)
 	{
-		dataContainer.add(rawData);
+		dataContainer.add(d);
 	}
 
 	public void goFirst() {
