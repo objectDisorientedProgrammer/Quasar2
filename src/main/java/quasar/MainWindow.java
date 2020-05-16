@@ -229,7 +229,6 @@ public class MainWindow
 		JLabel quasarLicense = new JLabel(quasarLicenseText);
 		quasarLicense.setForeground(Color.blue.darker());
 		quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//		quasarLicense.setAlignmentX(Component.LEFT_ALIGNMENT);
 		quasarLicense.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -257,7 +256,6 @@ public class MainWindow
 		JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
 		commons_ioLicense.setForeground(Color.blue.darker());
 		commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//		commons_ioLicense.setAlignmentX(Component.LEFT_ALIGNMENT);
 		commons_ioLicense.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -335,12 +333,6 @@ public class MainWindow
 		});
 		fileMenu.add(quitMenuItem);
 		
-		/* TODO is there a need for an 'options' menu?
-		JMenu optionsMenu = new JMenu("Options");
-		optionsMenu.setMnemonic(KeyEvent.VK_O);
-		menuBar.add(optionsMenu);
-		*/
-		
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		menuBar.add(helpMenu);
@@ -358,22 +350,6 @@ public class MainWindow
 			}
 		});
 		helpMenu.add(helpMenuItem);
-		
-//		JMenuItem licenseMenuItem = new JMenuItem(licenseMenuText); // TODO add image?
-//		licenseMenuItem.setMnemonic(KeyEvent.VK_L);
-//		licenseMenuItem.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// display the licenses
-//				
-//				
-//				
-//				
-//				JOptionPane.showMessageDialog(null, linkPane, licenseMenuText,
-//						JOptionPane.PLAIN_MESSAGE, null/*new ImageIcon(this.getClass().getResource(imagePath+"todo.png"))*/);
-//			}
-//		});
-//		helpMenu.add(licenseMenuItem);
 		
 		JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
 		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
