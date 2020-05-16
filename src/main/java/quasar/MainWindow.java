@@ -82,7 +82,7 @@ public class MainWindow
 	{
 		super();
 		
-		this.nm = new NodeManager();
+		this.nm = new NodeManager(/*"_quasar.dat"*/);
 		this.editWindow = new EditWindow(this);
 		
 		initializeMainWindowAndPanel();
@@ -307,7 +307,32 @@ public class MainWindow
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		menuBar.add(fileMenu);
 		
-		JMenuItem saveMenuItem = new JMenuItem("Save");
+		JMenuItem loadMenuItem = new JMenuItem("Load...");
+		loadMenuItem.setMnemonic(KeyEvent.VK_L);
+		loadMenuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// open a directory navigation window
+				JFileChooser fileWindow = new JFileChooser();
+				int returnVal = fileWindow.showOpenDialog(mainPanel);
+
+				// if the user selects a file, attempt to load it
+	            if (returnVal == JFileChooser.APPROVE_OPTION)
+	            {
+	                try {
+						nm.loadFile(fileWindow.getSelectedFile().getAbsolutePath());
+					} catch (IOException e1) {
+						// TODO display an error window
+						e1.printStackTrace();
+					}
+	                requestListDisplayUpdate();
+	            }
+			}
+		});
+		fileMenu.add(loadMenuItem);
+		
+		JMenuItem saveMenuItem = new JMenuItem("Save...");
 		saveMenuItem.setMnemonic(KeyEvent.VK_S);
 		saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(imagePath + "save.png")));
 		saveMenuItem.addActionListener(new ActionListener()
@@ -334,6 +359,7 @@ public class MainWindow
                 mainWindow.dispose();
             }
 		});
+		fileMenu.addSeparator();
 		fileMenu.add(quitMenuItem);
 		
 		JMenu helpMenu = new JMenu("Help");
