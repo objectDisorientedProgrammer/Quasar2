@@ -37,11 +37,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-
 import javax.swing.*;
 
 public class MainWindow
@@ -50,7 +47,7 @@ public class MainWindow
 	private EditWindow editWindow;
 	
 	private final String author = "Douglas Chidester";
-	private final String version = " v0.6.10";
+	private final String version = " v0.7.0";
 	private final String windowTitle = "Quasar";
 	private final int frameWidth = 450;
 	private final int frameHeight = 400;
@@ -59,13 +56,14 @@ public class MainWindow
 	
 	private JFrame mainWindow;
 	private JPanel mainPanel;
+	private JPanel aboutPane;
 	
 	// Variables
 	private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
 	
-	private String quasarLicenseText = "Quasar license";
+	private String quasarLicenseText = "Quasar";
 	private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
-	private String commonsIoLicenseText = "commons-io license";
+	private String commonsIoLicenseText = "commons-io";
 	private String commonsIoLicenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt";
 	
 	// GUI
@@ -87,6 +85,8 @@ public class MainWindow
 		this.editWindow = new EditWindow(this);
 		
 		initializeMainWindowAndPanel();
+		
+		createAboutPanel();
 		
 		createAndAddMenuBar();
 		
@@ -212,6 +212,91 @@ public class MainWindow
 		mainWindow.add(mainPanel);
 	}
 	
+	private void createAboutPanel()
+	{
+		aboutPane = new JPanel();
+		aboutPane.setLayout(new BoxLayout(aboutPane, BoxLayout.PAGE_AXIS));
+		
+		JLabel applicationInfo = new JLabel("Created by " + author);
+		applicationInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		JLabel versionInfo = new JLabel("Version " + version);
+		versionInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		JLabel licensesText = new JLabel(licenseMenuText + ":");
+		licensesText.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		JLabel quasarLicense = new JLabel(quasarLicenseText);
+		quasarLicense.setForeground(Color.blue.darker());
+		quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//		quasarLicense.setAlignmentX(Component.LEFT_ALIGNMENT);
+		quasarLicense.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+			        Desktop.getDesktop().browse(new URI(quasarLicenseUrl));
+			    } catch (IOException | URISyntaxException e1) {
+			        e1.printStackTrace();
+			    }
+			}
+		});
+		
+		JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
+		commons_ioLicense.setForeground(Color.blue.darker());
+		commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//		commons_ioLicense.setAlignmentX(Component.LEFT_ALIGNMENT);
+		commons_ioLicense.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+			        Desktop.getDesktop().browse(new URI(commonsIoLicenseUrl));
+			    } catch (IOException | URISyntaxException e1) {
+			        e1.printStackTrace();
+			    }
+			}
+		});
+		
+		aboutPane.add(licensesText);
+		// put the license links side by side
+		JPanel licenseLinks = new JPanel(new FlowLayout());
+		licenseLinks.add(quasarLicense);
+		licenseLinks.add(commons_ioLicense);
+		aboutPane.add(licenseLinks);
+		
+		// add a space to start a new section of application info
+		JLabel spacer = new JLabel("\n");
+		spacer.setAlignmentX(Component.LEFT_ALIGNMENT);
+		aboutPane.add(spacer);
+		aboutPane.add(applicationInfo);
+		aboutPane.add(versionInfo);
+	}
+	
 	private void createAndAddMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -274,79 +359,21 @@ public class MainWindow
 		});
 		helpMenu.add(helpMenuItem);
 		
-		JMenuItem licenseMenuItem = new JMenuItem(licenseMenuText); // TODO add image?
-		licenseMenuItem.setMnemonic(KeyEvent.VK_L);
-		licenseMenuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// display the licenses
-				JPanel linkPane = new JPanel();
-				linkPane.setLayout(new BoxLayout(linkPane, BoxLayout.PAGE_AXIS));
-				
-				JLabel quasarLicense = new JLabel(quasarLicenseText);
-				quasarLicense.setForeground(Color.blue.darker());
-				quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				quasarLicense.setAlignmentX(Component.CENTER_ALIGNMENT);
-				quasarLicense.addMouseListener(new MouseListener() {
-					
-					@Override
-					public void mouseReleased(MouseEvent e) {}
-					
-					@Override
-					public void mousePressed(MouseEvent e) {}
-					
-					@Override
-					public void mouseExited(MouseEvent e) {}
-					
-					@Override
-					public void mouseEntered(MouseEvent e) {}
-					
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						try {
-					        Desktop.getDesktop().browse(new URI(quasarLicenseUrl));
-					    } catch (IOException | URISyntaxException e1) {
-					        e1.printStackTrace();
-					    }
-					}
-				});
-				
-				JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
-				commons_ioLicense.setForeground(Color.blue.darker());
-				commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				commons_ioLicense.setAlignmentX(Component.CENTER_ALIGNMENT);
-				commons_ioLicense.addMouseListener(new MouseListener() {
-					
-					@Override
-					public void mouseReleased(MouseEvent e) {}
-					
-					@Override
-					public void mousePressed(MouseEvent e) {}
-					
-					@Override
-					public void mouseExited(MouseEvent e) {}
-					
-					@Override
-					public void mouseEntered(MouseEvent e) {}
-					
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						try {
-					        Desktop.getDesktop().browse(new URI(commonsIoLicenseUrl));
-					    } catch (IOException | URISyntaxException e1) {
-					        e1.printStackTrace();
-					    }
-					}
-				});
-				
-				linkPane.add(quasarLicense);
-				linkPane.add(commons_ioLicense);
-				
-				JOptionPane.showMessageDialog(null, linkPane, licenseMenuText,
-						JOptionPane.PLAIN_MESSAGE, null/*new ImageIcon(this.getClass().getResource(imagePath+"todo.png"))*/);
-			}
-		});
-		helpMenu.add(licenseMenuItem);
+//		JMenuItem licenseMenuItem = new JMenuItem(licenseMenuText); // TODO add image?
+//		licenseMenuItem.setMnemonic(KeyEvent.VK_L);
+//		licenseMenuItem.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// display the licenses
+//				
+//				
+//				
+//				
+//				JOptionPane.showMessageDialog(null, linkPane, licenseMenuText,
+//						JOptionPane.PLAIN_MESSAGE, null/*new ImageIcon(this.getClass().getResource(imagePath+"todo.png"))*/);
+//			}
+//		});
+//		helpMenu.add(licenseMenuItem);
 		
 		JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
 		aboutMenuItem.setMnemonic(KeyEvent.VK_A);
@@ -356,7 +383,7 @@ public class MainWindow
 			public void actionPerformed(ActionEvent e)
 			{
 				// show author and version if user clicks: Help -> About
-				JOptionPane.showMessageDialog(null, "Created by " + author + "\nVersion " + version, "About",
+				JOptionPane.showMessageDialog(null, aboutPane, "About",
 						JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"person.png")));
 			}
 		});
