@@ -29,6 +29,8 @@ package quasar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.*;
 
@@ -230,6 +232,7 @@ public class MainWindow
 			public void actionPerformed(ActionEvent e)
 			{
 				// TODO save to file
+				// TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/4
 				//writeToFile(filenameTextfield.getText()); // File -> Save
 			}
 		});
@@ -279,7 +282,15 @@ public class MainWindow
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// display the license
-				JOptionPane.showMessageDialog(null, license, "License",
+//				try {
+//					URL commonsioLicense = new URL("https://www.apache.org/licenses/LICENSE-2.0.txt");
+//					commonsioLicense.
+//				} catch (MalformedURLException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+				
+				JOptionPane.showMessageDialog(null, "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt", "License",
 						JOptionPane.PLAIN_MESSAGE, null/*new ImageIcon(this.getClass().getResource(imagePath+"todo.png"))*/);
 			}
 		});
@@ -299,5 +310,4 @@ public class MainWindow
 		});
 		helpMenu.add(aboutMenuItem);
 	}
-
 }
