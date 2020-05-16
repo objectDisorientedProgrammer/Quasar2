@@ -26,10 +26,20 @@
 
 package quasar;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.*;
@@ -45,24 +55,6 @@ public class MainWindow
 	private final int frameWidth = 450;
 	private final int frameHeight = 400;
 	
-	private final String license = "The MIT License (MIT)\n\n" +
-			"Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)\n\n" +
-			"Permission is hereby granted, free of charge, to any person obtaining a copy\n" +
-			"of this software and associated documentation files (the \"Software\"), to deal\n" +
-			"in the Software without restriction, including without limitation the rights\n" +
-			"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n" +
-			"copies of the Software, and to permit persons to whom the Software is\n" +
-			"furnished to do so, subject to the following conditions:\n\n" +
-			"The above copyright notice and this permission notice shall be included in\n" +
-			"all copies or substantial portions of the Software.\n\n" +
-			"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" +
-			"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" +
-			"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" +
-			"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" +
-			"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
-			"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n" +
-			"THE SOFTWARE.";
-	
 	private final String imagePath = "/images/";	// path in jar file
 	
 	private JFrame mainWindow;
@@ -70,6 +62,11 @@ public class MainWindow
 	
 	// Variables
 	private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
+	
+	private String quasarLicenseText = "Quasar license";
+	private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
+	private String commonsIoLicenseText = "commons-io license";
+	private String commonsIoLicenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt";
 	
 	// GUI
 	private JTextField searchTF;
@@ -80,6 +77,7 @@ public class MainWindow
 	private JButton newNodeBtn;
 	private JButton editBtn;
 	private JButton saveBtn;
+	private String licenseMenuText = "Licenses";
 
 	public MainWindow()
 	{
@@ -276,21 +274,75 @@ public class MainWindow
 		});
 		helpMenu.add(helpMenuItem);
 		
-		JMenuItem licenseMenuItem = new JMenuItem("License"); // TODO add image?
+		JMenuItem licenseMenuItem = new JMenuItem(licenseMenuText); // TODO add image?
 		licenseMenuItem.setMnemonic(KeyEvent.VK_L);
 		licenseMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// display the license
-//				try {
-//					URL commonsioLicense = new URL("https://www.apache.org/licenses/LICENSE-2.0.txt");
-//					commonsioLicense.
-//				} catch (MalformedURLException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
+				// display the licenses
+				JPanel linkPane = new JPanel();
+				linkPane.setLayout(new BoxLayout(linkPane, BoxLayout.PAGE_AXIS));
 				
-				JOptionPane.showMessageDialog(null, "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt", "License",
+				JLabel quasarLicense = new JLabel(quasarLicenseText);
+				quasarLicense.setForeground(Color.blue.darker());
+				quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				quasarLicense.setAlignmentX(Component.CENTER_ALIGNMENT);
+				quasarLicense.addMouseListener(new MouseListener() {
+					
+					@Override
+					public void mouseReleased(MouseEvent e) {}
+					
+					@Override
+					public void mousePressed(MouseEvent e) {}
+					
+					@Override
+					public void mouseExited(MouseEvent e) {}
+					
+					@Override
+					public void mouseEntered(MouseEvent e) {}
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						try {
+					        Desktop.getDesktop().browse(new URI(quasarLicenseUrl));
+					    } catch (IOException | URISyntaxException e1) {
+					        e1.printStackTrace();
+					    }
+					}
+				});
+				
+				JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
+				commons_ioLicense.setForeground(Color.blue.darker());
+				commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				commons_ioLicense.setAlignmentX(Component.CENTER_ALIGNMENT);
+				commons_ioLicense.addMouseListener(new MouseListener() {
+					
+					@Override
+					public void mouseReleased(MouseEvent e) {}
+					
+					@Override
+					public void mousePressed(MouseEvent e) {}
+					
+					@Override
+					public void mouseExited(MouseEvent e) {}
+					
+					@Override
+					public void mouseEntered(MouseEvent e) {}
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						try {
+					        Desktop.getDesktop().browse(new URI(commonsIoLicenseUrl));
+					    } catch (IOException | URISyntaxException e1) {
+					        e1.printStackTrace();
+					    }
+					}
+				});
+				
+				linkPane.add(quasarLicense);
+				linkPane.add(commons_ioLicense);
+				
+				JOptionPane.showMessageDialog(null, linkPane, licenseMenuText,
 						JOptionPane.PLAIN_MESSAGE, null/*new ImageIcon(this.getClass().getResource(imagePath+"todo.png"))*/);
 			}
 		});
