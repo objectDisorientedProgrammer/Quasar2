@@ -121,4 +121,10 @@ public class Contact extends Data
 		this.email = email;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return super.toString() + "; " + this.firstName + " " + this.lastName + "; " + this.phoneNumber + "; " + this.email;
+	}
+	
 }

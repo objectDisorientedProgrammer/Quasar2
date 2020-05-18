@@ -156,7 +156,7 @@ public class Data
 		{
 			if(sb.length() > 0)
 				sb.append(" ");
-			sb.append("<" + keywords + ">");
+			sb.append("'" + keywords + "'");
 		}
 		
 		if(type != null)
