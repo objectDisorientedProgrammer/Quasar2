@@ -103,7 +103,7 @@ public class NodeManager
 	 * @throws IOException
 	 */
 	public void loadFile(String filename) throws IOException {
-		String file = FileUtils.readFileToString(new File(filename), "UTF-8");
+		String file = FileUtils.readFileToString(new File(filename));//FileUtils.readFileToString(new File(filename), "UTF-8");
 		String[] fileLines = file.split("\n");
 		
 		for(String line : fileLines)
@@ -123,7 +123,7 @@ public class NodeManager
 				d.setKeywords(tokens[4]);
 				d.setType(tokens[5]);
 				
-				System.out.println("Adding" + d.toString());
+				System.out.println("Adding " + d.toString());
 				
 				createEntry(d);
 				break;
@@ -135,7 +135,7 @@ public class NodeManager
 				d.setKeywords(tokens[4]);
 				d.setType(tokens[5]);
 				
-				System.out.println("Adding" + d.toString());
+				System.out.println("Adding " + d.toString());
 				
 				createEntry(d);
 				break;
@@ -147,7 +147,7 @@ public class NodeManager
 				d.setKeywords(tokens[4]);
 				d.setType(tokens[5]);
 				
-				System.out.println("Adding" + d.toString());
+				System.out.println("Adding " + d.toString());
 				
 				createEntry(d);
 				
