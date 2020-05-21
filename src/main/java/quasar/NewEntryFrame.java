@@ -172,7 +172,7 @@ public class NewEntryFrame extends JFrame {
 			public void actionPerformed(ActionEvent e)
 			{
 				// Object created for debugging. TODO this could be done inline if desired.
-				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()]);
+				Data d = new Data(title.getText(), description.getText(), date.getText(), keywords.getText(), possibleEntries[dataTypeSelector.getSelectedIndex()].substring(0, 1).toLowerCase());
 				manager.createEntry(d);
 				
 				if(EnableDebug)
