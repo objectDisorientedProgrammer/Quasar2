@@ -26,11 +26,12 @@
 
 package quasar;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.Panel;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -51,22 +52,22 @@ public class EditWindow
 {
 	MainWindow mwReference;
 	private JFrame frame;
-	private JPanel panel; // TODO use this
 	private String windowTitle = "Edit";
-	private int frameWidth = 430;
-	private int frameHeight = 250;
-	private JTextField titleTextField;
+	private int frameWidth = 300;
+	private int frameHeight = 450;
+	
 	private JLabel propertiesLabel;
+	private String windowHeading = "Properties for";
+	
 	private JLabel titleLabel;
+	private JTextField titleTextField;
+	
 	private JLabel descriptionLabel;
 	private JTextField descriptionTextField;
 	private JLabel dateLabel;
 	private JFormattedTextField dateDisplay;
 	private JLabel keywordsLabel;
 	private JTextField keywordsTextField;
-	private int textfieldXcoord = 95;  // (X, y, width, height)
-	private int labelWidth = 80;       // (X, y, WIDTH, height)
-	private int textfieldWidth = frameWidth - (textfieldXcoord + 18); // text fields extend to end of frame on creation
 	
 	private JButton saveButton;
 	
@@ -74,7 +75,6 @@ public class EditWindow
 	private boolean editable = false;
 	
 	private JButton cancelButton;
-	private int buttonWidth = 90;
 	
 	private Data localDataCopy = null;
 	
@@ -113,27 +113,64 @@ public class EditWindow
 	private void addGUIElements(Container pane)
 	{
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		// create container for "common attributes" and populate
 		JPanel topPane = new JPanel();
-		topPane.add(propertiesLabel);
+		topPane.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 		
-		topPane.add(titleLabel);
-		topPane.add(titleTextField);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.weighty = 0.0;
+		c.gridwidth = 10;
+		c.insets = new Insets(2, 2, 2, 2); // padding for all elements
 		
-		topPane.add(descriptionLabel);
-		topPane.add(descriptionTextField);
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		topPane.add(propertiesLabel, c);
 		
-		topPane.add(dateLabel);
-		topPane.add(dateDisplay);
+		c.anchor = GridBagConstraints.LINE_START;
+		c.gridwidth = 1;
+		c.gridy = 1;
+		c.ipady = 0; // this adjusts the size of the title. 0 is default.
+		topPane.add(titleLabel, c);
+		c.gridx = 1;
+		c.weightx = 2.0;
+		topPane.add(titleTextField, c);
 		
-		topPane.add(keywordsLabel);
-		topPane.add(keywordsTextField);
-		topPane.add(typeSelector);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.weightx = 0.5;
+		topPane.add(descriptionLabel, c);
+		c.gridx = 1;
+		topPane.add(descriptionTextField, c);
+		
+		c.gridx = 0;
+		c.gridy = 3;
+		topPane.add(dateLabel, c);
+		c.gridx = 1;
+		topPane.add(dateDisplay, c);
+		
+		c.gridx = 0;
+		c.gridy = 4;
+		topPane.add(keywordsLabel, c);
+		c.gridx = 1;
+		topPane.add(keywordsTextField, c);
+		
+		c.gridx = 0;
+		c.gridy = 5;
+		c.gridwidth = 2; // column width
+		c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(4, 80, 4, 80); // add left and right padding to center the element
+		topPane.add(typeSelector, c);
 		
 		pane.add(topPane);
 		
+		// add changing UI panel (cards)
 		pane.add(cards);
 		
-		
+		// create container for buttons
 		JPanel endPane = new JPanel();
 		
 		endPane.add(cancelButton);
@@ -148,58 +185,11 @@ public class EditWindow
 	 */
 	private void createAndAddGUI()
 	{
-		Font defaultLabelFont = new Font("Tahoma", Font.PLAIN, 12);
-		
-		propertiesLabel = new JLabel("Properties");
-		propertiesLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
-//		propertiesLabel.setBounds(10, 11, 97, 18);
-		
-		titleLabel = new JLabel("Title:");
-		titleLabel.setLabelFor(titleTextField);
-		titleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		titleLabel.setFont(defaultLabelFont);
-//		titleLabel.setBounds(10, 42, labelWidth, 14);
-
-		titleTextField = new JTextField();
-		titleTextField.setToolTipText("Title");
-//		titleTextField.setBounds(textfieldXcoord, 40, textfieldWidth, 20);
-		titleTextField.setColumns(10);
-
-		descriptionLabel = new JLabel("Description:");
-		descriptionLabel.setLabelFor(descriptionTextField);
-		descriptionLabel.setFont(defaultLabelFont);
-		descriptionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-//		descriptionLabel.setBounds(10, 72, labelWidth, 14);
-
-		descriptionTextField = new JTextField();
-		descriptionTextField.setToolTipText("Description");
-//		descriptionTextField.setBounds(textfieldXcoord, 70, textfieldWidth, 20);
-		descriptionTextField.setColumns(10);
-		
-		dateLabel = new JLabel("Date:");
-		dateLabel.setLabelFor(dateDisplay);
-		dateLabel.setFont(defaultLabelFont);
-		dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-//		dateLabel.setBounds(10, 102, labelWidth, 14);
-
-		// FIXME this method exists here and in NewEntryFrame...need to consolidate these...
-		dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
-		dateDisplay.setToolTipText("YYYY-MM-DD");
-//		dateDisplay.setBounds(textfieldXcoord, 100, textfieldWidth, 20);
-
-		keywordsLabel = new JLabel("Keywords:");
-		keywordsLabel.setLabelFor(keywordsTextField);
-		keywordsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		keywordsLabel.setFont(defaultLabelFont);
-//		keywordsLabel.setBounds(10, 132, labelWidth, 14);
-
-		keywordsTextField = new JTextField();
-		keywordsTextField.setToolTipText("Keywords");
-//		keywordsTextField.setBounds(textfieldXcoord, 130, textfieldWidth, 20);
-		keywordsTextField.setColumns(10);
+		initializeCommonUi();
 		
 		JPanel allCard = new JPanel();
 		cards.add(allCard, dataTypeList[0]);
+		// TODO add content for entries of type "all"?
 		
 		JPanel documentCard = new JPanel();
 		docPathTf = new JTextField();
@@ -250,9 +240,7 @@ public class EditWindow
 			}
 		});
         
-		
 		cancelButton = new JButton("Close");
-//		cancelButton.setBounds(textfieldXcoord, 160, buttonWidth, 34);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
@@ -267,8 +255,9 @@ public class EditWindow
 			}
 		});
 		
+		// TODO consider combining the edit and save buttons as they are mutually exclusive.
+		// Combining would reduce the clutter within the edit window.
 		saveButton = new JButton("Save");
-//		saveButton.setBounds(textfieldXcoord + buttonWidth + 6, 160, buttonWidth, 34);
 		saveButton.setEnabled(false); // disable by default until user wants to edit
 		saveButton.addActionListener(new ActionListener() {
 			@Override
@@ -286,9 +275,9 @@ public class EditWindow
 				}
 			}
 		});
-		
+		// TODO consider combining the edit and save buttons as they are mutually exclusive.
+		// Combining would reduce the clutter within the edit window.
 		editButton = new JButton("Edit");
-//		editButton.setBounds(textfieldXcoord + ((buttonWidth + 6) * 2), 160, buttonWidth, 34);
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -302,6 +291,53 @@ public class EditWindow
 				}
 			}
 		});
+	}
+
+	/**
+	 * Create and add the "common attributes" fields
+	 */
+	private void initializeCommonUi()
+	{
+		Font defaultLabelFont = new Font("Tahoma", Font.PLAIN, 12);
+		
+		propertiesLabel = new JLabel(windowHeading);
+		propertiesLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		titleLabel = new JLabel("Title:", JLabel.TRAILING);
+		titleLabel.setLabelFor(titleTextField);
+		titleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		titleLabel.setFont(defaultLabelFont);
+
+		titleTextField = new JTextField();
+		titleTextField.setToolTipText("Title");
+		titleTextField.setColumns(10);
+
+		descriptionLabel = new JLabel("Description:", JLabel.TRAILING);
+		descriptionLabel.setLabelFor(descriptionTextField);
+		descriptionLabel.setFont(defaultLabelFont);
+		descriptionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		descriptionTextField = new JTextField();
+		descriptionTextField.setToolTipText("Description");
+		descriptionTextField.setColumns(10);
+		
+		dateLabel = new JLabel("Date:");
+		dateLabel.setLabelFor(dateDisplay);
+		dateLabel.setFont(defaultLabelFont);
+		dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		// FIXME this method exists here and in NewEntryFrame...need to consolidate these...
+		dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
+		dateDisplay.setToolTipText("YYYY-MM-DD");
+
+		keywordsLabel = new JLabel("Keywords:");
+		keywordsLabel.setLabelFor(keywordsTextField);
+		keywordsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		keywordsLabel.setFont(defaultLabelFont);
+
+		keywordsTextField = new JTextField();
+		keywordsTextField.setToolTipText("Keywords");
+		keywordsTextField.setColumns(10);
 	}
 	
 	// FIXME this method exists here and in NewEntryFrame...need to consolidate these...
@@ -344,6 +380,7 @@ public class EditWindow
 		// TODO check for valid 'newValue' in all cases
 		if(newValue.compareTo(this.localDataCopy.title) != 0) // if title changed
 		{
+			propertiesLabel.setText(windowHeading + " " + newValue);
 			titleTextField.setText(newValue);
 			frame.setTitle(newValue); // update window title
 			this.localDataCopy.title = newValue;
@@ -375,6 +412,7 @@ public class EditWindow
 	{
 		this.localDataCopy = d;
 		frame.setTitle(this.localDataCopy.getTitle()); // update window title
+		propertiesLabel.setText(windowHeading + " " + this.localDataCopy.getTitle()); // update header label
 		// fill in fields
 		titleTextField.setText(this.localDataCopy.getTitle());
 		descriptionTextField.setText(this.localDataCopy.getDescription());
@@ -388,34 +426,26 @@ public class EditWindow
 		// ...
 		switch(this.localDataCopy.getType())
 		{
-		
-		case "a": typeSelector.setSelectedIndex(0); break;
-		case "d":
-			typeSelector.setSelectedIndex(1);
-			Document doc = (Document) this.localDataCopy;
-			docPathTf.setText(doc.getPath());
-			break;
-		case "w": typeSelector.setSelectedIndex(2); break;
-		case "p": typeSelector.setSelectedIndex(3); break;
-		case "c":
-			typeSelector.setSelectedIndex(4);
-			Contact con = (Contact) this.localDataCopy;
-			firstnameTf.setText(con.getFirstName());
-			lastnameTf.setText(con.getLastName());
-			phoneNumberTf.setText(con.getPhoneNumber());
-			emailTf.setText(con.getEmail());
-			
-			System.out.println("viewing contact" + con.toString());
-			break;
-		default:
-			typeSelector.setSelectedIndex(0); break;
+			default:
+			case "a": typeSelector.setSelectedIndex(0); break;
+			case "d":
+				typeSelector.setSelectedIndex(1);
+				Document doc = (Document) this.localDataCopy;
+				docPathTf.setText(doc.getPath());
+				break;
+			case "w": typeSelector.setSelectedIndex(2); break;
+			case "p": typeSelector.setSelectedIndex(3); break;
+			case "c":
+				typeSelector.setSelectedIndex(4);
+				Contact con = (Contact) this.localDataCopy;
+				firstnameTf.setText(con.getFirstName());
+				lastnameTf.setText(con.getLastName());
+				phoneNumberTf.setText(con.getPhoneNumber());
+				emailTf.setText(con.getEmail());
+				
+				System.out.println("viewing contact: " + con.toString());
+				break;
 		}
-		
-//		if(this.localDataCopy.getType() == "d")
-//		{
-//			JTextField pathTf = new JTextField(((Document) this.localDataCopy).getPath());
-//			frame.getContentPane().add(pathTf);
-//		}
 	}
 
 	/**
