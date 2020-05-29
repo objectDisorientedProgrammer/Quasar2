@@ -1,27 +1,27 @@
 /*
  * Created: May 28, 2013
  * 
-	The MIT License (MIT)
-	
-	Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-	
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-	
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
+    The MIT License (MIT)
+    
+    Copyright (c) 2013 Gamma (Douglas Chidester, James Howard, Steve Corbette)
+    
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+    
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+    
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
  */
 
 package quasar;
@@ -50,430 +50,430 @@ import javax.swing.text.MaskFormatter;
 
 public class EditWindow
 {
-	MainWindow mwReference;
-	private JFrame frame;
-	private String windowTitle = "Edit";
-	private int frameWidth = 300;
-	private int frameHeight = 450;
-	
-	private JLabel propertiesLabel;
-	private String windowHeading = "Properties for";
-	
-	private JLabel titleLabel;
-	private JTextField titleTextField;
-	
-	private JLabel descriptionLabel;
-	private JTextField descriptionTextField;
-	private JLabel dateLabel;
-	private JFormattedTextField dateDisplay;
-	private JLabel keywordsLabel;
-	private JTextField keywordsTextField;
-	
-	private JButton saveButton;
-	
-	private JButton editButton;
-	private boolean editable = false;
-	
-	private JButton cancelButton;
-	
-	private Data localDataCopy = null;
-	
-	private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" }; // TODO remove this duplicate
-	JComboBox<String> typeSelector;
-	private JPanel cards;
-	private JTextField docPathTf;
-	
-	private JTextField firstnameTf;
-	private JTextField lastnameTf;
-	private JTextField phoneNumberTf;
-	private JTextField emailTf;
-	
-	
-	public EditWindow(MainWindow main)
-	{
-		super();
-		this.mwReference = main;
-		frame = new JFrame(windowTitle);
-		frame.setSize(frameWidth, frameHeight);
-		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setLayout(null);
-		
-		cards = new JPanel(new CardLayout());
-		
-		createAndAddGUI();
-		addGUIElements(frame.getContentPane());
-		setEditingEntry(editable);
-	}
-	
-	/**
-	 * Add GUI elements to a container.
-	 * @param pane - the container to add components to.
-	 */
-	private void addGUIElements(Container pane)
-	{
-		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-		// create container for "common attributes" and populate
-		JPanel topPane = new JPanel();
-		topPane.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.5;
-		c.weighty = 0.0;
-		c.gridwidth = 10;
-		c.insets = new Insets(2, 2, 2, 2); // padding for all elements
-		
-		c.anchor = GridBagConstraints.PAGE_START;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 2;
-		topPane.add(propertiesLabel, c);
-		
-		c.anchor = GridBagConstraints.LINE_START;
-		c.gridwidth = 1;
-		c.gridy = 1;
-		c.ipady = 0; // this adjusts the size of the title. 0 is default.
-		topPane.add(titleLabel, c);
-		c.gridx = 1;
-		c.weightx = 2.0;
-		topPane.add(titleTextField, c);
-		
-		c.gridx = 0;
-		c.gridy = 2;
-		c.weightx = 0.5;
-		topPane.add(descriptionLabel, c);
-		c.gridx = 1;
-		topPane.add(descriptionTextField, c);
-		
-		c.gridx = 0;
-		c.gridy = 3;
-		topPane.add(dateLabel, c);
-		c.gridx = 1;
-		topPane.add(dateDisplay, c);
-		
-		c.gridx = 0;
-		c.gridy = 4;
-		topPane.add(keywordsLabel, c);
-		c.gridx = 1;
-		topPane.add(keywordsTextField, c);
-		
-		c.gridx = 0;
-		c.gridy = 5;
-		c.gridwidth = 2; // column width
-		c.anchor = GridBagConstraints.CENTER;
-		c.insets = new Insets(4, 80, 4, 80); // add left and right padding to center the element
-		topPane.add(typeSelector, c);
-		
-		pane.add(topPane);
-		
-		// add changing UI panel (cards)
-		pane.add(cards);
-		
-		// create container for buttons
-		JPanel endPane = new JPanel();
-		
-		endPane.add(cancelButton);
-		endPane.add(editButton);
-		endPane.add(saveButton);
-		
-		pane.add(endPane);
-	}
-
-	/**
-	 * Initialize all GUI components.
-	 */
-	private void createAndAddGUI()
-	{
-		initializeCommonUi();
-		
-		JPanel allCard = new JPanel();
-		cards.add(allCard, dataTypeList[0]);
-		// TODO add content for entries of type "all"?
-		
-		JPanel documentCard = new JPanel();
-		docPathTf = new JTextField();
-		JTextField pageNumTf = new JTextField();
-		JTextField authorTf = new JTextField();
-		JTextField publishDateTf = new JTextField();
-		documentCard.add(docPathTf);
-		documentCard.add(pageNumTf);
-		documentCard.add(authorTf);
-		documentCard.add(publishDateTf);
-		cards.add(documentCard, dataTypeList[1]);
-		
-		JPanel websiteCard = new JPanel();
-		JTextField urlTf = new JTextField();
-		websiteCard.add(urlTf);
-		cards.add(websiteCard, dataTypeList[2]);
-		
-		JPanel pictureCard = new JPanel();
-		JTextField picPathTf = new JTextField();
-		JTextField photographerTf = new JTextField();
-		JTextField imageWidthTf = new JTextField();
-		JTextField imageHeightTf = new JTextField();
-		pictureCard.add(picPathTf);
-		pictureCard.add(photographerTf);
-		pictureCard.add(imageWidthTf);
-		pictureCard.add(imageHeightTf);
-		cards.add(pictureCard, dataTypeList[3]);
-		
-		JPanel contactCard = new JPanel();
-		firstnameTf = new JTextField();
-		lastnameTf = new JTextField();
-		phoneNumberTf = new JTextField();
-		emailTf = new JTextField();
-		contactCard.add(firstnameTf);
-		contactCard.add(lastnameTf);
-		contactCard.add(phoneNumberTf);
-		contactCard.add(emailTf);
-		cards.add(contactCard, dataTypeList[4]);
-		
-		typeSelector = new JComboBox<String>(dataTypeList);
-		typeSelector.setEnabled(false);
-		typeSelector.addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.show(cards, (String)e.getItem());
-			}
-		});
+    MainWindow mwReference;
+    private JFrame frame;
+    private String windowTitle = "Edit";
+    private int frameWidth = 300;
+    private int frameHeight = 450;
+    
+    private JLabel propertiesLabel;
+    private String windowHeading = "Properties for";
+    
+    private JLabel titleLabel;
+    private JTextField titleTextField;
+    
+    private JLabel descriptionLabel;
+    private JTextField descriptionTextField;
+    private JLabel dateLabel;
+    private JFormattedTextField dateDisplay;
+    private JLabel keywordsLabel;
+    private JTextField keywordsTextField;
+    
+    private JButton saveButton;
+    
+    private JButton editButton;
+    private boolean editable = false;
+    
+    private JButton cancelButton;
+    
+    private Data localDataCopy = null;
+    
+    private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" }; // TODO remove this duplicate
+    JComboBox<String> typeSelector;
+    private JPanel cards;
+    private JTextField docPathTf;
+    
+    private JTextField firstnameTf;
+    private JTextField lastnameTf;
+    private JTextField phoneNumberTf;
+    private JTextField emailTf;
+    
+    
+    public EditWindow(MainWindow main)
+    {
+        super();
+        this.mwReference = main;
+        frame = new JFrame(windowTitle);
+        frame.setSize(frameWidth, frameHeight);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(null);
         
-		cancelButton = new JButton("Close");
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				if(editable == true)
-				{
-					editable = !editable; // toggle edit status
-					setEditingEntry(editable); // disable editing
-					editButton.setEnabled(true); // enable clicking 'edit' again
-					saveButton.setEnabled(false); // disable saving
-				}
-				hideFrame();
-			}
-		});
-		
-		// TODO consider combining the edit and save buttons as they are mutually exclusive.
-		// Combining would reduce the clutter within the edit window.
-		saveButton = new JButton("Save");
-		saveButton.setEnabled(false); // disable by default until user wants to edit
-		saveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(editable == true)
-				{
-					editable = !editable; // toggle edit status
-					setEditingEntry(editable); // disable editing
-					editButton.setEnabled(true); // enable clicking 'edit' again
-					saveButton.setEnabled(false); // disable saving
-					
-					updateDataValues(); // save changes
-					
-					frame.getContentPane().repaint(); // redraw the frame
-				}
-			}
-		});
-		// TODO consider combining the edit and save buttons as they are mutually exclusive.
-		// Combining would reduce the clutter within the edit window.
-		editButton = new JButton("Edit");
-		editButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(editable == false)
-				{
-					editable = !editable; // toggle edit status
-					setEditingEntry(editable); // enable editing
-					editButton.setEnabled(false); // disable clicking 'edit' again
-					saveButton.setEnabled(true); // allow saving
-					frame.getContentPane().repaint(); // redraw the frame
-				}
-			}
-		});
-	}
+        cards = new JPanel(new CardLayout());
+        
+        createAndAddGUI();
+        addGUIElements(frame.getContentPane());
+        setEditingEntry(editable);
+    }
+    
+    /**
+     * Add GUI elements to a container.
+     * @param pane - the container to add components to.
+     */
+    private void addGUIElements(Container pane)
+    {
+        pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        // create container for "common attributes" and populate
+        JPanel topPane = new JPanel();
+        topPane.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.weighty = 0.0;
+        c.gridwidth = 10;
+        c.insets = new Insets(2, 2, 2, 2); // padding for all elements
+        
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        topPane.add(propertiesLabel, c);
+        
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridwidth = 1;
+        c.gridy = 1;
+        c.ipady = 0; // this adjusts the size of the title. 0 is default.
+        topPane.add(titleLabel, c);
+        c.gridx = 1;
+        c.weightx = 2.0;
+        topPane.add(titleTextField, c);
+        
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weightx = 0.5;
+        topPane.add(descriptionLabel, c);
+        c.gridx = 1;
+        topPane.add(descriptionTextField, c);
+        
+        c.gridx = 0;
+        c.gridy = 3;
+        topPane.add(dateLabel, c);
+        c.gridx = 1;
+        topPane.add(dateDisplay, c);
+        
+        c.gridx = 0;
+        c.gridy = 4;
+        topPane.add(keywordsLabel, c);
+        c.gridx = 1;
+        topPane.add(keywordsTextField, c);
+        
+        c.gridx = 0;
+        c.gridy = 5;
+        c.gridwidth = 2; // column width
+        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(4, 80, 4, 80); // add left and right padding to center the element
+        topPane.add(typeSelector, c);
+        
+        pane.add(topPane);
+        
+        // add changing UI panel (cards)
+        pane.add(cards);
+        
+        // create container for buttons
+        JPanel endPane = new JPanel();
+        
+        endPane.add(cancelButton);
+        endPane.add(editButton);
+        endPane.add(saveButton);
+        
+        pane.add(endPane);
+    }
 
-	/**
-	 * Create and add the "common attributes" fields
-	 */
-	private void initializeCommonUi()
-	{
-		Font defaultLabelFont = new Font("Tahoma", Font.PLAIN, 12);
-		
-		propertiesLabel = new JLabel(windowHeading);
-		propertiesLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
-		
-		titleLabel = new JLabel("Title:", JLabel.TRAILING);
-		titleLabel.setLabelFor(titleTextField);
-		titleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		titleLabel.setFont(defaultLabelFont);
+    /**
+     * Initialize all GUI components.
+     */
+    private void createAndAddGUI()
+    {
+        initializeCommonUi();
+        
+        JPanel allCard = new JPanel();
+        cards.add(allCard, dataTypeList[0]);
+        // TODO add content for entries of type "all"?
+        
+        JPanel documentCard = new JPanel();
+        docPathTf = new JTextField();
+        JTextField pageNumTf = new JTextField();
+        JTextField authorTf = new JTextField();
+        JTextField publishDateTf = new JTextField();
+        documentCard.add(docPathTf);
+        documentCard.add(pageNumTf);
+        documentCard.add(authorTf);
+        documentCard.add(publishDateTf);
+        cards.add(documentCard, dataTypeList[1]);
+        
+        JPanel websiteCard = new JPanel();
+        JTextField urlTf = new JTextField();
+        websiteCard.add(urlTf);
+        cards.add(websiteCard, dataTypeList[2]);
+        
+        JPanel pictureCard = new JPanel();
+        JTextField picPathTf = new JTextField();
+        JTextField photographerTf = new JTextField();
+        JTextField imageWidthTf = new JTextField();
+        JTextField imageHeightTf = new JTextField();
+        pictureCard.add(picPathTf);
+        pictureCard.add(photographerTf);
+        pictureCard.add(imageWidthTf);
+        pictureCard.add(imageHeightTf);
+        cards.add(pictureCard, dataTypeList[3]);
+        
+        JPanel contactCard = new JPanel();
+        firstnameTf = new JTextField();
+        lastnameTf = new JTextField();
+        phoneNumberTf = new JTextField();
+        emailTf = new JTextField();
+        contactCard.add(firstnameTf);
+        contactCard.add(lastnameTf);
+        contactCard.add(phoneNumberTf);
+        contactCard.add(emailTf);
+        cards.add(contactCard, dataTypeList[4]);
+        
+        typeSelector = new JComboBox<String>(dataTypeList);
+        typeSelector.setEnabled(false);
+        typeSelector.addItemListener(new ItemListener() {
+            
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                CardLayout cl = (CardLayout)(cards.getLayout());
+                cl.show(cards, (String)e.getItem());
+            }
+        });
+        
+        cancelButton = new JButton("Close");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(editable == true)
+                {
+                    editable = !editable; // toggle edit status
+                    setEditingEntry(editable); // disable editing
+                    editButton.setEnabled(true); // enable clicking 'edit' again
+                    saveButton.setEnabled(false); // disable saving
+                }
+                hideFrame();
+            }
+        });
+        
+        // TODO consider combining the edit and save buttons as they are mutually exclusive.
+        // Combining would reduce the clutter within the edit window.
+        saveButton = new JButton("Save");
+        saveButton.setEnabled(false); // disable by default until user wants to edit
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(editable == true)
+                {
+                    editable = !editable; // toggle edit status
+                    setEditingEntry(editable); // disable editing
+                    editButton.setEnabled(true); // enable clicking 'edit' again
+                    saveButton.setEnabled(false); // disable saving
+                    
+                    updateDataValues(); // save changes
+                    
+                    frame.getContentPane().repaint(); // redraw the frame
+                }
+            }
+        });
+        // TODO consider combining the edit and save buttons as they are mutually exclusive.
+        // Combining would reduce the clutter within the edit window.
+        editButton = new JButton("Edit");
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(editable == false)
+                {
+                    editable = !editable; // toggle edit status
+                    setEditingEntry(editable); // enable editing
+                    editButton.setEnabled(false); // disable clicking 'edit' again
+                    saveButton.setEnabled(true); // allow saving
+                    frame.getContentPane().repaint(); // redraw the frame
+                }
+            }
+        });
+    }
 
-		titleTextField = new JTextField();
-		titleTextField.setToolTipText("Title");
-		titleTextField.setColumns(10);
+    /**
+     * Create and add the "common attributes" fields
+     */
+    private void initializeCommonUi()
+    {
+        Font defaultLabelFont = new Font("Tahoma", Font.PLAIN, 12);
+        
+        propertiesLabel = new JLabel(windowHeading);
+        propertiesLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+        
+        titleLabel = new JLabel("Title:", JLabel.TRAILING);
+        titleLabel.setLabelFor(titleTextField);
+        titleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        titleLabel.setFont(defaultLabelFont);
 
-		descriptionLabel = new JLabel("Description:", JLabel.TRAILING);
-		descriptionLabel.setLabelFor(descriptionTextField);
-		descriptionLabel.setFont(defaultLabelFont);
-		descriptionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        titleTextField = new JTextField();
+        titleTextField.setToolTipText("Title");
+        titleTextField.setColumns(10);
 
-		descriptionTextField = new JTextField();
-		descriptionTextField.setToolTipText("Description");
-		descriptionTextField.setColumns(10);
-		
-		dateLabel = new JLabel("Date:");
-		dateLabel.setLabelFor(dateDisplay);
-		dateLabel.setFont(defaultLabelFont);
-		dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        descriptionLabel = new JLabel("Description:", JLabel.TRAILING);
+        descriptionLabel.setLabelFor(descriptionTextField);
+        descriptionLabel.setFont(defaultLabelFont);
+        descriptionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		// FIXME this method exists here and in NewEntryFrame...need to consolidate these...
-		dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
-		dateDisplay.setToolTipText("YYYY-MM-DD");
+        descriptionTextField = new JTextField();
+        descriptionTextField.setToolTipText("Description");
+        descriptionTextField.setColumns(10);
+        
+        dateLabel = new JLabel("Date:");
+        dateLabel.setLabelFor(dateDisplay);
+        dateLabel.setFont(defaultLabelFont);
+        dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		keywordsLabel = new JLabel("Keywords:");
-		keywordsLabel.setLabelFor(keywordsTextField);
-		keywordsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		keywordsLabel.setFont(defaultLabelFont);
+        // FIXME this method exists here and in NewEntryFrame...need to consolidate these...
+        dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
+        dateDisplay.setToolTipText("YYYY-MM-DD");
 
-		keywordsTextField = new JTextField();
-		keywordsTextField.setToolTipText("Keywords");
-		keywordsTextField.setColumns(10);
-	}
-	
-	// FIXME this method exists here and in NewEntryFrame...need to consolidate these...
-	// stolen from https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
-	protected MaskFormatter createFormatter(String s) {
-	    MaskFormatter formatter = null;
-	    try {
-	        formatter = new MaskFormatter(s);
-	    } catch (java.text.ParseException exc) {
-	        System.err.println("formatter is bad: " + exc.getMessage());
-	    }
-	    return formatter;
-	}
-	
-	/**
-	 * Enable or disable editing a node.
-	 * @param enable - set true to enable editing, set false to disable editing
-	 */
-	private void setEditingEntry(boolean enable)
-	{
-		titleTextField.setEditable(enable);
-		descriptionTextField.setEditable(enable);
-		dateDisplay.setEditable(enable);
-		keywordsTextField.setEditable(enable);
-		
-		typeSelector.setEnabled(enable); // show the correct card depending on the data type
-		
-		// TODO node specific data
-	}
-	
-	/**
-	 * Save all changes made to data.
-	 */
-	private void updateDataValues()
-	{
-		// could change this to see if text has changed before trying to set new,
-		// but it might be more efficient to just overwrite.
-		String newValue = titleTextField.getText();
-		
-		// TODO check for valid 'newValue' in all cases
-		if(newValue.compareTo(this.localDataCopy.title) != 0) // if title changed
-		{
-			propertiesLabel.setText(windowHeading + " " + newValue);
-			titleTextField.setText(newValue);
-			frame.setTitle(newValue); // update window title
-			this.localDataCopy.title = newValue;
-			this.mwReference.requestListDisplayUpdate(); // update the display list
-		}
-		
-		newValue = descriptionTextField.getText();
-		descriptionTextField.setText(newValue);
-		this.localDataCopy.description = newValue;
-		
-		newValue = dateDisplay.getText();
-		//if(verifyDate(newValue))
-		dateDisplay.setText(newValue);
-		this.localDataCopy.date = newValue;
-		//else -> create error message window
-		
-		newValue = keywordsTextField.getText();
-		keywordsTextField.setText(newValue);
-		this.localDataCopy.keywords = newValue;
-		
-		// TODO node specific data
-	}
-	
-	/**
-	 * Display an entry's data in the edit window.
-	 * @param d - the entry to display
-	 */
-	public void displayEntry(Data d)
-	{
-		this.localDataCopy = d;
-		frame.setTitle(this.localDataCopy.getTitle()); // update window title
-		propertiesLabel.setText(windowHeading + " " + this.localDataCopy.getTitle()); // update header label
-		// fill in fields
-		titleTextField.setText(this.localDataCopy.getTitle());
-		descriptionTextField.setText(this.localDataCopy.getDescription());
-		dateDisplay.setText(this.localDataCopy.getDate());
-		keywordsTextField.setText(this.localDataCopy.getKeywords());
-		
-		// TODO switch on type
-		// display type specific info
-		//if(localDataCopy instanceof Picture)
-		//else if(localDataCopy instanceof Document)
-		// ...
-		switch(this.localDataCopy.getType())
-		{
-			default:
-			case "a": typeSelector.setSelectedIndex(0); break;
-			case "d":
-				typeSelector.setSelectedIndex(1);
-				Document doc = (Document) this.localDataCopy;
-				docPathTf.setText(doc.getPath());
-				break;
-			case "w": typeSelector.setSelectedIndex(2); break;
-			case "p": typeSelector.setSelectedIndex(3); break;
-			case "c":
-				typeSelector.setSelectedIndex(4);
-				Contact con = (Contact) this.localDataCopy;
-				firstnameTf.setText(con.getFirstName());
-				lastnameTf.setText(con.getLastName());
-				phoneNumberTf.setText(con.getPhoneNumber());
-				emailTf.setText(con.getEmail());
-				
-				System.out.println("viewing contact: " + con.toString());
-				break;
-		}
-	}
+        keywordsLabel = new JLabel("Keywords:");
+        keywordsLabel.setLabelFor(keywordsTextField);
+        keywordsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        keywordsLabel.setFont(defaultLabelFont);
 
-	/**
-	 * Show the window.
-	 */
-	public void showFrame() {
-		frame.setVisible(true);
-	}
-	
-	/**
-	 * Hide the window.
-	 */
-	public void hideFrame() {
-		frame.setVisible(false);
-	}
+        keywordsTextField = new JTextField();
+        keywordsTextField.setToolTipText("Keywords");
+        keywordsTextField.setColumns(10);
+    }
+    
+    // FIXME this method exists here and in NewEntryFrame...need to consolidate these...
+    // stolen from https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
+    protected MaskFormatter createFormatter(String s) {
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(s);
+        } catch (java.text.ParseException exc) {
+            System.err.println("formatter is bad: " + exc.getMessage());
+        }
+        return formatter;
+    }
+    
+    /**
+     * Enable or disable editing a node.
+     * @param enable - set true to enable editing, set false to disable editing
+     */
+    private void setEditingEntry(boolean enable)
+    {
+        titleTextField.setEditable(enable);
+        descriptionTextField.setEditable(enable);
+        dateDisplay.setEditable(enable);
+        keywordsTextField.setEditable(enable);
+        
+        typeSelector.setEnabled(enable); // show the correct card depending on the data type
+        
+        // TODO node specific data
+    }
+    
+    /**
+     * Save all changes made to data.
+     */
+    private void updateDataValues()
+    {
+        // could change this to see if text has changed before trying to set new,
+        // but it might be more efficient to just overwrite.
+        String newValue = titleTextField.getText();
+        
+        // TODO check for valid 'newValue' in all cases
+        if(newValue.compareTo(this.localDataCopy.title) != 0) // if title changed
+        {
+            propertiesLabel.setText(windowHeading + " " + newValue);
+            titleTextField.setText(newValue);
+            frame.setTitle(newValue); // update window title
+            this.localDataCopy.title = newValue;
+            this.mwReference.requestListDisplayUpdate(); // update the display list
+        }
+        
+        newValue = descriptionTextField.getText();
+        descriptionTextField.setText(newValue);
+        this.localDataCopy.description = newValue;
+        
+        newValue = dateDisplay.getText();
+        //if(verifyDate(newValue))
+        dateDisplay.setText(newValue);
+        this.localDataCopy.date = newValue;
+        //else -> create error message window
+        
+        newValue = keywordsTextField.getText();
+        keywordsTextField.setText(newValue);
+        this.localDataCopy.keywords = newValue;
+        
+        // TODO node specific data
+    }
+    
+    /**
+     * Display an entry's data in the edit window.
+     * @param d - the entry to display
+     */
+    public void displayEntry(Data d)
+    {
+        this.localDataCopy = d;
+        frame.setTitle(this.localDataCopy.getTitle()); // update window title
+        propertiesLabel.setText(windowHeading + " " + this.localDataCopy.getTitle()); // update header label
+        // fill in fields
+        titleTextField.setText(this.localDataCopy.getTitle());
+        descriptionTextField.setText(this.localDataCopy.getDescription());
+        dateDisplay.setText(this.localDataCopy.getDate());
+        keywordsTextField.setText(this.localDataCopy.getKeywords());
+        
+        // TODO switch on type
+        // display type specific info
+        //if(localDataCopy instanceof Picture)
+        //else if(localDataCopy instanceof Document)
+        // ...
+        switch(this.localDataCopy.getType())
+        {
+            default:
+            case "a": typeSelector.setSelectedIndex(0); break;
+            case "d":
+                typeSelector.setSelectedIndex(1);
+                Document doc = (Document) this.localDataCopy;
+                docPathTf.setText(doc.getPath());
+                break;
+            case "w": typeSelector.setSelectedIndex(2); break;
+            case "p": typeSelector.setSelectedIndex(3); break;
+            case "c":
+                typeSelector.setSelectedIndex(4);
+                Contact con = (Contact) this.localDataCopy;
+                firstnameTf.setText(con.getFirstName());
+                lastnameTf.setText(con.getLastName());
+                phoneNumberTf.setText(con.getPhoneNumber());
+                emailTf.setText(con.getEmail());
+                
+                System.out.println("viewing contact: " + con.toString());
+                break;
+        }
+    }
 
-	/**
-	 * Delete the instance of the frame.
-	 */
-	public void remove() {
-		frame.dispose();
-	}
-	
-	/**
-	 * Determine if the frame on the screen.
-	 * @return <b>True</b> if the frame is showing on the screen, otherwise <b>false</b>.
-	 */
-	public boolean isAlive() {
-		return frame.isShowing();
-	}
+    /**
+     * Show the window.
+     */
+    public void showFrame() {
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Hide the window.
+     */
+    public void hideFrame() {
+        frame.setVisible(false);
+    }
+
+    /**
+     * Delete the instance of the frame.
+     */
+    public void remove() {
+        frame.dispose();
+    }
+    
+    /**
+     * Determine if the frame on the screen.
+     * @return <b>True</b> if the frame is showing on the screen, otherwise <b>false</b>.
+     */
+    public boolean isAlive() {
+        return frame.isShowing();
+    }
 }
