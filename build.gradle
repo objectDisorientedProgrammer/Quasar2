@@ -1,4 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'quasar.Quasar'
 
 // change compiler flags here
 compileJava {
@@ -19,10 +22,5 @@ jar {
     manifest {
         attributes 'Main-Class': 'quasar.Quasar'
     }
-}
-
-task run(type: JavaExec) {
-    main = "-jar";
-    args jar.archivePath
 }
 
