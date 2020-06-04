@@ -75,7 +75,7 @@ public class MainWindow
     private JComboBox<String> filterComboBox;
     private JButton newNodeBtn;
     private JButton editBtn;
-    private JButton saveBtn;
+    //private JButton saveBtn; // TODO remove?
     private String licenseMenuText = "Licenses";
     private String databaseFilePath;
 
@@ -110,7 +110,7 @@ public class MainWindow
         mainPanel.add(filterComboBox);
         mainPanel.add(newNodeBtn);
         mainPanel.add(editBtn);
-        mainPanel.add(saveBtn);
+        //mainPanel.add(saveBtn); // TODO remove?
     }
 
     private void createGUIElements()
@@ -173,10 +173,10 @@ public class MainWindow
             }
         });
 
-        saveBtn = new JButton("Save");
+        /*saveBtn = new JButton("Save");
         saveBtn.setToolTipText("Save current list.");
         saveBtn.setBounds(341, 144, 89, 23);
-        saveBtn.setEnabled(false); // TODO ...might remove this and implement periodic background saving instead
+        saveBtn.setEnabled(false); */ // TODO ...might remove this and implement periodic background saving instead
         // nm.saveToFile(); // TODO
     }
     
@@ -334,7 +334,7 @@ public class MainWindow
         });
         fileMenu.add(loadMenuItem);
         
-        JMenuItem saveMenuItem = new JMenuItem("Save...");
+        JMenuItem saveMenuItem = new JMenuItem("Save");
         saveMenuItem.setMnemonic(KeyEvent.VK_S);
         saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(imagePath + "save.png")));
         saveMenuItem.addActionListener(new ActionListener()
