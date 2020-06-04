@@ -1,4 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'quasar.Quasar'
 
 // change compiler flags here
 compileJava {
@@ -9,9 +12,14 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    deps // configuration that holds jars to include in the jar
+}
+
 dependencies {
-    // remote dependency of apache commons-io v2.6
-    implementation 'commons-io:commons-io:2.6'
+    // remote dependency of apache commons-io
+    deps group:'commons-io', name:'commons-io',version:'2.6'
+    configurations.compile.extendsFrom(configurations.deps)
 }
 
 jar {
@@ -19,10 +27,9 @@ jar {
     manifest {
         attributes 'Main-Class': 'quasar.Quasar'
     }
-}
-
-task run(type: JavaExec) {
-    main = "-jar";
-    args jar.archivePath
+    // package dependencies into main jar
+    from {
+        configurations.deps.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
