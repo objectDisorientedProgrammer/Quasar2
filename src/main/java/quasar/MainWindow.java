@@ -347,14 +347,14 @@ public class MainWindow
                 // TODO save to file
                 // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/4
                 //writeToFile(filenameTextfield.getText()); // File -> Save
-            	try
-				{
-					nm.saveToFile();
-				} catch(UnsupportedOperationException ex)
-				{
-					JOptionPane.showMessageDialog(null, "Save is not available yet.", "Save unsupported",
-	                        JOptionPane.ERROR_MESSAGE, null);
-				}
+                try
+                {
+                    nm.saveToFile();
+                } catch(UnsupportedOperationException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Save is not available yet.", "Save unsupported",
+                            JOptionPane.ERROR_MESSAGE, null);
+                }
             }
         });
         fileMenu.add(saveMenuItem);
