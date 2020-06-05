@@ -33,7 +33,6 @@ public class SearchManager
     private ArrayList<String> stringPool;
     private ArrayList<String> phrases;
     private ArrayList<String> excluded;
-    private Node current;
 
     public void clearData()
     {
