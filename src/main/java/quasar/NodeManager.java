@@ -30,15 +30,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.io.FileUtils;
 
 public class NodeManager
 {
-    private Node head;
-    private Node current;
-    private Node tail;
+	private boolean DEBUG_PRINT = false;
     private int documentCount;
     private int websiteCount;
     private int pictureCount;
@@ -47,18 +43,7 @@ public class NodeManager
     private String dataFile;
     //private HashMap<Data, String> dataContainer = new HashMap<Data, String>();
     private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
-    String[] items;
-
-    /**
-     * Creates a NodeManager with the default load/save file of Quasar.dat.
-     */
-    public NodeManager()
-    {
-        super();
-        initializeVariables();
-        // TODO load database on program start
-        //this("Quasar.dat");
-    }
+    private String[] items;
 
     /**
      * Creates a NodeManager with a specified load/save file.
@@ -90,11 +75,6 @@ public class NodeManager
         this.pictureCount = 0;
         this.contactCount = 0;
         this.totalCount = 0;
-        head = null;
-        tail = null;
-        
-        //head = new Node(new Data("Head Node"));   // create head with title
-        //tail = new Node(new Data("Tail Node"));   // create tail with title
     }
 
     /**
@@ -123,7 +103,8 @@ public class NodeManager
                 d.setKeywords(tokens[4]);
                 d.setType(tokens[5]);
                 
-                System.out.println("Adding " + d.toString());
+                if(DEBUG_PRINT)
+                    System.out.println("Adding " + d.toString());
                 
                 createEntry(d);
                 break;
@@ -135,7 +116,8 @@ public class NodeManager
                 d.setKeywords(tokens[4]);
                 d.setType(tokens[5]);
                 
-                System.out.println("Adding " + d.toString());
+                if(DEBUG_PRINT)
+                    System.out.println("Adding " + d.toString());
                 
                 createEntry(d);
                 break;
@@ -147,7 +129,8 @@ public class NodeManager
                 d.setKeywords(tokens[4]);
                 d.setType(tokens[5]);
                 
-                System.out.println("Adding " + d.toString());
+                if(DEBUG_PRINT)
+                    System.out.println("Adding " + d.toString());
                 
                 createEntry(d);
                 
@@ -160,12 +143,14 @@ public class NodeManager
                 d.setKeywords(tokens[4]);
                 d.setType(tokens[5]);
                 
-                System.out.println("Adding " + d.toString());
+                if(DEBUG_PRINT)
+                    System.out.println("Adding " + d.toString());
                 
                 createEntry(d);
                 break;
             default:
-                System.out.println("Unknown: " + line);
+            	if(DEBUG_PRINT)
+                    System.out.println("Unknown: " + line);
                 break;
             }
         }
@@ -178,38 +163,10 @@ public class NodeManager
     public void saveToFile() {
         throw new UnsupportedOperationException();
     }
-
-//  /**
-//   * 
-//   * @param Node
-//   */
-//  public void addNode(Data rawData) {
-//      throw new UnsupportedOperationException();
-//  }
     
     public void createEntry(Data d)
     {
         dataContainer.add(d);
-    }
-
-    public void goFirst() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void goNext() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void goPrev() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void goLast() {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean outOfBounds() {
-        throw new UnsupportedOperationException();
     }
 
     public boolean isEmpty() {
@@ -221,11 +178,12 @@ public class NodeManager
         items = new String[dataContainer.size()];
         int i = 0;
         
-        for (Data data : dataContainer) {
+        for (Data data : dataContainer)
+        {
             items[i] = data.title;
             ++i;
         }
-
+        
         return items;
     }
 

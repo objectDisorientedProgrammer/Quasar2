@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,6 +54,7 @@ public class MainWindow
     private final int frameHeight = 400;
     
     private final String imagePath = "/images/";    // path in jar file
+    private final String defaultFilename = "quasar.dat";
     
     private JFrame mainWindow;
     private JPanel mainPanel;
@@ -83,7 +85,7 @@ public class MainWindow
     {
         super();
         
-        this.nm = new NodeManager(/*"_quasar.dat"*/);
+        this.nm = new NodeManager(System.getProperty("user.home") + File.separator + defaultFilename);
         this.editWindow = new EditWindow(this);
         
         initializeMainWindowAndPanel();
@@ -345,6 +347,14 @@ public class MainWindow
                 // TODO save to file
                 // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/4
                 //writeToFile(filenameTextfield.getText()); // File -> Save
+                try
+                {
+                    nm.saveToFile();
+                } catch(UnsupportedOperationException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Save is not available yet.", "Save unsupported",
+                            JOptionPane.ERROR_MESSAGE, null);
+                }
             }
         });
         fileMenu.add(saveMenuItem);
