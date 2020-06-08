@@ -25,20 +25,28 @@
 
 package quasar;
 
+import java.io.File;
+
 public class Quasar
 {
+    private static final String defaultFilename = "quasar.dat";
+    
     public static final int ALL = 0;
     public static final int DOCUMENT = 1;
     public static final int WEBSITE = 2;
-    public static final int PICTURE = 4;
-    public static final int CONTACT = 8;
+    public static final int PICTURE = 3;
+    public static final int CONTACT = 4;
+    
+    public static final String[] entryTypeStrings = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
     
     public static void main(String[] args)
     {
     	MainWindow mainWindow;
     	EditWindow editWindow;
+    	NodeManager nm = new NodeManager(System.getProperty("user.home") + File.separator + defaultFilename);
     	
-    	mainWindow = new MainWindow();
+    	mainWindow = new MainWindow(nm);
+    	//editWindow = new EditWindow(mainWindow);
     	
 //        javax.swing.SwingUtilities.invokeLater(new Runnable()
 //        {

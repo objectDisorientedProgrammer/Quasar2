@@ -36,7 +36,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,14 +52,14 @@ public class MainWindow
     private final int frameHeight = 400;
     
     private final String imagePath = "/images/";    // path in jar file
-    private final String defaultFilename = "quasar.dat";
+    
     
     private JFrame mainWindow;
     private JPanel mainPanel;
     private JPanel aboutPane;
     
     // Variables
-    private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
+    
     
     private String quasarLicenseText = "Quasar";
     private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
@@ -84,11 +83,11 @@ public class MainWindow
     private String licenseMenuText = "Licenses";
     private String databaseFilePath;
 
-    public MainWindow()
+    public MainWindow(NodeManager nm)
     {
         super();
         
-        this.nm = new NodeManager(System.getProperty("user.home") + File.separator + defaultFilename);
+        this.nm = nm;
         
         initializeMainWindowAndPanel();
         
@@ -169,7 +168,7 @@ public class MainWindow
                     // Ultimately needs to be implemented via populating an EditWindow with
                     // the appropriate data depending on the entry type.
                     Data d = nm.getEntry(dataList.getSelectedValue());
-                    JOptionPane.showMessageDialog(null, d.getDescription() +'\n'+ d.getDate(), d.getTitle(),
+                    JOptionPane.showMessageDialog(null, d.getDescription() +'\n'+ d.getDate() + '\n' + d.getType(), d.getTitle(),
                             JOptionPane.INFORMATION_MESSAGE, null);
                     
                     // reset double click logic
@@ -185,9 +184,9 @@ public class MainWindow
         filterLbl.setBounds(10, 42, 80, 14);
 
         filterComboBox = new JComboBox<String>();
-        filterComboBox.setModel(new DefaultComboBoxModel<String>(dataTypeList));
+        filterComboBox.setModel(new DefaultComboBoxModel<String>(Quasar.entryTypeStrings));
         filterComboBox.setSelectedIndex(0);
-        filterComboBox.setMaximumRowCount(dataTypeList.length);
+        filterComboBox.setMaximumRowCount(Quasar.entryTypeStrings.length);
         filterComboBox.setBounds(95, 38, 120, 22);
 
         newNodeBtn = new JButton("New");

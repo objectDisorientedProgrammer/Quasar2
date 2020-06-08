@@ -36,7 +36,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -78,7 +77,6 @@ public class EditWindow
     
     private Data localDataCopy = null;
     
-    private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" }; // TODO remove this duplicate
     JComboBox<String> typeSelector;
     private JPanel cards;
     private JTextField docPathTf;
@@ -104,6 +102,8 @@ public class EditWindow
         createAndAddGUI();
         addGUIElements(frame.getContentPane());
         setEditingEntry(editable);
+        
+        frame.setVisible(true);
     }
     
     /**
@@ -188,7 +188,7 @@ public class EditWindow
         initializeCommonUi();
         
         JPanel allCard = new JPanel();
-        cards.add(allCard, dataTypeList[0]);
+        cards.add(allCard, Quasar.entryTypeStrings[Quasar.ALL]);
         // TODO add content for entries of type "all"?
         
         JPanel documentCard = new JPanel();
@@ -200,12 +200,12 @@ public class EditWindow
         documentCard.add(pageNumTf);
         documentCard.add(authorTf);
         documentCard.add(publishDateTf);
-        cards.add(documentCard, dataTypeList[1]);
+        cards.add(documentCard, Quasar.entryTypeStrings[Quasar.DOCUMENT]);
         
         JPanel websiteCard = new JPanel();
         JTextField urlTf = new JTextField();
         websiteCard.add(urlTf);
-        cards.add(websiteCard, dataTypeList[2]);
+        cards.add(websiteCard, Quasar.entryTypeStrings[Quasar.WEBSITE]);
         
         JPanel pictureCard = new JPanel();
         JTextField picPathTf = new JTextField();
@@ -216,7 +216,7 @@ public class EditWindow
         pictureCard.add(photographerTf);
         pictureCard.add(imageWidthTf);
         pictureCard.add(imageHeightTf);
-        cards.add(pictureCard, dataTypeList[3]);
+        cards.add(pictureCard, Quasar.entryTypeStrings[Quasar.PICTURE]);
         
         JPanel contactCard = new JPanel();
         firstnameTf = new JTextField();
@@ -227,9 +227,9 @@ public class EditWindow
         contactCard.add(lastnameTf);
         contactCard.add(phoneNumberTf);
         contactCard.add(emailTf);
-        cards.add(contactCard, dataTypeList[4]);
+        cards.add(contactCard, Quasar.entryTypeStrings[Quasar.CONTACT]);
         
-        typeSelector = new JComboBox<String>(dataTypeList);
+        typeSelector = new JComboBox<String>(Quasar.entryTypeStrings);
         typeSelector.setEnabled(false);
         typeSelector.addItemListener(new ItemListener() {
             
@@ -471,7 +471,7 @@ public class EditWindow
     
     /**
      * Determine if the frame on the screen.
-     * @return <b>True</b> if the frame is showing on the screen, otherwise <b>false</b>.
+     * @return {@code true} if the frame is showing on the screen, otherwise {@code false}.
      */
     public boolean isAlive() {
         return frame.isShowing();
