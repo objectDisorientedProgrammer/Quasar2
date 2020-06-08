@@ -45,7 +45,6 @@ import javax.swing.*;
 public class MainWindow
 {
     private NodeManager nm;
-    private EditWindow editWindow;
     
     private final String author = "Douglas Chidester";
     private final String version = " v0.7.0";
@@ -73,11 +72,15 @@ public class MainWindow
     private JTextField searchTF;
     private JLabel filterLbl;
     private JButton searchBtn;
+    
     private JList<String> dataList;
+    private JScrollPane scrollPane;
+    private int clickcount = 0;
+    private String previouslySelected = "";
+    
     private JComboBox<String> filterComboBox;
     private JButton newNodeBtn;
     private JButton editBtn;
-    //private JButton saveBtn; // TODO remove?
     private String licenseMenuText = "Licenses";
     private String databaseFilePath;
 
@@ -86,7 +89,6 @@ public class MainWindow
         super();
         
         this.nm = new NodeManager(System.getProperty("user.home") + File.separator + defaultFilename);
-        this.editWindow = new EditWindow(this);
         
         initializeMainWindowAndPanel();
         
@@ -107,12 +109,11 @@ public class MainWindow
     {
         mainPanel.add(searchTF);
         mainPanel.add(searchBtn);
-        mainPanel.add(dataList);
+        mainPanel.add(scrollPane);
         mainPanel.add(filterLbl);
         mainPanel.add(filterComboBox);
         mainPanel.add(newNodeBtn);
         mainPanel.add(editBtn);
-        //mainPanel.add(saveBtn); // TODO remove?
     }
 
     private void createGUIElements()
@@ -132,8 +133,53 @@ public class MainWindow
             }
         });
         
+        // create the data container for the UI
         dataList = new JList<String>();
-        dataList.setBounds(10, 80, 315, 188);
+        dataList.setLayoutOrientation(JList.VERTICAL);
+        // create a scrollable area to display the data
+        scrollPane = new JScrollPane(dataList);
+        scrollPane.setBounds(10, 80, 315, 188);
+        
+        dataList.addMouseListener(new MouseListener()
+        {
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {}
+            
+            @Override
+            public void mousePressed(MouseEvent e)
+            {}
+            
+            @Override
+            public void mouseExited(MouseEvent e)
+            {}
+            
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {}
+            
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                ++clickcount;
+                // display entry on double click
+                if(clickcount >= 2 && previouslySelected == dataList.getSelectedValue())
+                {
+                    // TODO this is for debugging.
+                    // Ultimately needs to be implemented via populating an EditWindow with
+                    // the appropriate data depending on the entry type.
+                    Data d = nm.getEntry(dataList.getSelectedValue());
+                    JOptionPane.showMessageDialog(null, d.getDescription() +'\n'+ d.getDate(), d.getTitle(),
+                            JOptionPane.INFORMATION_MESSAGE, null);
+                    
+                    // reset double click logic
+                    clickcount = 0;
+                    previouslySelected = "";
+                }
+                else // First click. Save click selection.
+                    previouslySelected = dataList.getSelectedValue();
+            }
+        });
 
         filterLbl = new JLabel("Search in:");
         filterLbl.setBounds(10, 42, 80, 14);
@@ -146,15 +192,11 @@ public class MainWindow
 
         newNodeBtn = new JButton("New");
         newNodeBtn.setToolTipText("Create a new entry.");
-        final NewEntryFrame nef = new NewEntryFrame(nm, dataTypeList, this);
+//        final NewEntryFrame nef = new NewEntryFrame(nm, dataTypeList, this); // TODO combine into editwindow
         newNodeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
-                // have the node manager add a node
-                //new Thread().start() {
-                nef.setVisible(true);
-                    //updateListDisplay(); // TODO move this to run() so it will update regularly
-                //};
+            	// TODO activate the edit window
             }
         });
         newNodeBtn.setBounds(341, 77, 91, 23);
@@ -170,16 +212,10 @@ public class MainWindow
             {
                 // thread this TODO issue #9
                 // Display selected entry in an edit window
-                editWindow.displayEntry(nm.getEntry(dataList.getSelectedValue()));
-                editWindow.showFrame();
+//                editWindow.displayEntry(nm.getEntry(dataList.getSelectedValue()));
+//                editWindow.showFrame();
             }
         });
-
-        /*saveBtn = new JButton("Save");
-        saveBtn.setToolTipText("Save current list.");
-        saveBtn.setBounds(341, 144, 89, 23);
-        saveBtn.setEnabled(false); */ // TODO ...might remove this and implement periodic background saving instead
-        // nm.saveToFile(); // TODO
     }
     
     public void requestListDisplayUpdate()
@@ -211,7 +247,7 @@ public class MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setLocationRelativeTo(null);
         
-        mainPanel = new JPanel(null); // TODO change layout manager
+        mainPanel = new JPanel(null); // TODO change layout manager; also no need to create a JPanel here.. use .getContentPane()
         
         mainWindow.add(mainPanel);
     }
