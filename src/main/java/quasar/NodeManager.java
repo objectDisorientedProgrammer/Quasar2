@@ -60,7 +60,6 @@ public class NodeManager
                 loadFile(this.dataFile);
             } catch (IOException e) {
                 System.err.println("NodeManager(String) - "+e.getMessage());
-                e.printStackTrace();
             }
         }
         
@@ -95,7 +94,7 @@ public class NodeManager
             // somehow initialize the data object and set the common attributes...
             switch(Integer.parseInt(tokens[0]))
             {
-            case 1: // doc
+            case Quasar.DOCUMENT: // doc
                 d = new Document(tokens[6]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -108,7 +107,7 @@ public class NodeManager
                 
                 createEntry(d);
                 break;
-            case 2: // web
+            case Quasar.WEBSITE: // web
                 d = new Website(tokens[6]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -121,7 +120,7 @@ public class NodeManager
                 
                 createEntry(d);
                 break;
-            case 4: // pic
+            case Quasar.PICTURE: // pic
                 d = new Picture(tokens[6]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -135,7 +134,7 @@ public class NodeManager
                 createEntry(d);
                 
                 break;
-            case 8: // contact
+            case Quasar.CONTACT: // contact
                 d = new Contact(tokens[6], tokens[7], tokens[8], tokens[9]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -187,11 +186,16 @@ public class NodeManager
         return items;
     }
 
+    /**
+     * Get an entry by title string.
+     * @param title Entry to look up.
+     * @return Data object or {@code null} if not found.
+     */
     public Data getEntry(String title)
     {
         Data v = null;
-        //return dataContainer.get(title);
-        for (Data data : dataContainer) {
+        for (Data data : dataContainer)
+        {
             if(data.title.equalsIgnoreCase(title))
             {
                 v = data;
@@ -199,6 +203,16 @@ public class NodeManager
             }
         }
         return v;
+    }
+    
+    /**
+     * Get an entry by index.
+     * @param index
+     * @return Data object.
+     */
+    public Data getEntry(int index)
+    {
+        return dataContainer.get(index);
     }
 
 }

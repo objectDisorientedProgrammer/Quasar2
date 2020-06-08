@@ -27,14 +27,25 @@ package quasar;
 
 public class Quasar
 {
+    public static final int ALL = 0;
+    public static final int DOCUMENT = 1;
+    public static final int WEBSITE = 2;
+    public static final int PICTURE = 4;
+    public static final int CONTACT = 8;
+    
     public static void main(String[] args)
     {
-        javax.swing.SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new MainWindow();
-            }
-        });
+    	MainWindow mainWindow;
+    	EditWindow editWindow;
+    	
+    	mainWindow = new MainWindow();
+    	
+//        javax.swing.SwingUtilities.invokeLater(new Runnable()
+//        {
+//            public void run()
+//            {
+//            	
+//            }
+//        });
     }
 }
