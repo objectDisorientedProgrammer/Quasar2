@@ -51,7 +51,7 @@ public class NewEntryFrame extends JFrame {
     private final int commonPaneCols = 2;
     
     private JPanel documentPane;
-    private NodeManager manager;
+    private EntryController manager;
     private String[] possibleEntries;
     private MainWindow mwReference;
     
@@ -64,7 +64,7 @@ public class NewEntryFrame extends JFrame {
     private JButton addEntryButton;
     private JButton resetButton;
     
-    public NewEntryFrame(NodeManager mngr, String[] entryTypes, MainWindow mw)
+    public NewEntryFrame(EntryController mngr, String[] entryTypes, MainWindow mw)
     {
         this.manager = mngr;
         this.possibleEntries = entryTypes;

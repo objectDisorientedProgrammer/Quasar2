@@ -39,11 +39,13 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Vector;
+
 import javax.swing.*;
 
 public class MainWindow
 {
-    private NodeManager nm;
+    private EntryController nm;
     
     private final String author = "Douglas Chidester";
     private final String version = " v0.7.0";
@@ -83,7 +85,9 @@ public class MainWindow
     private String licenseMenuText = "Licenses";
     private String databaseFilePath;
 
-    public MainWindow(NodeManager nm)
+    private ActionListener searchListener;
+
+    public MainWindow(EntryController nm)
     {
         super();
         
@@ -117,20 +121,50 @@ public class MainWindow
 
     private void createGUIElements()
     {
+        searchListener = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                // get the query text
+                String searchString = searchTF.getText();
+                // get filter
+                int filter = filterComboBox.getSelectedIndex();
+                // return results based on query text and filter
+                Vector<String> temp = new Vector<String>(10);
+                boolean anyMatches = nm.search(searchString, filter, temp);
+
+                if(anyMatches)
+                {
+                    // update the display list
+                    dataList.setListData(temp);
+                    dataList.setSelectedIndex(0);
+                }
+                else
+                    // tell the user there were no matches
+                    JOptionPane.showMessageDialog(null, "No results.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
+                
+            }
+        };
+        
         searchTF = new JTextField();
         searchTF.setToolTipText("Search here");
         searchTF.setBounds(10, 11, 315, 20);
         searchTF.setColumns(10);
+        searchTF.addActionListener(searchListener);
         
         searchBtn = new JButton("Search");
         searchBtn.setBounds(341, 10, 91, 23);
-        searchBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Search not implemented yet.", "Unavailable",
-                        JOptionPane.INFORMATION_MESSAGE, null);
-            }
-        });
+        searchBtn.addActionListener(searchListener);
+        
+        filterLbl = new JLabel("Search in:");
+        filterLbl.setBounds(10, 42, 80, 14);
+
+        filterComboBox = new JComboBox<String>();
+        filterComboBox.setModel(new DefaultComboBoxModel<String>(Quasar.entryTypeStrings));
+        filterComboBox.setSelectedIndex(0);
+        filterComboBox.setMaximumRowCount(Quasar.entryTypeStrings.length);
+        filterComboBox.setBounds(95, 38, 120, 22);
         
         // create the data container for the UI
         dataList = new JList<String>();
@@ -180,18 +214,8 @@ public class MainWindow
             }
         });
 
-        filterLbl = new JLabel("Search in:");
-        filterLbl.setBounds(10, 42, 80, 14);
-
-        filterComboBox = new JComboBox<String>();
-        filterComboBox.setModel(new DefaultComboBoxModel<String>(Quasar.entryTypeStrings));
-        filterComboBox.setSelectedIndex(0);
-        filterComboBox.setMaximumRowCount(Quasar.entryTypeStrings.length);
-        filterComboBox.setBounds(95, 38, 120, 22);
-
         newNodeBtn = new JButton("New");
         newNodeBtn.setToolTipText("Create a new entry.");
-//        final NewEntryFrame nef = new NewEntryFrame(nm, dataTypeList, this); // TODO combine into editwindow
         newNodeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {

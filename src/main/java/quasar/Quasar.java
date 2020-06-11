@@ -43,7 +43,7 @@ public class Quasar
     {
     	MainWindow mainWindow;
     	EditWindow editWindow;
-    	NodeManager nm = new NodeManager(System.getProperty("user.home") + File.separator + defaultFilename);
+    	EntryController nm = new EntryController(System.getProperty("user.home") + File.separator + defaultFilename);
     	
     	mainWindow = new MainWindow(nm);
     	//editWindow = new EditWindow(mainWindow);

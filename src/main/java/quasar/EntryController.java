@@ -29,10 +29,11 @@ package quasar;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
 
-public class NodeManager
+public class EntryController
 {
 	private boolean DEBUG_PRINT = false;
     private int documentCount;
@@ -41,15 +42,14 @@ public class NodeManager
     private int contactCount;
     private int totalCount;
     private String dataFile;
-    //private HashMap<Data, String> dataContainer = new HashMap<Data, String>();
     private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
     private String[] items;
 
     /**
-     * Creates a NodeManager with a specified load/save file.
+     * Creates a EntryController with a specified load/save file.
      * @param dataFile - filename for the loading/saving
      */
-    public NodeManager(String dataFile) {
+    public EntryController(String dataFile) {
         super();
         this.dataFile = dataFile;
         initializeVariables();
@@ -59,7 +59,7 @@ public class NodeManager
             try {
                 loadFile(this.dataFile);
             } catch (IOException e) {
-                System.err.println("NodeManager(String) - "+e.getMessage());
+                System.err.println("EntryController(String) - " + e.getMessage());
             }
         }
         
@@ -214,5 +214,44 @@ public class NodeManager
     {
         return dataContainer.get(index);
     }
-
+    
+    public boolean search(String searchString, int filter, Vector<String> results)
+    {
+        String lookup = Quasar.entryTypeStrings[filter].toLowerCase().substring(0, 1) ;
+        
+        for(Data data : dataContainer)
+        {
+            if (filter == Quasar.ALL)
+            {
+                // gather all entries
+                if (searchString.equalsIgnoreCase(""))
+                    results.add(data.getTitle());
+                //search only titles
+                else if (data.getTitle().contains(searchString))
+                {
+                    results.add(data.getTitle());
+                }
+            }
+            else
+            {
+                //search by type, then by title
+//                if (data.getType() == filter) FIXME type needs to become an int
+                if (lookup.equalsIgnoreCase(data.getType()))
+                {
+                    // if blank search, gather all entries of the type
+                    if (searchString.equalsIgnoreCase(""))
+                    {
+                        results.add(data.getTitle());
+                    }
+                    // gather all entries that match the query text
+                    else if (data.getTitle().contains(searchString))
+                    {
+                        results.add(data.getTitle());
+                    }
+                }
+            }
+        }
+        
+        return results.size() > 0;
+    }
 }
