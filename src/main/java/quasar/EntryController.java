@@ -172,6 +172,18 @@ public class EntryController
         return dataContainer.isEmpty();
     }
     
+    public Data[] getAllData()
+    {
+        Data ary[] = new Data[dataContainer.size()];
+        int i = 0;
+        for(Data d : dataContainer)
+        {
+            ary[i] = d;
+            ++i;
+        }
+        return ary;
+    }
+    
     public String[] getAllDataTitles()
     {
         items = new String[dataContainer.size()];
@@ -193,16 +205,14 @@ public class EntryController
      */
     public Data getEntry(String title)
     {
-        Data v = null;
         for (Data data : dataContainer)
         {
             if(data.title.equalsIgnoreCase(title))
             {
-                v = data;
-                break;
+                return data;
             }
         }
-        return v;
+        return null;
     }
     
     /**
@@ -253,5 +263,15 @@ public class EntryController
         }
         
         return results.size() > 0;
+    }
+
+    public Data getEntry(Data selectedValue)
+    {
+        for(Data d : dataContainer)
+        {
+            if(d.equals(selectedValue))
+                return d;
+        }
+        return null;
     }
 }

@@ -26,10 +26,13 @@
 package quasar;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
 
 public class Quasar
 {
     private static final String defaultFilename = "quasar.dat";
+    private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
     
     public static final int ALL = 0;
     public static final int DOCUMENT = 1;
@@ -39,14 +42,17 @@ public class Quasar
     
     public static final String[] entryTypeStrings = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
     
+    private static EntryController controller;
+    
     public static void main(String[] args)
     {
+        Data entry = null;
     	MainWindow mainWindow;
     	EditWindow editWindow;
-    	EntryController nm = new EntryController(System.getProperty("user.home") + File.separator + defaultFilename);
+    	controller = new EntryController(defaultFilepath);
+    	mainWindow = new MainWindow(entry);
     	
-    	mainWindow = new MainWindow(nm);
-    	//editWindow = new EditWindow(mainWindow);
+//    	editWindow = new EditWindow();
     	
 //        javax.swing.SwingUtilities.invokeLater(new Runnable()
 //        {
@@ -55,5 +61,35 @@ public class Quasar
 //            	
 //            }
 //        });
+    }
+    
+    public static boolean search(String searchString, int filter, Vector<String> results)
+    {
+        return controller.search(searchString, filter, results);
+    }
+    
+    public static Data[] getAllData()
+    {
+        return controller.getAllData();
+    }
+    
+    public static boolean isEmpty()
+    {
+        return controller.isEmpty();
+    }
+
+    public static void loadFile(String databaseFilePath) throws IOException
+    {
+        controller.loadFile(databaseFilePath);
+    }
+
+    public static void saveToFile()
+    {
+        controller.saveToFile();        
+    }
+
+    public static Data getEntry(Data selectedValue)
+    {
+        return controller.getEntry(selectedValue);
     }
 }

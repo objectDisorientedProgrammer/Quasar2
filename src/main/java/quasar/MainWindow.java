@@ -45,8 +45,6 @@ import javax.swing.*;
 
 public class MainWindow
 {
-    private EntryController nm;
-    
     private final String author = "Douglas Chidester";
     private final String version = " v0.7.0";
     private final String windowTitle = "Quasar";
@@ -55,13 +53,12 @@ public class MainWindow
     
     private final String imagePath = "/images/";    // path in jar file
     
-    
     private JFrame mainWindow;
     private JPanel mainPanel;
     private JPanel aboutPane;
     
     // Variables
-    
+    private Data entry;
     
     private String quasarLicenseText = "Quasar";
     private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
@@ -74,10 +71,10 @@ public class MainWindow
     private JLabel filterLbl;
     private JButton searchBtn;
     
-    private JList<String> dataList;
+    private JList<Data> dataList;
     private JScrollPane scrollPane;
     private int clickcount = 0;
-    private String previouslySelected = "";
+    private Data previouslySelected;
     
     private JComboBox<String> filterComboBox;
     private JButton newNodeBtn;
@@ -87,11 +84,10 @@ public class MainWindow
 
     private ActionListener searchListener;
 
-    public MainWindow(EntryController nm)
+    public MainWindow(Data model)
     {
         super();
-        
-        this.nm = nm;
+        this.entry = model;
         
         initializeMainWindowAndPanel();
         
@@ -132,16 +128,17 @@ public class MainWindow
                 int filter = filterComboBox.getSelectedIndex();
                 // return results based on query text and filter
                 Vector<String> temp = new Vector<String>(10);
-                boolean anyMatches = nm.search(searchString, filter, temp);
+                boolean anyMatches = Quasar.search(searchString, filter, temp);
 
                 if(anyMatches)
                 {
                     // update the display list
-                    dataList.setListData(temp);
-                    dataList.setSelectedIndex(0);
+//                    dataList.setListData(temp);
+//                    dataList.setSelectedIndex(0);
+                    JOptionPane.showMessageDialog(null, "Work in progress.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 else
-                    // tell the user there were no matches
+                    // tell the user there are no matches
                     JOptionPane.showMessageDialog(null, "No results.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
                 
             }
@@ -167,7 +164,7 @@ public class MainWindow
         filterComboBox.setBounds(95, 38, 120, 22);
         
         // create the data container for the UI
-        dataList = new JList<String>();
+        dataList = new JList<Data>();
         dataList.setLayoutOrientation(JList.VERTICAL);
         // create a scrollable area to display the data
         scrollPane = new JScrollPane(dataList);
@@ -201,13 +198,14 @@ public class MainWindow
                     // TODO this is for debugging.
                     // Ultimately needs to be implemented via populating an EditWindow with
                     // the appropriate data depending on the entry type.
-                    Data d = nm.getEntry(dataList.getSelectedValue());
-                    JOptionPane.showMessageDialog(null, d.getDescription() +'\n'+ d.getDate() + '\n' + d.getType(), d.getTitle(),
+                    Data d = Quasar.getEntry(dataList.getSelectedValue());
+                    if(d != null)
+                        JOptionPane.showMessageDialog(null, d.getDescription() +'\n'+ d.getDate() + '\n' + d.getType(), d.getTitle(),
                             JOptionPane.INFORMATION_MESSAGE, null);
                     
                     // reset double click logic
                     clickcount = 0;
-                    previouslySelected = "";
+                    previouslySelected = null;
                 }
                 else // First click. Save click selection.
                     previouslySelected = dataList.getSelectedValue();
@@ -225,7 +223,7 @@ public class MainWindow
         newNodeBtn.setBounds(341, 77, 91, 23);
 
         editBtn = new JButton("View");
-        editBtn.setToolTipText("View and edit the selected entry.");
+        editBtn.setToolTipText("View or edit the selected entry.");
         editBtn.setBounds(341, 111, 91, 23);
         editBtn.setEnabled(false);
         editBtn.addActionListener(new ActionListener()
@@ -248,13 +246,13 @@ public class MainWindow
 
     private void updateListDisplay()
     {
-        if(nm.isEmpty())
+        if(Quasar.isEmpty())
         {   
             editBtn.setEnabled(false);
         }
         else
         {
-            dataList.setListData(nm.getAllDataTitles());
+            dataList.setListData(Quasar.getAllData());
             editBtn.setEnabled(true);
             // select the first item
             dataList.setSelectedIndex(0);
@@ -384,7 +382,7 @@ public class MainWindow
                 {
                     try {
                         databaseFilePath = fileWindow.getSelectedFile().getAbsolutePath();
-                        nm.loadFile(databaseFilePath);
+                        Quasar.loadFile(databaseFilePath);
                     } catch (IOException e1) {
                         // TODO display an error window
                         e1.printStackTrace();
@@ -408,7 +406,7 @@ public class MainWindow
                 //writeToFile(filenameTextfield.getText()); // File -> Save
                 try
                 {
-                    nm.saveToFile();
+                    Quasar.saveToFile();
                 } catch(UnsupportedOperationException ex)
                 {
                     JOptionPane.showMessageDialog(null, "Save is not available yet.", "Save unsupported",
