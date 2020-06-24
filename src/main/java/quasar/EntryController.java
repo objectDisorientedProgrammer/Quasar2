@@ -225,7 +225,7 @@ public class EntryController
         return dataContainer.get(index);
     }
     
-    public boolean search(String searchString, int filter, Vector<String> results)
+    public boolean search(String searchString, int filter, Vector<Data> results)
     {
         String lookup = Quasar.entryTypeStrings[filter].toLowerCase().substring(0, 1) ;
         
@@ -235,11 +235,11 @@ public class EntryController
             {
                 // gather all entries
                 if (searchString.equalsIgnoreCase(""))
-                    results.add(data.getTitle());
+                    results.add(data);
                 //search only titles
                 else if (data.getTitle().contains(searchString))
                 {
-                    results.add(data.getTitle());
+                    results.add(data);
                 }
             }
             else
@@ -251,12 +251,12 @@ public class EntryController
                     // if blank search, gather all entries of the type
                     if (searchString.equalsIgnoreCase(""))
                     {
-                        results.add(data.getTitle());
+                        results.add(data);
                     }
                     // gather all entries that match the query text
                     else if (data.getTitle().contains(searchString))
                     {
-                        results.add(data.getTitle());
+                        results.add(data);
                     }
                 }
             }
