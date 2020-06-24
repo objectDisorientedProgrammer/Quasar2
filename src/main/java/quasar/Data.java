@@ -132,39 +132,12 @@ public class Data
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        // Only add populated strings to return string
+        
+        // Only add title
         if(title != null && title.length() > 0)
-        {
-            sb.append("\"" + title + "\"");
-        }
-        
-        if(description != null && description.length() > 0)
-        {
-            if(sb.length() > 0)
-                sb.append(" ");
-            sb.append("|" + description + "|");
-        }
-        
-        if(date != null && date.length() > 0)
-        {
-            if(sb.length() > 0)
-                sb.append(" ");
-            sb.append("[" + date + "]");
-        }
-        
-        if(keywords != null && keywords.length() > 0)
-        {
-            if(sb.length() > 0)
-                sb.append(" ");
-            sb.append("'" + keywords + "'");
-        }
-        
-        if(type != null)
-        {
-            if(sb.length() > 0)
-                sb.append(" ");
-            sb.append("<" + type + ">");
-        }
+            sb.append(title);
+        else
+            sb.append("no title");
         
         return sb.toString();
     }
