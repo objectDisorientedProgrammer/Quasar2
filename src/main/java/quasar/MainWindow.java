@@ -127,15 +127,13 @@ public class MainWindow
                 // get filter
                 int filter = filterComboBox.getSelectedIndex();
                 // return results based on query text and filter
-                Vector<String> temp = new Vector<String>(10);
-                boolean anyMatches = Quasar.search(searchString, filter, temp);
+                Vector<Data> temp = new Vector<Data>(10);
 
-                if(anyMatches)
+                if(Quasar.search(searchString, filter, temp))
                 {
                     // update the display list
-//                    dataList.setListData(temp);
-//                    dataList.setSelectedIndex(0);
-                    JOptionPane.showMessageDialog(null, "Work in progress.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
+                    dataList.setListData(temp);
+                    dataList.setSelectedIndex(0);
                 }
                 else
                     // tell the user there are no matches
@@ -192,22 +190,16 @@ public class MainWindow
             public void mouseClicked(MouseEvent e)
             {
                 ++clickcount;
-                // display entry on double click
+                // display list item on double click
                 if(clickcount >= 2 && previouslySelected == dataList.getSelectedValue())
                 {
-                    // TODO this is for debugging.
-                    // Ultimately needs to be implemented via populating an EditWindow with
-                    // the appropriate data depending on the entry type.
-                    Data d = Quasar.getEntry(dataList.getSelectedValue());
-                    if(d != null)
-                        JOptionPane.showMessageDialog(null, d.getDescription() +'\n'+ d.getDate() + '\n' + d.getType(), d.getTitle(),
-                            JOptionPane.INFORMATION_MESSAGE, null);
+                    Quasar.displayEntry(dataList.getSelectedValue());
                     
                     // reset double click logic
                     clickcount = 0;
                     previouslySelected = null;
                 }
-                else // First click. Save click selection.
+                else // First click. Save selected list item.
                     previouslySelected = dataList.getSelectedValue();
             }
         });
@@ -217,7 +209,7 @@ public class MainWindow
         newNodeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
-            	// TODO activate the edit window
+            	// TODO activate the edit window with no Data object
             }
         });
         newNodeBtn.setBounds(341, 77, 91, 23);
@@ -233,8 +225,7 @@ public class MainWindow
             {
                 // thread this TODO issue #9
                 // Display selected entry in an edit window
-//                editWindow.displayEntry(nm.getEntry(dataList.getSelectedValue()));
-//                editWindow.showFrame();
+                Quasar.displayEntry(dataList.getSelectedValue());
             }
         });
     }
@@ -257,8 +248,6 @@ public class MainWindow
             // select the first item
             dataList.setSelectedIndex(0);
         }
-        
-        
     }
 
     private void initializeMainWindowAndPanel()
@@ -287,6 +276,7 @@ public class MainWindow
         JLabel licensesText = new JLabel(licenseMenuText + ":");
         licensesText.setAlignmentX(Component.LEFT_ALIGNMENT);
         
+        // create a hyperlink to the Quasar License (TODO the license might need to be embedded into the application)
         JLabel quasarLicense = new JLabel(quasarLicenseText);
         quasarLicense.setForeground(Color.blue.darker());
         quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -314,7 +304,8 @@ public class MainWindow
                 }
             }
         });
-        
+    
+        // create a hyperlink to the Quasar License (TODO the license might need to be embedded into the application)
         JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
         commons_ioLicense.setForeground(Color.blue.darker());
         commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -403,7 +394,7 @@ public class MainWindow
             {
                 // TODO save to file
                 // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/4
-                //writeToFile(filenameTextfield.getText()); // File -> Save
+                // File -> Save
                 try
                 {
                     Quasar.saveToFile();
@@ -443,7 +434,7 @@ public class MainWindow
             public void actionPerformed(ActionEvent e)
             {
                 // show basic use instructions if user clicks: Help -> Getting Started
-                JOptionPane.showMessageDialog(null, "Something helpful...", "Usage",
+                JOptionPane.showMessageDialog(null, "Something helpful...maybe a link to the wiki?", "Usage",
                         JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
             }
         });

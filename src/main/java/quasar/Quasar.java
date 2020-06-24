@@ -43,16 +43,17 @@ public class Quasar
     public static final String[] entryTypeStrings = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
     
     private static EntryController controller;
+    private static EditWindow editWindow;
     
     public static void main(String[] args)
     {
         Data entry = null;
     	MainWindow mainWindow;
-    	EditWindow editWindow;
+    	
     	controller = new EntryController(defaultFilepath);
     	mainWindow = new MainWindow(entry);
     	
-//    	editWindow = new EditWindow();
+    	editWindow = new EditWindow();
     	
 //        javax.swing.SwingUtilities.invokeLater(new Runnable()
 //        {
@@ -63,7 +64,7 @@ public class Quasar
 //        });
     }
     
-    public static boolean search(String searchString, int filter, Vector<String> results)
+    public static boolean search(String searchString, int filter, Vector<Data> results)
     {
         return controller.search(searchString, filter, results);
     }
@@ -91,5 +92,12 @@ public class Quasar
     public static Data getEntry(Data selectedValue)
     {
         return controller.getEntry(selectedValue);
+    }
+
+    public static void displayEntry(Data d)
+    {
+        // TODO decode data by type and call a specific display method in editWindow
+        editWindow.displayEntry(d);
+        editWindow.showFrame();
     }
 }
