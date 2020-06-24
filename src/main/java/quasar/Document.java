@@ -117,10 +117,4 @@ public class Document extends Data {
     public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
     }
-    
-    @Override
-    public String toString()
-    {
-        return super.toString() + "; " + this.path + "; " + this.pageNumber + "; " + this.author + "; " + this.publishDate;
-    }
 }

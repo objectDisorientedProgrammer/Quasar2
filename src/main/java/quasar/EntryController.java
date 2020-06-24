@@ -29,10 +29,11 @@ package quasar;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
 
-public class NodeManager
+public class EntryController
 {
 	private boolean DEBUG_PRINT = false;
     private int documentCount;
@@ -41,15 +42,14 @@ public class NodeManager
     private int contactCount;
     private int totalCount;
     private String dataFile;
-    //private HashMap<Data, String> dataContainer = new HashMap<Data, String>();
     private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
     private String[] items;
 
     /**
-     * Creates a NodeManager with a specified load/save file.
+     * Creates a EntryController with a specified load/save file.
      * @param dataFile - filename for the loading/saving
      */
-    public NodeManager(String dataFile) {
+    public EntryController(String dataFile) {
         super();
         this.dataFile = dataFile;
         initializeVariables();
@@ -59,8 +59,7 @@ public class NodeManager
             try {
                 loadFile(this.dataFile);
             } catch (IOException e) {
-                System.err.println("NodeManager(String) - "+e.getMessage());
-                e.printStackTrace();
+                System.err.println("EntryController(String) - " + e.getMessage());
             }
         }
         
@@ -95,7 +94,7 @@ public class NodeManager
             // somehow initialize the data object and set the common attributes...
             switch(Integer.parseInt(tokens[0]))
             {
-            case 1: // doc
+            case Quasar.DOCUMENT: // doc
                 d = new Document(tokens[6]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -108,7 +107,7 @@ public class NodeManager
                 
                 createEntry(d);
                 break;
-            case 2: // web
+            case Quasar.WEBSITE: // web
                 d = new Website(tokens[6]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -121,7 +120,7 @@ public class NodeManager
                 
                 createEntry(d);
                 break;
-            case 4: // pic
+            case Quasar.PICTURE: // pic
                 d = new Picture(tokens[6]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -135,7 +134,7 @@ public class NodeManager
                 createEntry(d);
                 
                 break;
-            case 8: // contact
+            case Quasar.CONTACT: // contact
                 d = new Contact(tokens[6], tokens[7], tokens[8], tokens[9]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
@@ -173,6 +172,18 @@ public class NodeManager
         return dataContainer.isEmpty();
     }
     
+    public Data[] getAllData()
+    {
+        Data ary[] = new Data[dataContainer.size()];
+        int i = 0;
+        for(Data d : dataContainer)
+        {
+            ary[i] = d;
+            ++i;
+        }
+        return ary;
+    }
+    
     public String[] getAllDataTitles()
     {
         items = new String[dataContainer.size()];
@@ -187,18 +198,80 @@ public class NodeManager
         return items;
     }
 
+    /**
+     * Get an entry by title string.
+     * @param title Entry to look up.
+     * @return Data object or {@code null} if not found.
+     */
     public Data getEntry(String title)
     {
-        Data v = null;
-        //return dataContainer.get(title);
-        for (Data data : dataContainer) {
+        for (Data data : dataContainer)
+        {
             if(data.title.equalsIgnoreCase(title))
             {
-                v = data;
-                break;
+                return data;
             }
         }
-        return v;
+        return null;
+    }
+    
+    /**
+     * Get an entry by index.
+     * @param index
+     * @return Data object.
+     */
+    public Data getEntry(int index)
+    {
+        return dataContainer.get(index);
+    }
+    
+    public boolean search(String searchString, int filter, Vector<Data> results)
+    {
+        String lookup = Quasar.entryTypeStrings[filter].toLowerCase().substring(0, 1) ;
+        
+        for(Data data : dataContainer)
+        {
+            if (filter == Quasar.ALL)
+            {
+                // gather all entries
+                if (searchString.equalsIgnoreCase(""))
+                    results.add(data);
+                //search only titles
+                else if (data.getTitle().contains(searchString))
+                {
+                    results.add(data);
+                }
+            }
+            else
+            {
+                //search by type, then by title
+//                if (data.getType() == filter) FIXME type needs to become an int
+                if (lookup.equalsIgnoreCase(data.getType()))
+                {
+                    // if blank search, gather all entries of the type
+                    if (searchString.equalsIgnoreCase(""))
+                    {
+                        results.add(data);
+                    }
+                    // gather all entries that match the query text
+                    else if (data.getTitle().contains(searchString))
+                    {
+                        results.add(data);
+                    }
+                }
+            }
+        }
+        
+        return results.size() > 0;
     }
 
+    public Data getEntry(Data selectedValue)
+    {
+        for(Data d : dataContainer)
+        {
+            if(d.equals(selectedValue))
+                return d;
+        }
+        return null;
+    }
 }

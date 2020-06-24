@@ -120,11 +120,4 @@ public class Contact extends Data
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    @Override
-    public String toString()
-    {
-        return super.toString() + "; " + this.firstName + " " + this.lastName + "; " + this.phoneNumber + "; " + this.email;
-    }
-    
 }

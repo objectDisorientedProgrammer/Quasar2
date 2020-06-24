@@ -36,17 +36,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Vector;
+
 import javax.swing.*;
 
 public class MainWindow
 {
-    private NodeManager nm;
-    private EditWindow editWindow;
-    
     private final String author = "Douglas Chidester";
     private final String version = " v0.7.0";
     private final String windowTitle = "Quasar";
@@ -54,14 +52,13 @@ public class MainWindow
     private final int frameHeight = 400;
     
     private final String imagePath = "/images/";    // path in jar file
-    private final String defaultFilename = "quasar.dat";
     
     private JFrame mainWindow;
     private JPanel mainPanel;
     private JPanel aboutPane;
     
     // Variables
-    private final String[] dataTypeList = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
+    private Data entry;
     
     private String quasarLicenseText = "Quasar";
     private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
@@ -73,20 +70,24 @@ public class MainWindow
     private JTextField searchTF;
     private JLabel filterLbl;
     private JButton searchBtn;
-    private JList<String> dataList;
+    
+    private JList<Data> dataList;
+    private JScrollPane scrollPane;
+    private int clickcount = 0;
+    private Data previouslySelected;
+    
     private JComboBox<String> filterComboBox;
     private JButton newNodeBtn;
     private JButton editBtn;
-    //private JButton saveBtn; // TODO remove?
     private String licenseMenuText = "Licenses";
     private String databaseFilePath;
 
-    public MainWindow()
+    private ActionListener searchListener;
+
+    public MainWindow(Data model)
     {
         super();
-        
-        this.nm = new NodeManager(System.getProperty("user.home") + File.separator + defaultFilename);
-        this.editWindow = new EditWindow(this);
+        this.entry = model;
         
         initializeMainWindowAndPanel();
         
@@ -107,60 +108,114 @@ public class MainWindow
     {
         mainPanel.add(searchTF);
         mainPanel.add(searchBtn);
-        mainPanel.add(dataList);
+        mainPanel.add(scrollPane);
         mainPanel.add(filterLbl);
         mainPanel.add(filterComboBox);
         mainPanel.add(newNodeBtn);
         mainPanel.add(editBtn);
-        //mainPanel.add(saveBtn); // TODO remove?
     }
 
     private void createGUIElements()
     {
+        searchListener = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                // get the query text
+                String searchString = searchTF.getText();
+                // get filter
+                int filter = filterComboBox.getSelectedIndex();
+                // return results based on query text and filter
+                Vector<Data> temp = new Vector<Data>(10);
+
+                if(Quasar.search(searchString, filter, temp))
+                {
+                    // update the display list
+                    dataList.setListData(temp);
+                    dataList.setSelectedIndex(0);
+                }
+                else
+                    // tell the user there are no matches
+                    JOptionPane.showMessageDialog(null, "No results.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
+                
+            }
+        };
+        
         searchTF = new JTextField();
         searchTF.setToolTipText("Search here");
         searchTF.setBounds(10, 11, 315, 20);
         searchTF.setColumns(10);
+        searchTF.addActionListener(searchListener);
         
         searchBtn = new JButton("Search");
         searchBtn.setBounds(341, 10, 91, 23);
-        searchBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Search not implemented yet.", "Unavailable",
-                        JOptionPane.INFORMATION_MESSAGE, null);
-            }
-        });
+        searchBtn.addActionListener(searchListener);
         
-        dataList = new JList<String>();
-        dataList.setBounds(10, 80, 315, 188);
-
         filterLbl = new JLabel("Search in:");
         filterLbl.setBounds(10, 42, 80, 14);
 
         filterComboBox = new JComboBox<String>();
-        filterComboBox.setModel(new DefaultComboBoxModel<String>(dataTypeList));
+        filterComboBox.setModel(new DefaultComboBoxModel<String>(Quasar.entryTypeStrings));
         filterComboBox.setSelectedIndex(0);
-        filterComboBox.setMaximumRowCount(dataTypeList.length);
+        filterComboBox.setMaximumRowCount(Quasar.entryTypeStrings.length);
         filterComboBox.setBounds(95, 38, 120, 22);
+        
+        // create the data container for the UI
+        dataList = new JList<Data>();
+        dataList.setLayoutOrientation(JList.VERTICAL);
+        // create a scrollable area to display the data
+        scrollPane = new JScrollPane(dataList);
+        scrollPane.setBounds(10, 80, 315, 188);
+        
+        dataList.addMouseListener(new MouseListener()
+        {
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {}
+            
+            @Override
+            public void mousePressed(MouseEvent e)
+            {}
+            
+            @Override
+            public void mouseExited(MouseEvent e)
+            {}
+            
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {}
+            
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                ++clickcount;
+                // display list item on double click
+                if(clickcount >= 2 && previouslySelected == dataList.getSelectedValue())
+                {
+                    Quasar.displayEntry(dataList.getSelectedValue());
+                    
+                    // reset double click logic
+                    clickcount = 0;
+                    previouslySelected = null;
+                }
+                else // First click. Save selected list item.
+                    previouslySelected = dataList.getSelectedValue();
+            }
+        });
 
         newNodeBtn = new JButton("New");
         newNodeBtn.setToolTipText("Create a new entry.");
-        final NewEntryFrame nef = new NewEntryFrame(nm, dataTypeList, this);
         newNodeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
-                // have the node manager add a node
-                //new Thread().start() {
-                nef.setVisible(true);
-                    //updateListDisplay(); // TODO move this to run() so it will update regularly
-                //};
+            	// TODO activate the edit window with no Data object
             }
         });
         newNodeBtn.setBounds(341, 77, 91, 23);
 
         editBtn = new JButton("View");
-        editBtn.setToolTipText("View and edit the selected entry.");
+        editBtn.setToolTipText("View or edit the selected entry.");
         editBtn.setBounds(341, 111, 91, 23);
         editBtn.setEnabled(false);
         editBtn.addActionListener(new ActionListener()
@@ -170,16 +225,9 @@ public class MainWindow
             {
                 // thread this TODO issue #9
                 // Display selected entry in an edit window
-                editWindow.displayEntry(nm.getEntry(dataList.getSelectedValue()));
-                editWindow.showFrame();
+                Quasar.displayEntry(dataList.getSelectedValue());
             }
         });
-
-        /*saveBtn = new JButton("Save");
-        saveBtn.setToolTipText("Save current list.");
-        saveBtn.setBounds(341, 144, 89, 23);
-        saveBtn.setEnabled(false); */ // TODO ...might remove this and implement periodic background saving instead
-        // nm.saveToFile(); // TODO
     }
     
     public void requestListDisplayUpdate()
@@ -189,19 +237,17 @@ public class MainWindow
 
     private void updateListDisplay()
     {
-        if(nm.isEmpty())
+        if(Quasar.isEmpty())
         {   
             editBtn.setEnabled(false);
         }
         else
         {
-            dataList.setListData(nm.getAllDataTitles());
+            dataList.setListData(Quasar.getAllData());
             editBtn.setEnabled(true);
             // select the first item
             dataList.setSelectedIndex(0);
         }
-        
-        
     }
 
     private void initializeMainWindowAndPanel()
@@ -211,7 +257,7 @@ public class MainWindow
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setLocationRelativeTo(null);
         
-        mainPanel = new JPanel(null); // TODO change layout manager
+        mainPanel = new JPanel(null); // TODO change layout manager; also no need to create a JPanel here.. use .getContentPane()
         
         mainWindow.add(mainPanel);
     }
@@ -230,6 +276,7 @@ public class MainWindow
         JLabel licensesText = new JLabel(licenseMenuText + ":");
         licensesText.setAlignmentX(Component.LEFT_ALIGNMENT);
         
+        // create a hyperlink to the Quasar License (TODO the license might need to be embedded into the application)
         JLabel quasarLicense = new JLabel(quasarLicenseText);
         quasarLicense.setForeground(Color.blue.darker());
         quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -257,7 +304,8 @@ public class MainWindow
                 }
             }
         });
-        
+    
+        // create a hyperlink to the Quasar License (TODO the license might need to be embedded into the application)
         JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
         commons_ioLicense.setForeground(Color.blue.darker());
         commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -325,7 +373,7 @@ public class MainWindow
                 {
                     try {
                         databaseFilePath = fileWindow.getSelectedFile().getAbsolutePath();
-                        nm.loadFile(databaseFilePath);
+                        Quasar.loadFile(databaseFilePath);
                     } catch (IOException e1) {
                         // TODO display an error window
                         e1.printStackTrace();
@@ -346,10 +394,10 @@ public class MainWindow
             {
                 // TODO save to file
                 // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/4
-                //writeToFile(filenameTextfield.getText()); // File -> Save
+                // File -> Save
                 try
                 {
-                    nm.saveToFile();
+                    Quasar.saveToFile();
                 } catch(UnsupportedOperationException ex)
                 {
                     JOptionPane.showMessageDialog(null, "Save is not available yet.", "Save unsupported",
@@ -386,7 +434,7 @@ public class MainWindow
             public void actionPerformed(ActionEvent e)
             {
                 // show basic use instructions if user clicks: Help -> Getting Started
-                JOptionPane.showMessageDialog(null, "Something helpful...", "Usage",
+                JOptionPane.showMessageDialog(null, "Something helpful...maybe a link to the wiki?", "Usage",
                         JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
             }
         });

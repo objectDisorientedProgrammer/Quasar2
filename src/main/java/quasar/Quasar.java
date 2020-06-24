@@ -25,16 +25,79 @@
 
 package quasar;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+
 public class Quasar
 {
+    private static final String defaultFilename = "quasar.dat";
+    private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
+    
+    public static final int ALL = 0;
+    public static final int DOCUMENT = 1;
+    public static final int WEBSITE = 2;
+    public static final int PICTURE = 3;
+    public static final int CONTACT = 4;
+    
+    public static final String[] entryTypeStrings = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
+    
+    private static EntryController controller;
+    private static EditWindow editWindow;
+    
     public static void main(String[] args)
     {
-        javax.swing.SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new MainWindow();
-            }
-        });
+        Data entry = null;
+    	MainWindow mainWindow;
+    	
+    	controller = new EntryController(defaultFilepath);
+    	mainWindow = new MainWindow(entry);
+    	
+    	editWindow = new EditWindow();
+    	
+//        javax.swing.SwingUtilities.invokeLater(new Runnable()
+//        {
+//            public void run()
+//            {
+//            	
+//            }
+//        });
+    }
+    
+    public static boolean search(String searchString, int filter, Vector<Data> results)
+    {
+        return controller.search(searchString, filter, results);
+    }
+    
+    public static Data[] getAllData()
+    {
+        return controller.getAllData();
+    }
+    
+    public static boolean isEmpty()
+    {
+        return controller.isEmpty();
+    }
+
+    public static void loadFile(String databaseFilePath) throws IOException
+    {
+        controller.loadFile(databaseFilePath);
+    }
+
+    public static void saveToFile()
+    {
+        controller.saveToFile();        
+    }
+
+    public static Data getEntry(Data selectedValue)
+    {
+        return controller.getEntry(selectedValue);
+    }
+
+    public static void displayEntry(Data d)
+    {
+        // TODO decode data by type and call a specific display method in editWindow
+        editWindow.displayEntry(d);
+        editWindow.showFrame();
     }
 }

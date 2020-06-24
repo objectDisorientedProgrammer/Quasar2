@@ -112,10 +112,4 @@ public class Picture extends Data
         if(h >= 0)
             this.imageHeight = h;
     }
-    
-    @Override
-    public String toString()
-    {
-        return super.toString() + "; " + this.path + "; " + this.photographer + "; w=" + this.imageWidth + "; h=" + this.imageHeight;
-    }
 }
