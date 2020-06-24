@@ -81,16 +81,16 @@ public class EditWindow
     private JPanel cards;
     private JTextField docPathTf;
     
+    JTextField urlTf;
     private JTextField firstnameTf;
     private JTextField lastnameTf;
     private JTextField phoneNumberTf;
     private JTextField emailTf;
     
     
-    public EditWindow(MainWindow main)
+    public EditWindow()
     {
         super();
-        this.mwReference = main;
         frame = new JFrame(windowTitle);
         frame.setSize(frameWidth, frameHeight);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -102,8 +102,6 @@ public class EditWindow
         createAndAddGUI();
         addGUIElements(frame.getContentPane());
         setEditingEntry(editable);
-        
-        frame.setVisible(true);
     }
     
     /**
@@ -203,7 +201,7 @@ public class EditWindow
         cards.add(documentCard, Quasar.entryTypeStrings[Quasar.DOCUMENT]);
         
         JPanel websiteCard = new JPanel();
-        JTextField urlTf = new JTextField();
+        urlTf = new JTextField();
         websiteCard.add(urlTf);
         cards.add(websiteCard, Quasar.entryTypeStrings[Quasar.WEBSITE]);
         
@@ -433,7 +431,11 @@ public class EditWindow
                 Document doc = (Document) this.localDataCopy;
                 docPathTf.setText(doc.getPath());
                 break;
-            case "w": typeSelector.setSelectedIndex(2); break;
+            case "w":
+                typeSelector.setSelectedIndex(2);
+                Website web = (Website) this.localDataCopy;
+                urlTf.setText(web.getUrl());
+                break;
             case "p": typeSelector.setSelectedIndex(3); break;
             case "c":
                 typeSelector.setSelectedIndex(4);
@@ -442,8 +444,6 @@ public class EditWindow
                 lastnameTf.setText(con.getLastName());
                 phoneNumberTf.setText(con.getPhoneNumber());
                 emailTf.setText(con.getEmail());
-                
-                System.out.println("viewing contact: " + con.toString());
                 break;
         }
     }
