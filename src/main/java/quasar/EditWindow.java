@@ -49,7 +49,6 @@ import javax.swing.text.MaskFormatter;
 
 public class EditWindow
 {
-    MainWindow mwReference;
     private JFrame frame;
     private String windowTitle = "Edit";
     private int frameWidth = 300;
@@ -81,7 +80,10 @@ public class EditWindow
     private JPanel cards;
     private JTextField docPathTf;
     
-    JTextField urlTf;
+    private JTextField urlTf;
+    
+    private JTextField picPathTf;
+    
     private JTextField firstnameTf;
     private JTextField lastnameTf;
     private JTextField phoneNumberTf;
@@ -206,7 +208,7 @@ public class EditWindow
         cards.add(websiteCard, Quasar.entryTypeStrings[Quasar.WEBSITE]);
         
         JPanel pictureCard = new JPanel();
-        JTextField picPathTf = new JTextField();
+        picPathTf = new JTextField();
         JTextField photographerTf = new JTextField();
         JTextField imageWidthTf = new JTextField();
         JTextField imageHeightTf = new JTextField();
@@ -246,9 +248,8 @@ public class EditWindow
                 {
                     editable = !editable; // toggle edit status
                     setEditingEntry(editable); // disable editing
-                    editButton.setEnabled(true); // enable clicking 'edit' again
-                    saveButton.setEnabled(false); // disable saving
                 }
+                clearFields();
                 hideFrame();
             }
         });
@@ -264,8 +265,6 @@ public class EditWindow
                 {
                     editable = !editable; // toggle edit status
                     setEditingEntry(editable); // disable editing
-                    editButton.setEnabled(true); // enable clicking 'edit' again
-                    saveButton.setEnabled(false); // disable saving
                     
                     updateDataValues(); // save changes
                     
@@ -283,12 +282,25 @@ public class EditWindow
                 {
                     editable = !editable; // toggle edit status
                     setEditingEntry(editable); // enable editing
-                    editButton.setEnabled(false); // disable clicking 'edit' again
-                    saveButton.setEnabled(true); // allow saving
                     frame.getContentPane().repaint(); // redraw the frame
                 }
             }
         });
+    }
+
+    private void clearFields()
+    {
+        frame.setTitle(windowTitle);
+        propertiesLabel.setText(windowHeading);
+        titleTextField.setText("");
+        descriptionTextField.setText("");
+        dateDisplay.setText("");
+        keywordsTextField.setText("");
+        
+        
+        // TODO clear entry specific data based on current type in typeSelector
+        
+        typeSelector.setSelectedIndex(Quasar.ALL);
     }
 
     /**
@@ -356,6 +368,9 @@ public class EditWindow
      */
     private void setEditingEntry(boolean enable)
     {
+        editButton.setEnabled(!editable); // update edit button
+        saveButton.setEnabled(editable); // update save button
+        
         titleTextField.setEditable(enable);
         descriptionTextField.setEditable(enable);
         dateDisplay.setEditable(enable);
@@ -382,7 +397,7 @@ public class EditWindow
             titleTextField.setText(newValue);
             frame.setTitle(newValue); // update window title
             this.localDataCopy.title = newValue;
-            this.mwReference.requestListDisplayUpdate(); // update the display list
+            Quasar.refreshEntryList();
         }
         
         newValue = descriptionTextField.getText();
@@ -399,7 +414,16 @@ public class EditWindow
         keywordsTextField.setText(newValue);
         this.localDataCopy.keywords = newValue;
         
-        // TODO node specific data
+        // TODO this will change once type is no longer a string...
+        switch(typeSelector.getSelectedIndex())
+        {
+            default:
+            case Quasar.ALL: this.localDataCopy.type = "a"; break;
+            case Quasar.DOCUMENT: this.localDataCopy.type = "d"; break;
+            case Quasar.WEBSITE: this.localDataCopy.type = "w"; break;
+            case Quasar.PICTURE: this.localDataCopy.type = "p"; break;
+            case Quasar.CONTACT: this.localDataCopy.type = "c"; break;
+        }
     }
     
     /**
@@ -417,33 +441,39 @@ public class EditWindow
         dateDisplay.setText(this.localDataCopy.getDate());
         keywordsTextField.setText(this.localDataCopy.getKeywords());
         
-        // TODO switch on type
+        // TODO type will change from string to int eventually...
         // display type specific info
-        //if(localDataCopy instanceof Picture)
-        //else if(localDataCopy instanceof Document)
-        // ...
         switch(this.localDataCopy.getType())
         {
             default:
-            case "a": typeSelector.setSelectedIndex(0); break;
+            case "a": typeSelector.setSelectedIndex(Quasar.ALL); break;
             case "d":
-                typeSelector.setSelectedIndex(1);
-                Document doc = (Document) this.localDataCopy;
-                docPathTf.setText(doc.getPath());
+                typeSelector.setSelectedIndex(Quasar.DOCUMENT);
+                if(this.localDataCopy instanceof Document)
+                {
+                    Document doc = (Document) this.localDataCopy;
+                    docPathTf.setText(doc.getPath());
+                }
                 break;
             case "w":
-                typeSelector.setSelectedIndex(2);
-                Website web = (Website) this.localDataCopy;
-                urlTf.setText(web.getUrl());
+                typeSelector.setSelectedIndex(Quasar.WEBSITE);
+                if(this.localDataCopy instanceof Website)
+                {
+                    Website web = (Website) this.localDataCopy;
+                    urlTf.setText(web.getUrl());
+                }
                 break;
-            case "p": typeSelector.setSelectedIndex(3); break;
+            case "p": typeSelector.setSelectedIndex(Quasar.PICTURE); break;
             case "c":
-                typeSelector.setSelectedIndex(4);
-                Contact con = (Contact) this.localDataCopy;
-                firstnameTf.setText(con.getFirstName());
-                lastnameTf.setText(con.getLastName());
-                phoneNumberTf.setText(con.getPhoneNumber());
-                emailTf.setText(con.getEmail());
+                typeSelector.setSelectedIndex(Quasar.CONTACT);
+                if(this.localDataCopy instanceof Contact)
+                {
+                    Contact con = (Contact) this.localDataCopy;
+                    firstnameTf.setText(con.getFirstName());
+                    lastnameTf.setText(con.getLastName());
+                    phoneNumberTf.setText(con.getPhoneNumber());
+                    emailTf.setText(con.getEmail());
+                }
                 break;
         }
     }
@@ -475,5 +505,40 @@ public class EditWindow
      */
     public boolean isAlive() {
         return frame.isShowing();
+    }
+
+    public Data populateNewEntry()
+    {
+        editable = true;
+        setEditingEntry(editable);
+        frame.setTitle("New");
+        showFrame();
+        this.localDataCopy = null;
+        // TODO this will change once type is no longer a string...
+        switch(typeSelector.getSelectedIndex())
+        {
+            default:
+            case Quasar.ALL:
+                this.localDataCopy = new Data();
+                this.localDataCopy.type = "a";
+                break;
+            case Quasar.DOCUMENT:
+                this.localDataCopy = new Document();
+                this.localDataCopy.type = "d";
+                break;
+            case Quasar.WEBSITE:
+                this.localDataCopy = new Website(urlTf.getText());
+                this.localDataCopy.type = "w";
+                break;
+            case Quasar.PICTURE:
+                this.localDataCopy = new Picture(picPathTf.getText());
+                this.localDataCopy.type = "p";
+                break;
+            case Quasar.CONTACT:
+                this.localDataCopy = new Contact();
+                this.localDataCopy.type = "c";
+                break;
+        }
+        return this.localDataCopy;
     }
 }
