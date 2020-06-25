@@ -210,6 +210,7 @@ public class MainWindow
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
             	// TODO activate the edit window with no Data object
+                Quasar.createNewEntry();
             }
         });
         newNodeBtn.setBounds(341, 77, 91, 23);
