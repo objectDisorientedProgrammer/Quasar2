@@ -105,7 +105,7 @@ public class EntryController
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
                 
-                createEntry(d);
+                addEntry(d);
                 break;
             case Quasar.WEBSITE: // web
                 d = new Website(tokens[6]);
@@ -118,7 +118,7 @@ public class EntryController
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
                 
-                createEntry(d);
+                addEntry(d);
                 break;
             case Quasar.PICTURE: // pic
                 d = new Picture(tokens[6]);
@@ -131,7 +131,7 @@ public class EntryController
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
                 
-                createEntry(d);
+                addEntry(d);
                 
                 break;
             case Quasar.CONTACT: // contact
@@ -145,7 +145,7 @@ public class EntryController
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
                 
-                createEntry(d);
+                addEntry(d);
                 break;
             default:
             	if(DEBUG_PRINT)
@@ -163,7 +163,14 @@ public class EntryController
         throw new UnsupportedOperationException();
     }
     
-    public void createEntry(Data d)
+    public Data createNewEntry()
+    {
+        Data d = new Data();
+        dataContainer.add(d);
+        return dataContainer.get(dataContainer.size() - 1);
+    }
+    
+    public void addEntry(Data d)
     {
         dataContainer.add(d);
     }

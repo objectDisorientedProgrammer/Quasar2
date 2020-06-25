@@ -43,12 +43,12 @@ public class Quasar
     public static final String[] entryTypeStrings = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
     
     private static EntryController controller;
+    private static MainWindow mainWindow;
     private static EditWindow editWindow;
     
     public static void main(String[] args)
     {
         Data entry = null;
-    	MainWindow mainWindow;
     	
     	controller = new EntryController(defaultFilepath);
     	mainWindow = new MainWindow(entry);
@@ -99,5 +99,21 @@ public class Quasar
         // TODO decode data by type and call a specific display method in editWindow
         editWindow.displayEntry(d);
         editWindow.showFrame();
+    }
+
+    public static Data createData()
+    {
+        return controller.createNewEntry();
+    }
+    
+    public static void refreshEntryList()
+    {
+        mainWindow.requestListDisplayUpdate();
+    }
+
+    public static void createNewEntry()
+    {
+        Data d = editWindow.populateNewEntry();
+        controller.addEntry(d);
     }
 }
