@@ -224,7 +224,6 @@ public class MainWindow
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                // thread this TODO issue #9
                 // Display selected entry in an edit window
                 Quasar.displayEntry(dataList.getSelectedValue());
             }

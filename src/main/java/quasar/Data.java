@@ -29,28 +29,28 @@ package quasar;
 public class Data
 {
     protected String title = null;
+    private static String defaultTitle = "no title";
     protected String description = null;
     protected String date = null;
     protected String keywords = null;
-    protected String type = "a";
-    //                                       a: all, c: contact, d: document, p: picture, w: website, u: unassigned
-    private final String[] validDataTypes = new String[]{ "a", "d", "w", "p", "c", "u" }; // TODO these could be char or int..
+    protected int type = Quasar.ALL;
+    private static int defaultType = Quasar.ALL;
     
     /**
      * Creates a data object with title set empty
      */
     public Data()
     {
-        this("", "", "", "", "a");
+        this(defaultTitle, "", "", "", defaultType);
     }
 
     /**
      * Create a data object with a type.
      * @param type - one character string
      */
-    public Data(String type)
+    public Data(int type)
     {
-        this("", "", "", "", type);
+        this(defaultTitle, "", "", "", type);
     }
 
     /**
@@ -61,7 +61,7 @@ public class Data
      * @param type - one character string
      */
     public Data(String title, String description, String date, String keywords,
-            String type) {
+            int type) {
         super();
         this.title = title;
         this.description = description;
@@ -103,7 +103,7 @@ public class Data
         this.keywords = keywords;
     }
     
-    public String getType() {
+    public int getType() {
         return type;
     }
     
@@ -111,16 +111,16 @@ public class Data
      * Case insensitive type setter.
      * @param type - a valid type of data
      */
-    public void setType(String type) {
+    public void setType(int type) {
         if(!isValidType(type))
             System.err.println("Error undefined type in Data.setType(): " + type);
         else
             this.type = type;
     }
     
-    private boolean isValidType(String str) {
-        for(String s : validDataTypes)
-            if(str.equalsIgnoreCase(s))
+    private boolean isValidType(int t) {
+        for(int i : Quasar.entryTypes)
+            if(i == t)
                 return true;
         return false;
     }
@@ -137,7 +137,7 @@ public class Data
         if(title != null && title.length() > 0)
             sb.append(title);
         else
-            sb.append("no title");
+            sb.append(defaultTitle);
         
         return sb.toString();
     }
