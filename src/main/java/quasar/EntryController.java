@@ -89,67 +89,69 @@ public class EntryController
         {
             String[] tokens = line.split("¶");
             Data d;
+            int type = Integer.parseInt(tokens[0]);
             
             // TODO this is a mess but works for now.
             // somehow initialize the data object and set the common attributes...
-            switch(Integer.parseInt(tokens[0]))
+            switch(type)
             {
             case Quasar.DOCUMENT: // doc
-                d = new Document(tokens[6]);
+                d = new Document(tokens[5]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
                 d.setDate(tokens[3]);
                 d.setKeywords(tokens[4]);
-                d.setType(tokens[5]);
+                d.setType(type);
                 
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
-                
+                ++documentCount;
                 addEntry(d);
                 break;
             case Quasar.WEBSITE: // web
-                d = new Website(tokens[6]);
+                d = new Website(tokens[5]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
                 d.setDate(tokens[3]);
                 d.setKeywords(tokens[4]);
-                d.setType(tokens[5]);
+                d.setType(type);
                 
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
-                
+                ++websiteCount;
                 addEntry(d);
                 break;
             case Quasar.PICTURE: // pic
-                d = new Picture(tokens[6]);
+                d = new Picture(tokens[5]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
                 d.setDate(tokens[3]);
                 d.setKeywords(tokens[4]);
-                d.setType(tokens[5]);
+                d.setType(type);
                 
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
-                
+                ++pictureCount;
                 addEntry(d);
                 
                 break;
             case Quasar.CONTACT: // contact
-                d = new Contact(tokens[6], tokens[7], tokens[8], tokens[9]);
+                d = new Contact(tokens[5], tokens[6], tokens[7], tokens[8]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
                 d.setDate(tokens[3]);
                 d.setKeywords(tokens[4]);
-                d.setType(tokens[5]);
+                d.setType(type);
                 
                 if(DEBUG_PRINT)
                     System.out.println("Adding " + d.toString());
-                
+                ++contactCount;
                 addEntry(d);
                 break;
             default:
             	if(DEBUG_PRINT)
                     System.out.println("Unknown: " + line);
+            	++totalCount;
                 break;
             }
         }
@@ -234,8 +236,6 @@ public class EntryController
     
     public boolean search(String searchString, int filter, Vector<Data> results)
     {
-        String lookup = Quasar.entryTypeStrings[filter].toLowerCase().substring(0, 1) ;
-        
         for(Data data : dataContainer)
         {
             if (filter == Quasar.ALL)
@@ -252,8 +252,7 @@ public class EntryController
             else
             {
                 //search by type, then by title
-//                if (data.getType() == filter) FIXME type needs to become an int
-                if (lookup.equalsIgnoreCase(data.getType()))
+                if (filter == data.getType())
                 {
                     // if blank search, gather all entries of the type
                     if (searchString.equalsIgnoreCase(""))

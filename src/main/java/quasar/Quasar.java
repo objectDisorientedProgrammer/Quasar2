@@ -39,7 +39,7 @@ public class Quasar
     public static final int WEBSITE = 2;
     public static final int PICTURE = 3;
     public static final int CONTACT = 4;
-    
+    public static final int[] entryTypes = new int[] { ALL, DOCUMENT, WEBSITE, PICTURE, CONTACT };
     public static final String[] entryTypeStrings = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
     
     private static EntryController controller;

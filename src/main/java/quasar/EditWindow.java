@@ -414,16 +414,7 @@ public class EditWindow
         keywordsTextField.setText(newValue);
         this.localDataCopy.keywords = newValue;
         
-        // TODO this will change once type is no longer a string...
-        switch(typeSelector.getSelectedIndex())
-        {
-            default:
-            case Quasar.ALL: this.localDataCopy.type = "a"; break;
-            case Quasar.DOCUMENT: this.localDataCopy.type = "d"; break;
-            case Quasar.WEBSITE: this.localDataCopy.type = "w"; break;
-            case Quasar.PICTURE: this.localDataCopy.type = "p"; break;
-            case Quasar.CONTACT: this.localDataCopy.type = "c"; break;
-        }
+        this.localDataCopy.setType(typeSelector.getSelectedIndex());
     }
     
     /**
@@ -441,31 +432,37 @@ public class EditWindow
         dateDisplay.setText(this.localDataCopy.getDate());
         keywordsTextField.setText(this.localDataCopy.getKeywords());
         
-        // TODO type will change from string to int eventually...
         // display type specific info
+        typeSelector.setSelectedIndex(this.localDataCopy.getType());
         switch(this.localDataCopy.getType())
         {
             default:
-            case "a": typeSelector.setSelectedIndex(Quasar.ALL); break;
-            case "d":
-                typeSelector.setSelectedIndex(Quasar.DOCUMENT);
+            case Quasar.ALL:
+                // type selector already updated
+                break;
+            case Quasar.DOCUMENT:
                 if(this.localDataCopy instanceof Document)
                 {
                     Document doc = (Document) this.localDataCopy;
                     docPathTf.setText(doc.getPath());
                 }
                 break;
-            case "w":
-                typeSelector.setSelectedIndex(Quasar.WEBSITE);
+            case Quasar.WEBSITE:
                 if(this.localDataCopy instanceof Website)
                 {
                     Website web = (Website) this.localDataCopy;
                     urlTf.setText(web.getUrl());
                 }
                 break;
-            case "p": typeSelector.setSelectedIndex(Quasar.PICTURE); break;
-            case "c":
-                typeSelector.setSelectedIndex(Quasar.CONTACT);
+            case Quasar.PICTURE:
+                // TODO populate UI components
+                if(this.localDataCopy instanceof Picture)
+                {
+                    Picture pic = (Picture) this.localDataCopy;
+                    picPathTf.setText(pic.getPath());
+                }
+                break;
+            case Quasar.CONTACT:
                 if(this.localDataCopy instanceof Contact)
                 {
                     Contact con = (Contact) this.localDataCopy;
@@ -509,36 +506,34 @@ public class EditWindow
 
     public Data populateNewEntry()
     {
+        int type = typeSelector.getSelectedIndex();
         editable = true;
         setEditingEntry(editable);
+        clearFields();
         frame.setTitle("New");
         showFrame();
         this.localDataCopy = null;
-        // TODO this will change once type is no longer a string...
-        switch(typeSelector.getSelectedIndex())
+//        // TODO this will change once type is no longer a string...
+        switch(type)
         {
             default:
             case Quasar.ALL:
                 this.localDataCopy = new Data();
-                this.localDataCopy.type = "a";
                 break;
             case Quasar.DOCUMENT:
                 this.localDataCopy = new Document();
-                this.localDataCopy.type = "d";
                 break;
             case Quasar.WEBSITE:
                 this.localDataCopy = new Website(urlTf.getText());
-                this.localDataCopy.type = "w";
                 break;
             case Quasar.PICTURE:
                 this.localDataCopy = new Picture(picPathTf.getText());
-                this.localDataCopy.type = "p";
                 break;
             case Quasar.CONTACT:
                 this.localDataCopy = new Contact();
-                this.localDataCopy.type = "c";
                 break;
         }
+        this.localDataCopy.type = type;
         return this.localDataCopy;
     }
 }
