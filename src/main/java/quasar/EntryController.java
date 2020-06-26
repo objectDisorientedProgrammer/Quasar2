@@ -95,6 +95,14 @@ public class EntryController
             // somehow initialize the data object and set the common attributes...
             switch(type)
             {
+            default:
+            case Quasar.ALL:
+                d = new Data(tokens[1], tokens[2], tokens[3], tokens[4], type);
+                
+                if(DEBUG_PRINT)
+                    System.out.println("Adding " + d.toString());
+            	++totalCount;
+                break;
             case Quasar.DOCUMENT: // doc
                 d = new Document(tokens[5]);
                 d.setTitle(tokens[1]);
@@ -148,11 +156,7 @@ public class EntryController
                 ++contactCount;
                 addEntry(d);
                 break;
-            default:
-            	if(DEBUG_PRINT)
-                    System.out.println("Unknown: " + line);
-            	++totalCount;
-                break;
+            
             }
         }
     }

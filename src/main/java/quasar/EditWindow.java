@@ -513,7 +513,7 @@ public class EditWindow
         frame.setTitle("New");
         showFrame();
         this.localDataCopy = null;
-//        // TODO this will change once type is no longer a string...
+        // TODO this will change once type is no longer a string...
         switch(type)
         {
             default:
@@ -537,3 +537,4 @@ public class EditWindow
         return this.localDataCopy;
     }
 }
+
