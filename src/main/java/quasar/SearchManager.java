@@ -41,15 +41,6 @@ public class SearchManager
 
     /**
      * 
-     * @param Node
-     */
-    public void setCurrent(Node c)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 
      * @param String
      */
     public void identifySearchCriteria(String s)
