@@ -39,7 +39,7 @@ public class Picture extends Data
      */
     public Picture(String path)
     {
-        this(path, "", -1, -1);
+        this(path, " ", -1, -1);
     }
     
     /**
@@ -60,7 +60,7 @@ public class Picture extends Data
      */
     public Picture(String path, int w, int h)
     {
-        this(path, "", w, h);
+        this(path, " ", w, h);
     }
     
     /**
@@ -111,5 +111,12 @@ public class Picture extends Data
     public void setHeight(int h) {
         if(h >= 0)
             this.imageHeight = h;
+    }
+    
+    @Override
+    public String toSaveString()
+    {
+        return super.toSaveString() + Quasar.sep +
+                path + Quasar.sep + photographer + Quasar.sep + imageWidth + Quasar.sep + imageHeight;  
     }
 }

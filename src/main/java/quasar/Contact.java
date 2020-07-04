@@ -39,7 +39,7 @@ public class Contact extends Data
      */
     public Contact()
     {
-        this("", "", "", "");
+        this(" ", " ", " ", " ");
     }
     
     /**
@@ -48,7 +48,7 @@ public class Contact extends Data
      */
     public Contact(String fname)
     {
-        this(fname, "", "", "");
+        this(fname, " ", " ", " ");
     }
     
     /**
@@ -58,7 +58,7 @@ public class Contact extends Data
      */
     public Contact(String fname, String lname)
     {
-        this(fname, lname, "", "");
+        this(fname, lname, " ", " ");
     }
     
     /**
@@ -69,7 +69,7 @@ public class Contact extends Data
      */
     public Contact(String fname, String lname, String phoneNum)
     {
-        this(fname, lname, phoneNum, "");
+        this(fname, lname, phoneNum, " ");
     }
 
     /**
@@ -119,5 +119,12 @@ public class Contact extends Data
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    @Override
+    public String toSaveString()
+    {
+        return super.toSaveString() + Quasar.sep + 
+                firstName + Quasar.sep + lastName + Quasar.sep + phoneNumber + Quasar.sep + email;
     }
 }

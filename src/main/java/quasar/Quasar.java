@@ -33,6 +33,7 @@ public class Quasar
 {
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
+    public static final String sep = "¶";
     
     public static final int ALL = 0;
     public static final int DOCUMENT = 1;
@@ -86,7 +87,14 @@ public class Quasar
 
     public static void saveToFile()
     {
-        controller.saveToFile();        
+        try
+        {
+            controller.saveToFile();
+        } catch(IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
     }
 
     public static Data getEntry(Data selectedValue)
