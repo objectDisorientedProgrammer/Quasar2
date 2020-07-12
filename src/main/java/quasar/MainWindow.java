@@ -392,20 +392,49 @@ public class MainWindow
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                // TODO save to file
-                // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/4
                 // File -> Save
+                // use the existing database
                 try
                 {
-                    Quasar.saveToFile();
+                    Quasar.saveToFile(databaseFilePath);
                 } catch(UnsupportedOperationException ex)
                 {
-                    JOptionPane.showMessageDialog(null, "Save is not available yet.", "Save unsupported",
+                    JOptionPane.showMessageDialog(null, "Save failed.", "Save error!",
                             JOptionPane.ERROR_MESSAGE, null);
                 }
             }
         });
         fileMenu.add(saveMenuItem);
+        
+        JMenuItem saveAs = new JMenuItem("Save as...");
+        saveAs.setMnemonic(KeyEvent.VK_A);
+        saveAs.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                // open a directory navigation window
+                JFileChooser fileWindow = new JFileChooser();
+                int returnVal = fileWindow.showOpenDialog(mainPanel);
+                String savePath = databaseFilePath;
+                // if the user selects a file, get the path
+                if (returnVal == JFileChooser.APPROVE_OPTION)
+                {
+                    savePath = fileWindow.getSelectedFile().getAbsolutePath();
+                }
+                
+                try
+                {
+                    Quasar.saveToFile(savePath);
+                } catch(UnsupportedOperationException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Save as failed.", "Save as error!",
+                            JOptionPane.ERROR_MESSAGE, null);
+                }
+            }
+        });
+        fileMenu.add(saveAs);
+        
         
         JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(imagePath+"exit.png")));
         quitMenuItem.setMnemonic(KeyEvent.VK_Q);

@@ -36,6 +36,7 @@ import org.apache.commons.io.FileUtils;
 public class EntryController
 {
 	private boolean DEBUG_PRINT = false;
+	private String encoding = "UTF-8";
     private int documentCount;
     private int websiteCount;
     private int pictureCount;
@@ -83,7 +84,7 @@ public class EntryController
      * @throws IOException
      */
     public void loadFile(String filename) throws IOException {
-        String file = FileUtils.readFileToString(new File(filename));//FileUtils.readFileToString(new File(filename), "UTF-8");
+        String file = FileUtils.readFileToString(new File(filename));//FileUtils.readFileToString(new File(filename), encoding);
         String[] fileLines = file.split("\n");
         
         for(String line : fileLines)
@@ -167,7 +168,7 @@ public class EntryController
      * @param String
      * @throws IOException 
      */
-    public void saveToFile() throws IOException
+    public void saveToFile(String filePath) throws IOException
     {
         String saveFile = "/home/doug/test.txt";
         StringBuilder b = new StringBuilder(dataContainer.size() * 4); // * 4 for the four default fields
@@ -205,7 +206,7 @@ public class EntryController
         
         System.out.println(b.toString());
         
-        FileUtils.writeStringToFile(new File(saveFile), b.toString(), "UTF-8", false);
+        FileUtils.writeStringToFile(new File(saveFile), b.toString(), encoding, false);
     }
     
     public Data createNewEntry()

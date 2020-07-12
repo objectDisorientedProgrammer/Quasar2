@@ -85,11 +85,11 @@ public class Quasar
         controller.loadFile(databaseFilePath);
     }
 
-    public static void saveToFile()
+    public static void saveToFile(String databaseFilePath)
     {
         try
         {
-            controller.saveToFile();
+            controller.saveToFile(databaseFilePath);
         } catch(IOException e)
         {
             // TODO Auto-generated catch block
