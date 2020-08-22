@@ -84,6 +84,7 @@ public class Document extends Data {
         this.pageNumber = pageNumber;
         this.author = author;
         this.publishDate = publish;
+        this.type = Quasar.DOCUMENT;
     }
 
     public String getPath() {
