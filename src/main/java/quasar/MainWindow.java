@@ -46,7 +46,7 @@ import javax.swing.*;
 public class MainWindow
 {
     private final String author = "Douglas Chidester";
-    private final String version = " v0.7.2";
+    private final String version = " v0.7.4";
     private final String windowTitle = "Quasar";
     private final int frameWidth = 450;
     private final int frameHeight = 400;

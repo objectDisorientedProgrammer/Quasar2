@@ -36,12 +36,13 @@ public class Quasar
     public static final String sep = "¶";
     
     public static final int ALL = 0;
-    public static final int DOCUMENT = 1;
-    public static final int WEBSITE = 2;
+    public static final int CONTACT = 1;
+    public static final int DOCUMENT = 2;
     public static final int PICTURE = 3;
-    public static final int CONTACT = 4;
-    public static final int[] entryTypes = new int[] { ALL, DOCUMENT, WEBSITE, PICTURE, CONTACT };
-    public static final String[] entryTypeStrings = new String[]{ "All", "Document", "Website", "Picture", "Contact" };
+    public static final int WEBSITE = 4;
+    
+    public static final int[] entryTypes = new int[] { ALL, CONTACT, DOCUMENT, PICTURE, WEBSITE };
+    public static final String[] entryTypeStrings = new String[]{ "All", "Contact", "Document", "Picture", "Website" };
     
     private static EntryController controller;
     private static MainWindow mainWindow;
