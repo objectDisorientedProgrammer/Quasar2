@@ -52,7 +52,7 @@ public class Quasar
         Data entry = null;
     	
     	controller = new EntryController(defaultFilepath);
-    	mainWindow = new MainWindow(entry);
+    	mainWindow = new MainWindow(entry, defaultFilepath);
     	
     	editWindow = new EditWindow();
     	
@@ -109,11 +109,6 @@ public class Quasar
         editWindow.showFrame();
     }
 
-    public static Data createData()
-    {
-        return controller.createNewEntry();
-    }
-    
     public static void refreshEntryList()
     {
         mainWindow.requestListDisplayUpdate();

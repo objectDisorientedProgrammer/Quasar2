@@ -28,7 +28,7 @@ package quasar;
 
 public class Website extends Data
 {
-    private String url;
+    private String url = " ";
 
     public Website(String url) {
         super();

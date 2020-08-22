@@ -35,8 +35,8 @@ import org.apache.commons.io.FileUtils;
 
 public class EntryController
 {
-	private boolean DEBUG_PRINT = false;
-	private String encoding = "UTF-8";
+    private boolean DEBUG_PRINT = false;
+    private String encoding = "UTF-8";
     private int documentCount;
     private int websiteCount;
     private int pictureCount;
