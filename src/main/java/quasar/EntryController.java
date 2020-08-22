@@ -62,7 +62,12 @@ public class EntryController
                 loadFile(this.dataFile);
             } catch (IOException e) {
                 // TODO write to log file instead of console. This message can happen if 1) first time use or 2) save file deleted
-                System.err.println("EntryController(String) - " + e.getMessage() + ".");
+                System.err.println("EntryController():: " + e.getMessage() + ".");
+            }
+            catch (ArrayIndexOutOfBoundsException oob)
+            {
+                // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/54
+                System.err.println("EntryController():: Save file corrupt - creating new file...");
             }
         }
         
@@ -159,7 +164,6 @@ public class EntryController
                 ++contactCount;
                 addEntry(d);
                 break;
-            
             }
         }
     }

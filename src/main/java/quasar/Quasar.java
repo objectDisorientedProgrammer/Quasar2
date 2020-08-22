@@ -54,7 +54,7 @@ public class Quasar
     	controller = new EntryController(defaultFilepath);
     	mainWindow = new MainWindow(entry, defaultFilepath);
     	
-    	editWindow = new EditWindow();
+    	editWindow = new EditWindow(entry);
     	
 //        javax.swing.SwingUtilities.invokeLater(new Runnable()
 //        {
@@ -116,7 +116,11 @@ public class Quasar
 
     public static void createNewEntry()
     {
-        Data d = editWindow.populateNewEntry();
+        editWindow.triggerNewEntry();
+    }
+    
+    public static void addNewEntry(Data d)
+    {
         controller.addEntry(d);
     }
 }

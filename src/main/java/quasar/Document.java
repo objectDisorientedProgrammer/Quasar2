@@ -37,7 +37,7 @@ public class Document extends Data {
      */
     public Document()
     {
-        this(" ", " ", " ", " ");
+        this("", "", "", "");
     }
 
     /**
@@ -46,7 +46,7 @@ public class Document extends Data {
      */
     public Document(String path)
     {
-        this(path, " ", " ", " ");
+        this(path, "", "", "");
     }
     
     /**
@@ -56,7 +56,7 @@ public class Document extends Data {
      */
     public Document(String path, String pageNumber)
     {
-        this(path, pageNumber, " ", " ");
+        this(path, pageNumber, "", "");
     }
     
     /**
@@ -67,7 +67,7 @@ public class Document extends Data {
      */
     public Document(String path, String pageNumber, String author)
     {
-        this(path, pageNumber, author, " ");
+        this(path, pageNumber, author, "");
     }
     
     /**

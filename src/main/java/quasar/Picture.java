@@ -39,7 +39,7 @@ public class Picture extends Data
      */
     public Picture(String path)
     {
-        this(path, " ", -1, -1);
+        this(path, "", -1, -1);
     }
     
     /**
@@ -60,7 +60,7 @@ public class Picture extends Data
      */
     public Picture(String path, int w, int h)
     {
-        this(path, " ", w, h);
+        this(path, "", w, h);
     }
     
     /**

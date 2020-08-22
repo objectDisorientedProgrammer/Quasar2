@@ -28,11 +28,11 @@ package quasar;
 
 public class Data
 {
-    protected String title = " ";
+    protected String title = "";
     private static String defaultTitle = "no title";
-    protected String description = " ";
-    protected String date = " ";
-    protected String keywords = " ";
+    protected String description = "";
+    protected String date = "";
+    protected String keywords = "";
     protected int type = Quasar.ALL;
     private static int defaultType = Quasar.ALL;
     
@@ -41,7 +41,7 @@ public class Data
      */
     public Data()
     {
-        this(defaultTitle, " ", " ", " ", defaultType);
+        this(defaultTitle, "", "", "", defaultType);
     }
 
     /**
@@ -50,7 +50,7 @@ public class Data
      */
     public Data(int type)
     {
-        this(defaultTitle, " ", " ", " ", type);
+        this(defaultTitle, "", "", "", type);
     }
 
     /**

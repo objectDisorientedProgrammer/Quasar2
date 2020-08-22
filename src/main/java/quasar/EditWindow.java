@@ -74,7 +74,7 @@ public class EditWindow
     
     private JButton cancelButton;
     
-    private Data localDataCopy = null;
+    private Data dataReference = null;
     
     JComboBox<String> typeSelector;
     private JPanel cards;
@@ -90,7 +90,7 @@ public class EditWindow
     private JTextField emailTf;
     
     
-    public EditWindow()
+    public EditWindow(Data entry)
     {
         super();
         frame = new JFrame(windowTitle);
@@ -98,6 +98,8 @@ public class EditWindow
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
+        
+        dataReference = entry;
         
         cards = new JPanel(new CardLayout());
         
@@ -386,35 +388,59 @@ public class EditWindow
      */
     private void updateDataValues()
     {
+        if(frame.getTitle() == "New" && this.dataReference == null)
+        {
+            switch(typeSelector.getSelectedIndex())
+            {
+                default:
+                case Quasar.ALL:
+                    this.dataReference = new Data();
+                    break;
+                case Quasar.DOCUMENT:
+                    this.dataReference = new Document();
+                    break;
+                case Quasar.WEBSITE:
+                    this.dataReference = new Website(urlTf.getText());
+                    break;
+                case Quasar.PICTURE:
+                    this.dataReference = new Picture(picPathTf.getText());
+                    break;
+                case Quasar.CONTACT:
+                    this.dataReference = new Contact();
+                    break;
+            }
+            Quasar.addNewEntry(dataReference);
+        }
+        
         // could change this to see if text has changed before trying to set new,
         // but it might be more efficient to just overwrite.
         String newValue = titleTextField.getText();
         
         // TODO check for valid 'newValue' in all cases
-        if(newValue.compareTo(this.localDataCopy.title) != 0) // if title changed
+        if(newValue.compareTo(this.dataReference.title) != 0) // if title changed
         {
             propertiesLabel.setText(windowHeading + " " + newValue);
             titleTextField.setText(newValue);
             frame.setTitle(newValue); // update window title
-            this.localDataCopy.title = newValue;
+            this.dataReference.title = newValue;
             Quasar.refreshEntryList();
         }
         
         newValue = descriptionTextField.getText();
         descriptionTextField.setText(newValue);
-        this.localDataCopy.description = newValue;
+        this.dataReference.description = newValue;
         
         newValue = dateDisplay.getText();
         //if(verifyDate(newValue))
         dateDisplay.setText(newValue);
-        this.localDataCopy.date = newValue;
+        this.dataReference.date = newValue;
         //else -> create error message window
         
         newValue = keywordsTextField.getText();
         keywordsTextField.setText(newValue);
-        this.localDataCopy.keywords = newValue;
+        this.dataReference.keywords = newValue;
         
-        this.localDataCopy.setType(typeSelector.getSelectedIndex());
+        this.dataReference.setType(typeSelector.getSelectedIndex());
     }
     
     /**
@@ -423,49 +449,49 @@ public class EditWindow
      */
     public void displayEntry(Data d)
     {
-        this.localDataCopy = d;
-        frame.setTitle(this.localDataCopy.getTitle()); // update window title
-        propertiesLabel.setText(windowHeading + " " + this.localDataCopy.getTitle()); // update header label
+        this.dataReference = d;
+        frame.setTitle(this.dataReference.getTitle()); // update window title
+        propertiesLabel.setText(windowHeading + " " + this.dataReference.getTitle()); // update header label
         // fill in fields
-        titleTextField.setText(this.localDataCopy.getTitle());
-        descriptionTextField.setText(this.localDataCopy.getDescription());
-        dateDisplay.setText(this.localDataCopy.getDate());
-        keywordsTextField.setText(this.localDataCopy.getKeywords());
+        titleTextField.setText(this.dataReference.getTitle());
+        descriptionTextField.setText(this.dataReference.getDescription());
+        dateDisplay.setText(this.dataReference.getDate());
+        keywordsTextField.setText(this.dataReference.getKeywords());
         
         // display type specific info
-        typeSelector.setSelectedIndex(this.localDataCopy.getType());
-        switch(this.localDataCopy.getType())
+        typeSelector.setSelectedIndex(this.dataReference.getType());
+        switch(this.dataReference.getType())
         {
             default:
             case Quasar.ALL:
                 // type selector already updated
                 break;
             case Quasar.DOCUMENT:
-                if(this.localDataCopy instanceof Document)
+                if(this.dataReference instanceof Document)
                 {
-                    Document doc = (Document) this.localDataCopy;
+                    Document doc = (Document) this.dataReference;
                     docPathTf.setText(doc.getPath());
                 }
                 break;
             case Quasar.WEBSITE:
-                if(this.localDataCopy instanceof Website)
+                if(this.dataReference instanceof Website)
                 {
-                    Website web = (Website) this.localDataCopy;
+                    Website web = (Website) this.dataReference;
                     urlTf.setText(web.getUrl());
                 }
                 break;
             case Quasar.PICTURE:
                 // TODO populate UI components
-                if(this.localDataCopy instanceof Picture)
+                if(this.dataReference instanceof Picture)
                 {
-                    Picture pic = (Picture) this.localDataCopy;
+                    Picture pic = (Picture) this.dataReference;
                     picPathTf.setText(pic.getPath());
                 }
                 break;
             case Quasar.CONTACT:
-                if(this.localDataCopy instanceof Contact)
+                if(this.dataReference instanceof Contact)
                 {
-                    Contact con = (Contact) this.localDataCopy;
+                    Contact con = (Contact) this.dataReference;
                     firstnameTf.setText(con.getFirstName());
                     lastnameTf.setText(con.getLastName());
                     phoneNumberTf.setText(con.getPhoneNumber());
@@ -504,37 +530,13 @@ public class EditWindow
         return frame.isShowing();
     }
 
-    public Data populateNewEntry()
+    public void triggerNewEntry()
     {
-        int type = typeSelector.getSelectedIndex();
         editable = true;
         setEditingEntry(editable);
         clearFields();
         frame.setTitle("New");
+        this.dataReference = null;
         showFrame();
-        this.localDataCopy = null;
-        // TODO this will change once type is no longer a string...
-        switch(type)
-        {
-            default:
-            case Quasar.ALL:
-                this.localDataCopy = new Data();
-                break;
-            case Quasar.DOCUMENT:
-                this.localDataCopy = new Document();
-                break;
-            case Quasar.WEBSITE:
-                this.localDataCopy = new Website(urlTf.getText());
-                break;
-            case Quasar.PICTURE:
-                this.localDataCopy = new Picture(picPathTf.getText());
-                break;
-            case Quasar.CONTACT:
-                this.localDataCopy = new Contact();
-                break;
-        }
-        this.localDataCopy.type = type;
-        return this.localDataCopy;
     }
 }
-
