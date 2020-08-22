@@ -34,7 +34,7 @@ public class Picture extends Data
     private int imageHeight = 0;
     
     /**
-     * Width and height set to -1 to indicate absence.
+     * Width and height set to 0 to indicate absence.
      * @param path - location of file
      */
     public Picture(String path)
@@ -43,7 +43,7 @@ public class Picture extends Data
     }
     
     /**
-     * Width and height set to -1 to indicate absence.
+     * Width and height set to 0 to indicate absence.
      * @param path - location of file
      * @param photographer
      */
@@ -75,8 +75,9 @@ public class Picture extends Data
         super();
         this.path = path;
         this.photographer = photographer;
-        this.imageWidth = w;
-        this.imageHeight = h;
+        setWidth(w);
+        setHeight(h);
+        this.type = Quasar.PICTURE;
     }
 
     public String getPath() {
