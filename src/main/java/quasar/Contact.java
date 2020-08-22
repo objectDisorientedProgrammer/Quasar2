@@ -87,6 +87,7 @@ public class Contact extends Data
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.type = Quasar.CONTACT;
     }
 
     public String getFirstName() {
