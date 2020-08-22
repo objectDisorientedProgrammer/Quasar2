@@ -30,8 +30,8 @@ public class Picture extends Data
 {
     private String path;
     private String photographer;
-    private int imageWidth;
-    private int imageHeight;
+    private int imageWidth = 0;
+    private int imageHeight = 0;
     
     /**
      * Width and height set to -1 to indicate absence.
@@ -39,7 +39,7 @@ public class Picture extends Data
      */
     public Picture(String path)
     {
-        this(path, "", -1, -1);
+        this(path, "", 0, 0);
     }
     
     /**
@@ -49,7 +49,7 @@ public class Picture extends Data
      */
     public Picture(String path, String photographer)
     {
-        this(path, photographer, -1, -1);
+        this(path, photographer, 0, 0);
     }
     
     /**
@@ -100,7 +100,7 @@ public class Picture extends Data
     }
 
     public void setWidth(int w) {
-        if(w >= 0)
+        if(w > 0)
             this.imageWidth = w;
     }
 
@@ -109,7 +109,7 @@ public class Picture extends Data
     }
 
     public void setHeight(int h) {
-        if(h >= 0)
+        if(h > 0)
             this.imageHeight = h;
     }
     
