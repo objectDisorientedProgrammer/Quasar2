@@ -8,6 +8,11 @@ compileJava {
     options.compilerArgs += ["-Xlint:deprecation"]
 }
 
+//plugins {
+//    id 'java'
+//    id 'eclipse' // to generate Eclipse project files
+//}
+
 repositories {
     mavenCentral()
 }
@@ -20,6 +25,18 @@ dependencies {
     // remote dependency of apache commons-io
     deps group:'commons-io', name:'commons-io',version:'2.6'
     configurations.compile.extendsFrom(configurations.deps)
+    
+    testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.6.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.6.2")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+	}
 }
 
 jar {
