@@ -519,13 +519,6 @@ public class EditWindow
     }
 
     /**
-     * Delete the instance of the frame.
-     */
-    public void remove() {
-        frame.dispose();
-    }
-    
-    /**
      * Determine if the frame on the screen.
      * @return {@code true} if the frame is showing on the screen, otherwise {@code false}.
      */
@@ -541,5 +534,13 @@ public class EditWindow
         frame.setTitle("New");
         this.dataReference = null;
         showFrame();
+    }
+
+    /**
+     * Destroy the window.
+     */
+    public void quit()
+    {
+        frame.dispose();
     }
 }

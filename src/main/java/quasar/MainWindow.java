@@ -46,7 +46,6 @@ import javax.swing.*;
 public class MainWindow
 {
     private final String author = "Douglas Chidester";
-    private final String version = " v0.7.4";
     private final String windowTitle = "Quasar";
     private final int frameWidth = 450;
     private final int frameHeight = 400;
@@ -271,7 +270,7 @@ public class MainWindow
         JLabel applicationInfo = new JLabel("Created by " + author);
         applicationInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JLabel versionInfo = new JLabel("Version " + version);
+        JLabel versionInfo = new JLabel("Version " + Quasar.applicationVersion);
         versionInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         JLabel licensesText = new JLabel(licenseMenuText + ":");
@@ -443,10 +442,7 @@ public class MainWindow
         {
             public void actionPerformed(ActionEvent e)
             {
-                // TODO save to file then quit
-                // save data and close program if user clicks: File -> Quit
-                //writeToFile(filenameTextfield.getText());
-                mainWindow.dispose();
+                Quasar.quitApplication();
             }
         });
         fileMenu.addSeparator();
@@ -483,5 +479,16 @@ public class MainWindow
             }
         });
         helpMenu.add(aboutMenuItem);
+    }
+
+    /**
+     * Save all data to a file and destroy the window.
+     */
+    public void quit()
+    {
+        // Save and quit
+        // TODO save
+        //writeToFile(filenameTextfield.getText());
+        mainWindow.dispose();
     }
 }
