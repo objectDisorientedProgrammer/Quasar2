@@ -28,6 +28,7 @@ package quasar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class DataTests
@@ -51,45 +52,49 @@ class DataTests
         
         Data d2 = new Data(Quasar.CONTACT);
         assertNotNull(d2);
-        assertEquals(Quasar.CONTACT, d.getType());
+        assertEquals(Quasar.CONTACT, d2.getType());
         
         Data d3 = new Data(Quasar.DOCUMENT);
         assertNotNull(d3);
-        assertEquals(Quasar.DOCUMENT, d.getType());
+        assertEquals(Quasar.DOCUMENT, d3.getType());
         
         Data d4 = new Data(Quasar.PICTURE);
         assertNotNull(d4);
-        assertEquals(Quasar.PICTURE, d.getType());
+        assertEquals(Quasar.PICTURE, d4.getType());
         
         Data d5 = new Data(Quasar.WEBSITE);
         assertNotNull(d5);
-        assertEquals(Quasar.WEBSITE, d.getType());
+        assertEquals(Quasar.WEBSITE, d5.getType());
     }
 
     @Test
     void testDataStringStringStringStringInt()
     {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    void testGetKeywords()
-    {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    void testSetKeywords()
-    {
-        fail("Not yet implemented");
+        Data d = new Data("title", "desc", "2020-08-22", "dummy testing blah", Quasar.DOCUMENT);
+        assertNotNull(d);
+        assertEquals("title", d.getTitle());
+        assertEquals("desc", d.getDescription());
+        assertEquals("2020-08-22", d.getDate());
+        
+        assertEquals("dummy testing blah", d.getKeywords());
+        assertEquals("dummy", d.getKeywords().split(" ")[0]);
+        assertEquals("testing", d.getKeywords().split(" ")[1]);
+        assertEquals("blah", d.getKeywords().split(" ")[2]);
+        
+        assertEquals(Quasar.DOCUMENT, d.getType());
     }
 
     @Test
     void testToString()
     {
-        fail("Not yet implemented");
+        Data d = new Data();
+        assertEquals("no title", d.toString());
+        
+        d.setTitle("a different title");
+        assertEquals("a different title", d.toString());
     }
 
+    @Disabled
     @Test
     void testToSaveString()
     {

@@ -28,6 +28,7 @@ package quasar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -50,6 +51,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#loadFile(java.lang.String)}.
      */
+    @Disabled
     @Test
     void testLoadFile()
     {
@@ -59,6 +61,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#saveToFile(java.lang.String)}.
      */
+    @Disabled
     @Test
     void testSaveToFile()
     {
@@ -68,6 +71,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#addEntry(quasar.Data)}.
      */
+    @Disabled
     @Test
     void testAddEntry()
     {
@@ -87,6 +91,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#getAllData()}.
      */
+    @Disabled
     @Test
     void testGetAllData()
     {
@@ -96,6 +101,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#getAllDataTitles()}.
      */
+    @Disabled
     @Test
     void testGetAllDataTitles()
     {
@@ -105,6 +111,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#getEntry(java.lang.String)}.
      */
+    @Disabled
     @Test
     void testGetEntryString()
     {
@@ -114,6 +121,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#getEntry(int)}.
      */
+    @Disabled
     @Test
     void testGetEntryInt()
     {
@@ -123,6 +131,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#search(java.lang.String, int, java.util.Vector)}.
      */
+    @Disabled
     @Test
     void testSearch()
     {
@@ -132,6 +141,7 @@ class EntryControllerTests
     /**
      * Test method for {@link quasar.EntryController#getEntry(quasar.Data)}.
      */
+    @Disabled
     @Test
     void testGetEntryData()
     {
