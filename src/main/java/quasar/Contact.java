@@ -120,4 +120,11 @@ public class Contact extends Data
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    @Override
+    public String toSaveString()
+    {
+        return super.toSaveString() + Quasar.sep + 
+                firstName + Quasar.sep + lastName + Quasar.sep + phoneNumber + Quasar.sep + email;
+    }
 }

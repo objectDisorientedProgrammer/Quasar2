@@ -117,4 +117,11 @@ public class Document extends Data {
     public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
     }
+    
+    @Override
+    public String toSaveString()
+    {
+        return super.toSaveString() + Quasar.sep +
+                path + Quasar.sep + pageNumber + Quasar.sep + author + Quasar.sep + publishDate; 
+    }
 }

@@ -46,7 +46,7 @@ import javax.swing.*;
 public class MainWindow
 {
     private final String author = "Douglas Chidester";
-    private final String version = " v0.7.0";
+    private final String version = " v0.7.2";
     private final String windowTitle = "Quasar";
     private final int frameWidth = 450;
     private final int frameHeight = 400;
@@ -84,11 +84,11 @@ public class MainWindow
 
     private ActionListener searchListener;
 
-    public MainWindow(Data model)
+    public MainWindow(Data model, String filepath)
     {
         super();
         this.entry = model;
-        
+        databaseFilePath = filepath;
         initializeMainWindowAndPanel();
         
         createAboutPanel();
@@ -205,7 +205,7 @@ public class MainWindow
         });
 
         newNodeBtn = new JButton("New");
-        newNodeBtn.setToolTipText("Create a new entry.");
+        newNodeBtn.setToolTipText("Create a new entry");
         newNodeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
@@ -216,7 +216,7 @@ public class MainWindow
         newNodeBtn.setBounds(341, 77, 91, 23);
 
         editBtn = new JButton("View");
-        editBtn.setToolTipText("View or edit the selected entry.");
+        editBtn.setToolTipText("View or edit the selected entry");
         editBtn.setBounds(341, 111, 91, 23);
         editBtn.setEnabled(false);
         editBtn.addActionListener(new ActionListener()
@@ -392,20 +392,49 @@ public class MainWindow
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                // TODO save to file
-                // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/4
                 // File -> Save
+                // use the existing database
                 try
                 {
-                    Quasar.saveToFile();
+                    Quasar.saveToFile(databaseFilePath);
                 } catch(UnsupportedOperationException ex)
                 {
-                    JOptionPane.showMessageDialog(null, "Save is not available yet.", "Save unsupported",
+                    JOptionPane.showMessageDialog(null, "Save failed.", "Save error!",
                             JOptionPane.ERROR_MESSAGE, null);
                 }
             }
         });
         fileMenu.add(saveMenuItem);
+        
+        JMenuItem saveAs = new JMenuItem("Save as...");
+        saveAs.setMnemonic(KeyEvent.VK_A);
+        saveAs.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                // open a directory navigation window
+                JFileChooser fileWindow = new JFileChooser();
+                int returnVal = fileWindow.showOpenDialog(mainPanel);
+                String savePath = databaseFilePath;
+                // if the user selects a file, get the path
+                if (returnVal == JFileChooser.APPROVE_OPTION)
+                {
+                    savePath = fileWindow.getSelectedFile().getAbsolutePath();
+                }
+                
+                try
+                {
+                    Quasar.saveToFile(savePath);
+                } catch(UnsupportedOperationException ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Save as failed.", "Save as error!",
+                            JOptionPane.ERROR_MESSAGE, null);
+                }
+            }
+        });
+        fileMenu.add(saveAs);
+        
         
         JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(imagePath+"exit.png")));
         quitMenuItem.setMnemonic(KeyEvent.VK_Q);

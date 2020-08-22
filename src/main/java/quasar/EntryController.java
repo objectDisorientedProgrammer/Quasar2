@@ -35,7 +35,8 @@ import org.apache.commons.io.FileUtils;
 
 public class EntryController
 {
-	private boolean DEBUG_PRINT = false;
+    private boolean DEBUG_PRINT = false;
+    private String encoding = "UTF-8";
     private int documentCount;
     private int websiteCount;
     private int pictureCount;
@@ -44,10 +45,11 @@ public class EntryController
     private String dataFile;
     private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
     private String[] items;
+    
 
     /**
      * Creates a EntryController with a specified load/save file.
-     * @param dataFile - filename for the loading/saving
+     * @param dataFile - filename for loading/saving
      */
     public EntryController(String dataFile) {
         super();
@@ -59,7 +61,13 @@ public class EntryController
             try {
                 loadFile(this.dataFile);
             } catch (IOException e) {
-                System.err.println("EntryController(String) - " + e.getMessage());
+                // TODO write to log file instead of console. This message can happen if 1) first time use or 2) save file deleted
+                System.err.println("EntryController():: " + e.getMessage() + ".");
+            }
+            catch (ArrayIndexOutOfBoundsException oob)
+            {
+                // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/54
+                System.err.println("EntryController():: Save file corrupt - creating new file...");
             }
         }
         
@@ -82,12 +90,12 @@ public class EntryController
      * @throws IOException
      */
     public void loadFile(String filename) throws IOException {
-        String file = FileUtils.readFileToString(new File(filename));//FileUtils.readFileToString(new File(filename), "UTF-8");
+        String file = FileUtils.readFileToString(new File(filename));//FileUtils.readFileToString(new File(filename), encoding);
         String[] fileLines = file.split("\n");
         
         for(String line : fileLines)
         {
-            String[] tokens = line.split("¶");
+            String[] tokens = line.split(Quasar.sep);
             Data d;
             int type = Integer.parseInt(tokens[0]);
             
@@ -104,7 +112,7 @@ public class EntryController
             	++totalCount;
                 break;
             case Quasar.DOCUMENT: // doc
-                d = new Document(tokens[5]);
+                d = new Document(tokens[5], tokens[6], tokens[7], tokens[8]);
                 d.setTitle(tokens[1]);
                 d.setDescription(tokens[2]);
                 d.setDate(tokens[3]);
@@ -156,24 +164,54 @@ public class EntryController
                 ++contactCount;
                 addEntry(d);
                 break;
-            
             }
         }
     }
 
     /**
      * 
-     * @param String
+     * @param filePath - path to the save file.
+     * @throws IOException 
      */
-    public void saveToFile() {
-        throw new UnsupportedOperationException();
-    }
-    
-    public Data createNewEntry()
+    public void saveToFile(String filePath) throws IOException
     {
-        Data d = new Data();
-        dataContainer.add(d);
-        return dataContainer.get(dataContainer.size() - 1);
+        StringBuilder b = new StringBuilder(dataContainer.size() * 4); // * 4 for the four default fields
+        
+        for(Data d : dataContainer)
+        {
+            if(d instanceof Contact)
+            {
+                Contact c = (Contact) d;
+                b.append(c.toSaveString());
+            }
+            else if(d instanceof Document)
+            {
+                Document doc = (Document) d;
+                b.append(doc.toSaveString());
+            }
+            else if(d instanceof Picture)
+            {
+                Picture p = (Picture) d;
+                b.append(p.toSaveString());
+            }
+            else if(d instanceof Website)
+            {
+                Website w = (Website) d;
+                b.append(w.toSaveString());
+            }
+            else
+            {
+                // regular Data
+                b.append(d.toSaveString());
+            }
+            
+            b.append('\n');
+        }
+        
+        if(DEBUG_PRINT)
+            System.out.println("Saving: '" + b.toString() + "' to file...");
+        
+        FileUtils.writeStringToFile(new File(filePath), b.toString(), encoding, false);
     }
     
     public void addEntry(Data d)

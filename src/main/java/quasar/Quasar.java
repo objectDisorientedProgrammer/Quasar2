@@ -33,6 +33,7 @@ public class Quasar
 {
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
+    public static final String sep = "¶";
     
     public static final int ALL = 0;
     public static final int DOCUMENT = 1;
@@ -51,9 +52,9 @@ public class Quasar
         Data entry = null;
     	
     	controller = new EntryController(defaultFilepath);
-    	mainWindow = new MainWindow(entry);
+    	mainWindow = new MainWindow(entry, defaultFilepath);
     	
-    	editWindow = new EditWindow();
+    	editWindow = new EditWindow(entry);
     	
 //        javax.swing.SwingUtilities.invokeLater(new Runnable()
 //        {
@@ -84,9 +85,16 @@ public class Quasar
         controller.loadFile(databaseFilePath);
     }
 
-    public static void saveToFile()
+    public static void saveToFile(String databaseFilePath)
     {
-        controller.saveToFile();        
+        try
+        {
+            controller.saveToFile(databaseFilePath);
+        } catch(IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
     }
 
     public static Data getEntry(Data selectedValue)
@@ -101,11 +109,6 @@ public class Quasar
         editWindow.showFrame();
     }
 
-    public static Data createData()
-    {
-        return controller.createNewEntry();
-    }
-    
     public static void refreshEntryList()
     {
         mainWindow.requestListDisplayUpdate();
@@ -113,7 +116,11 @@ public class Quasar
 
     public static void createNewEntry()
     {
-        Data d = editWindow.populateNewEntry();
+        editWindow.triggerNewEntry();
+    }
+    
+    public static void addNewEntry(Data d)
+    {
         controller.addEntry(d);
     }
 }

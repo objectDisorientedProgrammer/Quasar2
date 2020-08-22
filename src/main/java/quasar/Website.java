@@ -28,7 +28,7 @@ package quasar;
 
 public class Website extends Data
 {
-    private String url;
+    private String url = "";
 
     public Website(String url) {
         super();
@@ -41,5 +41,11 @@ public class Website extends Data
 
     public void setUrl(String url) {
         this.url = url;
+    }
+    
+    @Override
+    public String toSaveString()
+    {
+        return super.toSaveString() + Quasar.sep + url;
     }
 }

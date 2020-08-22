@@ -112,4 +112,11 @@ public class Picture extends Data
         if(h >= 0)
             this.imageHeight = h;
     }
+    
+    @Override
+    public String toSaveString()
+    {
+        return super.toSaveString() + Quasar.sep +
+                path + Quasar.sep + photographer + Quasar.sep + imageWidth + Quasar.sep + imageHeight;  
+    }
 }

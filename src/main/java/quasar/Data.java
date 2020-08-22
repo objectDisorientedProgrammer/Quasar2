@@ -28,11 +28,11 @@ package quasar;
 
 public class Data
 {
-    protected String title = null;
+    protected String title = "";
     private static String defaultTitle = "no title";
-    protected String description = null;
-    protected String date = null;
-    protected String keywords = null;
+    protected String description = "";
+    protected String date = "";
+    protected String keywords = "";
     protected int type = Quasar.ALL;
     private static int defaultType = Quasar.ALL;
     
@@ -140,5 +140,14 @@ public class Data
             sb.append(defaultTitle);
         
         return sb.toString();
+    }
+    
+    /**
+     * 
+     * @return String that can be written to a save file.
+     */
+    public String toSaveString()
+    {
+        return type + Quasar.sep + title + Quasar.sep + description + Quasar.sep + date + Quasar.sep + keywords;
     }
 }
