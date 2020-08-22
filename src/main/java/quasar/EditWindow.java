@@ -449,6 +449,9 @@ public class EditWindow
      */
     public void displayEntry(Data d)
     {
+        if(d == null)
+            return;
+        
         this.dataReference = d;
         frame.setTitle(this.dataReference.getTitle()); // update window title
         propertiesLabel.setText(windowHeading + " " + this.dataReference.getTitle()); // update header label

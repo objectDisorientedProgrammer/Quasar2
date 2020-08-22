@@ -193,7 +193,8 @@ public class MainWindow
                 // display list item on double click
                 if(clickcount >= 2 && previouslySelected == dataList.getSelectedValue())
                 {
-                    Quasar.displayEntry(dataList.getSelectedValue());
+                    if(dataList.getSelectedValue() != null)
+                        Quasar.displayEntry(dataList.getSelectedValue());
                     
                     // reset double click logic
                     clickcount = 0;
