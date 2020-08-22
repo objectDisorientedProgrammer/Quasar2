@@ -49,7 +49,7 @@ public class EntryController
 
     /**
      * Creates a EntryController with a specified load/save file.
-     * @param dataFile - filename for the loading/saving
+     * @param dataFile - filename for loading/saving
      */
     public EntryController(String dataFile) {
         super();
@@ -61,7 +61,8 @@ public class EntryController
             try {
                 loadFile(this.dataFile);
             } catch (IOException e) {
-                System.err.println("EntryController(String) - " + e.getMessage());
+                // TODO write to log file instead of console. This message can happen if 1) first time use or 2) save file deleted
+                System.err.println("EntryController(String) - " + e.getMessage() + ".");
             }
         }
         
@@ -165,12 +166,11 @@ public class EntryController
 
     /**
      * 
-     * @param String
+     * @param filePath - path to the save file.
      * @throws IOException 
      */
     public void saveToFile(String filePath) throws IOException
     {
-        String saveFile = "/home/doug/test.txt";
         StringBuilder b = new StringBuilder(dataContainer.size() * 4); // * 4 for the four default fields
         
         for(Data d : dataContainer)
@@ -204,16 +204,10 @@ public class EntryController
             b.append('\n');
         }
         
-        System.out.println(b.toString());
+        if(DEBUG_PRINT)
+            System.out.println("Saving: '" + b.toString() + "' to file...");
         
-        FileUtils.writeStringToFile(new File(saveFile), b.toString(), encoding, false);
-    }
-    
-    public Data createNewEntry()
-    {
-        Data d = new Data();
-        dataContainer.add(d);
-        return dataContainer.get(dataContainer.size() - 1);
+        FileUtils.writeStringToFile(new File(filePath), b.toString(), encoding, false);
     }
     
     public void addEntry(Data d)

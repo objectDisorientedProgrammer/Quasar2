@@ -46,7 +46,7 @@ import javax.swing.*;
 public class MainWindow
 {
     private final String author = "Douglas Chidester";
-    private final String version = " v0.7.0";
+    private final String version = " v0.7.2";
     private final String windowTitle = "Quasar";
     private final int frameWidth = 450;
     private final int frameHeight = 400;
@@ -84,11 +84,11 @@ public class MainWindow
 
     private ActionListener searchListener;
 
-    public MainWindow(Data model)
+    public MainWindow(Data model, String filepath)
     {
         super();
         this.entry = model;
-        
+        databaseFilePath = filepath;
         initializeMainWindowAndPanel();
         
         createAboutPanel();
@@ -205,7 +205,7 @@ public class MainWindow
         });
 
         newNodeBtn = new JButton("New");
-        newNodeBtn.setToolTipText("Create a new entry.");
+        newNodeBtn.setToolTipText("Create a new entry");
         newNodeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
@@ -216,7 +216,7 @@ public class MainWindow
         newNodeBtn.setBounds(341, 77, 91, 23);
 
         editBtn = new JButton("View");
-        editBtn.setToolTipText("View or edit the selected entry.");
+        editBtn.setToolTipText("View or edit the selected entry");
         editBtn.setBounds(341, 111, 91, 23);
         editBtn.setEnabled(false);
         editBtn.addActionListener(new ActionListener()
