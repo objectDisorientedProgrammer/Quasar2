@@ -31,7 +31,7 @@ import java.util.Vector;
 
 public class Quasar
 {
-    public static final String applicationVersion = " v0.7.5";
+    public static final String applicationVersion = " v0.7.6";
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;

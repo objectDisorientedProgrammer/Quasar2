@@ -67,12 +67,8 @@ public class EditWindow
     private JLabel keywordsLabel;
     private JTextField keywordsTextField;
     
-    private JButton saveButton;
-    
     private JButton editButton;
     private boolean editable = false;
-    
-    private JButton cancelButton;
     
     private Data dataReference = null;
     
@@ -172,12 +168,10 @@ public class EditWindow
         // add changing UI panel (cards)
         pane.add(cards);
         
-        // create container for buttons
+        // create bottom container
         JPanel endPane = new JPanel();
         
-        endPane.add(cancelButton);
         endPane.add(editButton);
-        endPane.add(saveButton);
         
         pane.add(endPane);
     }
@@ -242,50 +236,11 @@ public class EditWindow
             }
         });
         
-        cancelButton = new JButton("Close");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if(editable == true)
-                {
-                    editable = !editable; // toggle edit status
-                    setEditingEntry(editable); // disable editing
-                }
-                clearFields();
-                hideFrame();
-            }
-        });
-        
-        // TODO consider combining the edit and save buttons as they are mutually exclusive.
-        // Combining would reduce the clutter within the edit window.
-        saveButton = new JButton("Save");
-        saveButton.setEnabled(false); // disable by default until user wants to edit
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(editable == true)
-                {
-                    editable = !editable; // toggle edit status
-                    setEditingEntry(editable); // disable editing
-                    
-                    updateDataValues(); // save changes
-                    
-                    frame.getContentPane().repaint(); // redraw the frame
-                }
-            }
-        });
-        // TODO consider combining the edit and save buttons as they are mutually exclusive.
-        // Combining would reduce the clutter within the edit window.
         editButton = new JButton("Edit");
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(editable == false)
-                {
-                    editable = !editable; // toggle edit status
-                    setEditingEntry(editable); // enable editing
-                    frame.getContentPane().repaint(); // redraw the frame
-                }
+                toggleEditButton(!editable);
             }
         });
     }
@@ -298,11 +253,9 @@ public class EditWindow
         descriptionTextField.setText("");
         dateDisplay.setText("");
         keywordsTextField.setText("");
-        
+        typeSelector.setSelectedIndex(Quasar.ALL);
         
         // TODO clear entry specific data based on current type in typeSelector
-        
-        typeSelector.setSelectedIndex(Quasar.ALL);
     }
 
     /**
@@ -370,9 +323,6 @@ public class EditWindow
      */
     private void setEditingEntry(boolean enable)
     {
-        editButton.setEnabled(!editable); // update edit button
-        saveButton.setEnabled(editable); // update save button
-        
         titleTextField.setEditable(enable);
         descriptionTextField.setEditable(enable);
         dateDisplay.setEditable(enable);
@@ -515,6 +465,7 @@ public class EditWindow
      * Hide the window.
      */
     public void hideFrame() {
+        clearFields();
         frame.setVisible(false);
     }
 
@@ -528,8 +479,7 @@ public class EditWindow
 
     public void triggerNewEntry()
     {
-        editable = true;
-        setEditingEntry(editable);
+        toggleEditButton(true);
         clearFields();
         frame.setTitle("New");
         this.dataReference = null;
@@ -542,5 +492,26 @@ public class EditWindow
     public void quit()
     {
         frame.dispose();
+    }
+    
+    /**
+     * Toggle the edit/save button.
+     * @param b - {@code true} to enable editing, {@code false} to disable editing.
+     */
+    private void toggleEditButton(boolean b)
+    {
+        editable = b;
+        if(editable == true)
+        {
+            setEditingEntry(editable);
+            editButton.setText("Save");
+        }
+        else
+        {
+            setEditingEntry(editable);
+            updateDataValues(); // save changes
+            hideFrame();
+            editButton.setText("Edit");
+        }
     }
 }
