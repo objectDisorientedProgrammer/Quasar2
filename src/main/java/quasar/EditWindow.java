@@ -42,6 +42,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -241,6 +242,9 @@ public class EditWindow
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleEditButton(!editable);
+                
+                if(false == editable)
+                    updateDataValues(); // save changes
             }
         });
     }
@@ -399,10 +403,14 @@ public class EditWindow
      */
     public void displayEntry(Data d)
     {
-        if(d == null)
-            return;
-        
         this.dataReference = d;
+        if(d == null)
+        {
+            JOptionPane.showMessageDialog(null, "There was an error displaying this entry.", "Data Error",  JOptionPane.ERROR_MESSAGE, null);
+            return;
+        }
+        toggleEditButton(false);
+        
         frame.setTitle(this.dataReference.getTitle()); // update window title
         propertiesLabel.setText(windowHeading + " " + this.dataReference.getTitle()); // update header label
         // fill in fields
@@ -452,6 +460,7 @@ public class EditWindow
                 }
                 break;
         }
+        showFrame();
     }
 
     /**
@@ -509,8 +518,6 @@ public class EditWindow
         else
         {
             setEditingEntry(editable);
-            updateDataValues(); // save changes
-            hideFrame();
             editButton.setText("Edit");
         }
     }

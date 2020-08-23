@@ -31,11 +31,11 @@ import java.util.Vector;
 
 public class Quasar
 {
-    public static final String applicationVersion = " v0.7.6";
+    public static final String applicationVersion = " v0.7.11";
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
-    public static final String sep = "\u00A6"; // ¶, but use unicode for cross-platform compatibility
+    public static final String sep = "\u00B6"; // ¶, but use unicode for cross-platform compatibility
     
     public static final int ALL = 0;
     public static final int CONTACT = 1;
@@ -109,7 +109,6 @@ public class Quasar
     {
         // TODO decode data by type and call a specific display method in editWindow
         editWindow.displayEntry(d);
-        editWindow.showFrame();
     }
 
     public static void refreshEntryList()
