@@ -95,81 +95,52 @@ public class EntryController
      * @throws IOException
      */
     public void loadFile(String filename) throws IOException {
-        String file = FileUtils.readFileToString(new File(filename));//FileUtils.readFileToString(new File(filename), encoding);
+        String file = FileUtils.readFileToString(new File(filename), encoding);
         String[] fileLines = file.split("\n");
         
         for(String line : fileLines)
         {
-            String[] tokens = line.split(Quasar.sep);
+            // Use custom parser to ensure all fields are collected and morph into array
+            ArrayList<String> fields = Parser.splitLine(line, Quasar.sep);
+            String[] tokens = new String[fields.size()];
+            tokens = fields.toArray(tokens);
             Data d;
             int type = Integer.parseInt(tokens[0]);
             
-            // TODO this is a mess but works for now.
-            // somehow initialize the data object and set the common attributes...
+            // create a new object based on type and populate its fields
             switch(type)
             {
             default:
             case Quasar.ALL:
                 d = new Data(tokens[1], tokens[2], tokens[3], tokens[4], type);
-                
-                if(DEBUG_PRINT)
-                    System.out.println("Adding " + d.toString());
             	++totalCount;
                 break;
-            case Quasar.DOCUMENT: // doc
+            case Quasar.DOCUMENT:
                 d = new Document(tokens[5], tokens[6], tokens[7], tokens[8]);
-                d.setTitle(tokens[1]);
-                d.setDescription(tokens[2]);
-                d.setDate(tokens[3]);
-                d.setKeywords(tokens[4]);
-                d.setType(type);
-                
-                if(DEBUG_PRINT)
-                    System.out.println("Adding " + d.toString());
                 ++documentCount;
-                addEntry(d);
                 break;
-            case Quasar.WEBSITE: // web
+            case Quasar.WEBSITE:
                 d = new Website(tokens[5]);
-                d.setTitle(tokens[1]);
-                d.setDescription(tokens[2]);
-                d.setDate(tokens[3]);
-                d.setKeywords(tokens[4]);
-                d.setType(type);
-                
-                if(DEBUG_PRINT)
-                    System.out.println("Adding " + d.toString());
                 ++websiteCount;
-                addEntry(d);
                 break;
-            case Quasar.PICTURE: // pic
+            case Quasar.PICTURE:
                 d = new Picture(tokens[5]);
-                d.setTitle(tokens[1]);
-                d.setDescription(tokens[2]);
-                d.setDate(tokens[3]);
-                d.setKeywords(tokens[4]);
-                d.setType(type);
-                
-                if(DEBUG_PRINT)
-                    System.out.println("Adding " + d.toString());
                 ++pictureCount;
-                addEntry(d);
-                
                 break;
-            case Quasar.CONTACT: // contact
+            case Quasar.CONTACT:
                 d = new Contact(tokens[5], tokens[6], tokens[7], tokens[8]);
-                d.setTitle(tokens[1]);
-                d.setDescription(tokens[2]);
-                d.setDate(tokens[3]);
-                d.setKeywords(tokens[4]);
-                d.setType(type);
-                
-                if(DEBUG_PRINT)
-                    System.out.println("Adding " + d.toString());
                 ++contactCount;
-                addEntry(d);
                 break;
             }
+            // populate common fields (duplicate work for the Quasar.ALL case, but meh)
+            d.setTitle(tokens[1]);
+            d.setDescription(tokens[2]);
+            d.setDate(tokens[3]);
+            d.setKeywords(tokens[4]);
+            addEntry(d);
+            
+            if(DEBUG_PRINT)
+                System.out.println("Adding " + d.toString());
         }
     }
 
