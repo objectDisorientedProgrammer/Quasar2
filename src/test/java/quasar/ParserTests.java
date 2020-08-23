@@ -45,41 +45,43 @@ class ParserTests
     @Test
     void testSplitLine()
     {
+        String sep = Quasar.sep;
+        
         // Quasar.ALL type with no data
-        String lineToParse = "0¶¶¶    -  -  ¶";
+        String lineToParse = "0"+sep+sep+sep+"    -  -  "+sep;
         ArrayList<String> answers = new ArrayList<String>();
         answers.add("0");
         answers.add("");
         answers.add("");
         answers.add("    -  -  ");
         answers.add("");
-        ArrayList<String> list = Parser.splitLine(lineToParse, Quasar.sep);
+        ArrayList<String> list = Parser.splitLine(lineToParse, sep);
         assertEquals(answers, list);
         
         // Quasar.ALL type
-         lineToParse = "0¶TEST¶¶¶key word, and, something";
+         lineToParse = "0"+sep+"TEST"+sep+sep+sep+"key word, and, something";
         answers = new ArrayList<String>();
         answers.add("0");
         answers.add("TEST");
         answers.add("");
         answers.add("");
         answers.add("key word, and, something");
-        list = Parser.splitLine(lineToParse, Quasar.sep);
+        list = Parser.splitLine(lineToParse, sep);
         assertEquals(answers, list);
         
         // Quasar.ALL type with full data
-        lineToParse = "0¶title¶desc¶2020-08-22¶key wor dz";
+        lineToParse = "0"+sep+"title"+sep+"desc"+sep+"2020-08-22"+sep+"key wor dz";
         answers = new ArrayList<String>();
         answers.add("0");
         answers.add("title");
         answers.add("desc");
         answers.add("2020-08-22");
         answers.add("key wor dz");
-        list = Parser.splitLine(lineToParse, Quasar.sep);
+        list = Parser.splitLine(lineToParse, sep);
         assertEquals(answers, list);
         
         // Quasar.CONTACT with no data
-        lineToParse = "4¶¶¶¶¶¶¶¶";
+        lineToParse = "4"+sep+sep+sep+sep+sep+sep+sep+sep;
         answers = new ArrayList<String>();
         answers.add("4");
         answers.add("");
@@ -90,11 +92,12 @@ class ParserTests
         answers.add("");
         answers.add("");
         answers.add("");
-        list = Parser.splitLine(lineToParse, Quasar.sep);
+        list = Parser.splitLine(lineToParse, sep);
         assertEquals(answers, list);
         
         // Quasar.CONTACT with full data
-        lineToParse = "4¶Test cont¶decr¶1400-02-13¶kwrd, another,again¶Mr. Van Hass¶GuttenBergz¶888-555-1234¶Test9@Test10.com";
+        lineToParse = "4"+sep+"Test cont"+sep+"decr"+sep+"1400-02-13"+sep+"kwrd, another,again"+sep+
+                "Mr. Van Hass"+sep+"GuttenBergz"+sep+"888-555-1234"+sep+"Test9@Test10.com";
         answers = new ArrayList<String>();
         answers.add("4");
         answers.add("Test cont");
@@ -105,7 +108,7 @@ class ParserTests
         answers.add("GuttenBergz");
         answers.add("888-555-1234");
         answers.add("Test9@Test10.com");
-        list = Parser.splitLine(lineToParse, Quasar.sep);
+        list = Parser.splitLine(lineToParse, sep);
         assertEquals(answers, list);
     }
 
