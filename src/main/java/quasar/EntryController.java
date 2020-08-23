@@ -56,7 +56,7 @@ public class EntryController
         this.dataFile = dataFile;
         initializeVariables();
         
-        if(this.dataFile != null || !this.dataFile.isEmpty())
+        if(this.dataFile != null && !this.dataFile.isEmpty())
         {
             try {
                 loadFile(this.dataFile);
@@ -82,6 +82,11 @@ public class EntryController
         this.pictureCount = 0;
         this.contactCount = 0;
         this.totalCount = 0;
+    }
+    
+    public int getTotalEntryCount()
+    {
+        return this.totalCount;
     }
 
     /**
