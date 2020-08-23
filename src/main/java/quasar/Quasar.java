@@ -35,7 +35,7 @@ public class Quasar
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
-    public static final String sep = "¦";
+    public static final String sep = "\u00A6";
     
     public static final int ALL = 0;
     public static final int CONTACT = 1;
