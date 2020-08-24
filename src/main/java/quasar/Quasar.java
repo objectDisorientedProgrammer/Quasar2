@@ -25,6 +25,7 @@
 
 package quasar;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
@@ -45,6 +46,8 @@ public class Quasar
     
     public static final int[] entryTypes = new int[] { ALL, CONTACT, DOCUMENT, PICTURE, WEBSITE };
     public static final String[] entryTypeStrings = new String[]{ "All", "Contact", "Document", "Picture", "Website" };
+    
+    public static final Font defaultLabelFont = new Font("Tahoma", Font.BOLD, 12);
     
     private static EntryController controller;
     private static MainWindow mainWindow;
