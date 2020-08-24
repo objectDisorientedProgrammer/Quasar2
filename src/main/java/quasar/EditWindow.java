@@ -75,7 +75,7 @@ public class EditWindow
     
     JComboBox<String> typeSelector;
     private JPanel cards;
-    private JTextField docPathTf;
+    private DocumentDisplay docDisplay;
     
     private JTextField urlTf;
     
@@ -188,16 +188,8 @@ public class EditWindow
         cards.add(allCard, Quasar.entryTypeStrings[Quasar.ALL]);
         // TODO add content for entries of type "all"?
         
-        JPanel documentCard = new JPanel();
-        docPathTf = new JTextField();
-        JTextField pageNumTf = new JTextField();
-        JTextField authorTf = new JTextField();
-        JTextField publishDateTf = new JTextField();
-        documentCard.add(docPathTf);
-        documentCard.add(pageNumTf);
-        documentCard.add(authorTf);
-        documentCard.add(publishDateTf);
-        cards.add(documentCard, Quasar.entryTypeStrings[Quasar.DOCUMENT]);
+        docDisplay = new DocumentDisplay();
+        cards.add(docDisplay, Quasar.entryTypeStrings[Quasar.DOCUMENT]);
         
         JPanel websiteCard = new JPanel();
         urlTf = new JTextField();
@@ -267,7 +259,7 @@ public class EditWindow
      */
     private void initializeCommonUi()
     {
-        Font defaultLabelFont = new Font("Tahoma", Font.PLAIN, 12);
+        Font defaultLabelFont = Quasar.defaultLabelFont;
         
         propertiesLabel = new JLabel(windowHeading);
         propertiesLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -335,6 +327,7 @@ public class EditWindow
         typeSelector.setEnabled(enable); // show the correct card depending on the data type
         
         // TODO node specific data
+        docDisplay.setEditable(enable);
     }
     
     /**
@@ -395,6 +388,12 @@ public class EditWindow
         this.dataReference.keywords = newValue;
         
         this.dataReference.setType(typeSelector.getSelectedIndex());
+        
+        if(this.dataReference instanceof Document)
+        {
+            Document d = (Document) this.dataReference;
+            docDisplay.updateDocument(d);
+        }
     }
     
     /**
@@ -431,7 +430,7 @@ public class EditWindow
                 if(this.dataReference instanceof Document)
                 {
                     Document doc = (Document) this.dataReference;
-                    docPathTf.setText(doc.getPath());
+                    docDisplay.displayDocument(doc);
                 }
                 break;
             case Quasar.WEBSITE:

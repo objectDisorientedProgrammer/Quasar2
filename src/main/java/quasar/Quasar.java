@@ -26,13 +26,14 @@
 package quasar;
 
 import java.awt.Font;
+//import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
 public class Quasar
 {
-    public static final String applicationVersion = " v0.7.11";
+    public static final String applicationVersion = " v0.7.12";
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
@@ -47,7 +48,7 @@ public class Quasar
     public static final int[] entryTypes = new int[] { ALL, CONTACT, DOCUMENT, PICTURE, WEBSITE };
     public static final String[] entryTypeStrings = new String[]{ "All", "Contact", "Document", "Picture", "Website" };
     
-    public static final Font defaultLabelFont = new Font("Tahoma", Font.BOLD, 12);
+    public static final Font defaultLabelFont = new Font("SansSerif", Font.BOLD, 12);
     
     private static EntryController controller;
     private static MainWindow mainWindow;
@@ -69,6 +70,9 @@ public class Quasar
 //            	
 //            }
 //        });
+    	
+//    	for(Font f : GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
+//    	    System.out.println(f.getFontName());
     }
     
     public static boolean search(String searchString, int filter, Vector<Data> results)

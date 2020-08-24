@@ -28,6 +28,9 @@ package quasar;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -40,68 +43,60 @@ public class GenericDisplay extends JPanel
 {
     private final int columns = 2;
     private Font defaultLabelFont = Quasar.defaultLabelFont;
+    private HashMap<JLabel, JTextField> rows;
     
-    private JLabel[] labels;
-    private JTextField[] textfields;
-    
-    public GenericDisplay(String[] labelText)
+    public GenericDisplay(HashMap<String, String> data)
     {
-        int rows = labelText.length;
-        this.setLayout(new GridLayout(rows, columns, 2, 2));
+        this.setLayout(new GridLayout(data.size(), columns, 2, 2));
         
-        labels = new JLabel[rows];
-        textfields = new JTextField[rows];
+        rows = new HashMap<JLabel, JTextField>(data.size());
         
-        for(int i = 0; i < rows; ++i)
+        JLabel label;
+        JTextField tf;
+        
+        // create a {label : textfield} pair for each {key : value} in data
+        for(Map.Entry<String, String> e : data.entrySet())
         {
-            labels[i] = new JLabel(labelText[i]);
-            labels[i].setFont(defaultLabelFont);
-            textfields[i] = new JTextField(10);
-            
-            this.add(labels[i]);
-            this.add(textfields[i]);
+            label = new JLabel(e.getKey());
+            label.setFont(defaultLabelFont);
+            tf = new JTextField(e.getValue());
+            rows.put(label, tf);
+            this.add(label);
+            this.add(tf);
         }
     }
     
-    public void setTextByRow(int row, String text)
-    {
-        if(row < textfields.length)
-            textfields[row].setText(text);
-        else
-            throw new IndexOutOfBoundsException("Row " + row + " is out of bounds!");
-    }
-    
-    public void setTextByName(String labelName, String text)
-    {
-        // find label and set text
-        for(int i = 0; i < labels.length; ++i)
-            if(labelName == labels[i].getText())
-                textfields[i].setText(text);
-    }
-
-    public String getTextByRow(int row)
-    {
-        if(row < textfields.length)
-            return textfields[row].getText();
-        else
-            throw new IndexOutOfBoundsException("Row " + row + " is out of bounds!");
-    }
-    
-    public String getTextByName(String labelName)
-    {
-        // find label and set text
-        for(int i = 0; i < labels.length; ++i)
-            if(labelName == labels[i].getText())
-                return textfields[i].getText();
-        
-        return null;
-    }
-
     public void setEditable(boolean editable)
     {
-        for(JTextField t : textfields)
+        for(JTextField tf : rows.values())
+            tf.setEditable(editable);
+    }
+
+    /**
+     * Populate data in the text fields.
+     * @param data
+     */
+    public void writeTo(HashMap<String, String> data)
+    {
+        for(Map.Entry<JLabel, JTextField> e : rows.entrySet())
         {
-            t.setEditable(editable);
+            // set the textfield value based on the new data's value which is looked up using the label's string
+            // textfield.setText( data[label.getText()] )
+            e.getValue().setText(data.get(e.getKey().getText()));
+        }
+    }
+    
+    /**
+     * Read data from the text fields.
+     * @param data
+     */
+    public void readFrom(HashMap<String, String> data)
+    {
+        for(Map.Entry<JLabel, JTextField> e : rows.entrySet())
+        {
+            // set the value based on the textfield's value which is looked up using the label's string
+            // data[label.getText()] = textfield.getText()
+            data.put(e.getKey().getText(), e.getValue().getText());
         }
     }
 }
