@@ -28,8 +28,6 @@ package quasar;
 
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.TextField;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
