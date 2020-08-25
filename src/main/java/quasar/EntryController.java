@@ -45,7 +45,6 @@ public class EntryController
     private String dataFile;
     private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
     private String[] items;
-    
 
     /**
      * Creates a EntryController with a specified load/save file.
@@ -66,17 +65,16 @@ public class EntryController
             }
             catch (ArrayIndexOutOfBoundsException oob)
             {
-                // TODO https://github.com/objectDisorientedProgrammer/Quasar2/issues/54
                 System.err.println("EntryController():: Save file corrupt - creating new file...");
             }
         }
-        
     }
 
     /**
      * Reset counts and set up head/tail nodes.
      */
-    private void initializeVariables() {
+    private void initializeVariables()
+    {
         this.documentCount = 0;
         this.websiteCount = 0;
         this.pictureCount = 0;
@@ -195,7 +193,8 @@ public class EntryController
         dataContainer.add(d);
     }
 
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return dataContainer.isEmpty();
     }
     
@@ -233,12 +232,9 @@ public class EntryController
     public Data getEntry(String title)
     {
         for (Data data : dataContainer)
-        {
             if(data.title.equalsIgnoreCase(title))
-            {
                 return data;
-            }
-        }
+        
         return null;
     }
     
@@ -292,10 +288,9 @@ public class EntryController
     public Data getEntry(Data selectedValue)
     {
         for(Data d : dataContainer)
-        {
             if(d.equals(selectedValue))
                 return d;
-        }
+        
         return null;
     }
 }

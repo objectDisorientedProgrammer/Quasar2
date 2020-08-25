@@ -42,7 +42,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -245,19 +244,6 @@ public class EditWindow
         });
     }
 
-    private void clearFields()
-    {
-        frame.setTitle(windowTitle);
-        propertiesLabel.setText(windowHeading);
-        titleTextField.setText("");
-        descriptionTextField.setText("");
-        dateDisplay.setText("");
-        keywordsTextField.setText("");
-        typeSelector.setSelectedIndex(Quasar.ALL);
-        
-        // TODO clear entry specific data based on current type in typeSelector
-    }
-
     /**
      * Create and add the "common attributes" fields
      */
@@ -291,7 +277,6 @@ public class EditWindow
         dateLabel.setFont(defaultLabelFont);
         dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        // FIXME this method exists here and in NewEntryFrame...need to consolidate these...
         dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
         dateDisplay.setToolTipText("YYYY-MM-DD");
 
@@ -305,7 +290,6 @@ public class EditWindow
         keywordsTextField.setColumns(10);
     }
     
-    // FIXME this method exists here and in NewEntryFrame...need to consolidate these...
     // stolen from https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
     protected MaskFormatter createFormatter(String s) {
         MaskFormatter formatter = null;
@@ -330,7 +314,7 @@ public class EditWindow
         
         typeSelector.setEnabled(enable); // show the correct card depending on the data type
         
-        // TODO node specific data
+        //  node specific data
         docDisplay.setEditable(enable);
     }
     
