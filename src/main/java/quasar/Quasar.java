@@ -33,7 +33,7 @@ import java.util.Vector;
 
 public class Quasar
 {
-    public static final String applicationVersion = " v0.7.12";
+    public static final String applicationVersion = " v0.7.13";
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
@@ -60,8 +60,6 @@ public class Quasar
     	
     	controller = new EntryController(defaultFilepath);
     	mainWindow = new MainWindow(entry, defaultFilepath);
-    	
-    	editWindow = new EditWindow(entry);
     	
 //        javax.swing.SwingUtilities.invokeLater(new Runnable()
 //        {
@@ -115,7 +113,7 @@ public class Quasar
     public static void displayEntry(Data d)
     {
         // TODO decode data by type and call a specific display method in editWindow
-        editWindow.displayEntry(d);
+        editWindow = new EditWindow(d);
     }
 
     public static void refreshEntryList()
@@ -125,7 +123,7 @@ public class Quasar
 
     public static void createNewEntry()
     {
-        editWindow.triggerNewEntry();
+        editWindow = new EditWindow(null);
     }
     
     public static void addNewEntry(Data d)

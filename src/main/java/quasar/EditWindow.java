@@ -86,23 +86,27 @@ public class EditWindow
     private JTextField phoneNumberTf;
     private JTextField emailTf;
     
-    
     public EditWindow(Data entry)
     {
         super();
         frame = new JFrame(windowTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
-        
-        dataReference = entry;
         
         cards = new JPanel(new CardLayout());
         
         createAndAddGUI();
         addGUIElements(frame.getContentPane());
         setEditingEntry(editable);
+        
+        if(entry == null)
+            triggerNewEntry();
+        else
+            displayEntry(entry);
+        
+        frame.setVisible(true);
     }
     
     /**
@@ -403,11 +407,6 @@ public class EditWindow
     public void displayEntry(Data d)
     {
         this.dataReference = d;
-        if(d == null)
-        {
-            JOptionPane.showMessageDialog(null, "There was an error displaying this entry.", "Data Error",  JOptionPane.ERROR_MESSAGE, null);
-            return;
-        }
         toggleEditButton(false);
         
         frame.setTitle(this.dataReference.getTitle()); // update window title
@@ -459,39 +458,12 @@ public class EditWindow
                 }
                 break;
         }
-        showFrame();
-    }
-
-    /**
-     * Show the window.
-     */
-    public void showFrame() {
-        frame.setVisible(true);
-    }
-    
-    /**
-     * Hide the window.
-     */
-    public void hideFrame() {
-        clearFields();
-        frame.setVisible(false);
-    }
-
-    /**
-     * Determine if the frame on the screen.
-     * @return {@code true} if the frame is showing on the screen, otherwise {@code false}.
-     */
-    public boolean isAlive() {
-        return frame.isShowing();
     }
 
     public void triggerNewEntry()
     {
         toggleEditButton(true);
-        clearFields();
         frame.setTitle("New");
-        this.dataReference = null;
-        showFrame();
     }
 
     /**
@@ -499,7 +471,8 @@ public class EditWindow
      */
     public void quit()
     {
-        frame.dispose();
+        if(frame.isActive())
+            frame.dispose();
     }
     
     /**
