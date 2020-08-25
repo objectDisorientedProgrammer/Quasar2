@@ -460,7 +460,8 @@ public class MainWindow
             public void actionPerformed(ActionEvent e)
             {
                 // show basic use instructions if user clicks: Help -> Getting Started
-                JOptionPane.showMessageDialog(null, "Something helpful...maybe a link to the wiki?", "Usage",
+                JOptionPane.showMessageDialog(null, "Welcome to Quasar.\nQuasar allows users to categorize data in a way\n"
+                        + "that makes sense to them. It was created as an\norganization tool and memory aid. Enjoy.", "Usage",
                         JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
             }
         });
@@ -487,8 +488,7 @@ public class MainWindow
     public void quit()
     {
         // Save and quit
-        // TODO save
-        //writeToFile(filenameTextfield.getText());
+        Quasar.saveToFile(databaseFilePath);
         mainWindow.dispose();
     }
 }
