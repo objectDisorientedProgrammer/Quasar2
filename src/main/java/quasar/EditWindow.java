@@ -75,15 +75,11 @@ public class EditWindow
     JComboBox<String> typeSelector;
     private JPanel cards;
     private DocumentDisplay docDisplay;
+    private ContactView contView;
     
     private JTextField urlTf;
     
     private JTextField picPathTf;
-    
-    private JTextField firstnameTf;
-    private JTextField lastnameTf;
-    private JTextField phoneNumberTf;
-    private JTextField emailTf;
     
     public EditWindow(Data entry)
     {
@@ -210,16 +206,8 @@ public class EditWindow
         pictureCard.add(imageHeightTf);
         cards.add(pictureCard, Quasar.entryTypeStrings[Quasar.PICTURE]);
         
-        JPanel contactCard = new JPanel();
-        firstnameTf = new JTextField();
-        lastnameTf = new JTextField();
-        phoneNumberTf = new JTextField();
-        emailTf = new JTextField();
-        contactCard.add(firstnameTf);
-        contactCard.add(lastnameTf);
-        contactCard.add(phoneNumberTf);
-        contactCard.add(emailTf);
-        cards.add(contactCard, Quasar.entryTypeStrings[Quasar.CONTACT]);
+        contView = new ContactView();
+        cards.add(contView.getComponent(), Quasar.entryTypeStrings[Quasar.CONTACT]);
         
         typeSelector = new JComboBox<String>(Quasar.entryTypeStrings);
         typeSelector.setEnabled(false);
@@ -316,6 +304,7 @@ public class EditWindow
         
         //  node specific data
         docDisplay.setEditable(enable);
+        contView.setEditable(enable);
     }
     
     /**
@@ -382,6 +371,10 @@ public class EditWindow
             Document d = (Document) this.dataReference;
             docDisplay.updateDocument(d);
         }
+        else if(this.dataReference instanceof Contact)
+        {
+            contView.update();
+        }
     }
     
     /**
@@ -434,11 +427,7 @@ public class EditWindow
             case Quasar.CONTACT:
                 if(this.dataReference instanceof Contact)
                 {
-                    Contact con = (Contact) this.dataReference;
-                    firstnameTf.setText(con.getFirstName());
-                    lastnameTf.setText(con.getLastName());
-                    phoneNumberTf.setText(con.getPhoneNumber());
-                    emailTf.setText(con.getEmail());
+                    contView.display((Contact) this.dataReference);
                 }
                 break;
         }
