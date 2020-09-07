@@ -137,7 +137,6 @@ public class MainWindow
                 else
                     // tell the user there are no matches
                     JOptionPane.showMessageDialog(null, "No results.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
-                
             }
         };
         
@@ -460,8 +459,8 @@ public class MainWindow
             public void actionPerformed(ActionEvent e)
             {
                 // show basic use instructions if user clicks: Help -> Getting Started
-                JOptionPane.showMessageDialog(null, "Welcome to Quasar.\nQuasar allows users to categorize data in a way\n"
-                        + "that makes sense to them. It was created as an\norganization tool and memory aid. Enjoy.", "Usage",
+                JOptionPane.showMessageDialog(null, "Welcome to Quasar.\nQuasar enables you to categorize data in a way\n"
+                        + "that makes sense to you. Enjoy this organization\nand memory aid tool.", "Usage",
                         JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
             }
         });
