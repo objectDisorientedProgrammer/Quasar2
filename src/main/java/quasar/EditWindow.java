@@ -76,6 +76,7 @@ public class EditWindow
     private JPanel cards;
     private DocumentDisplay docDisplay;
     private ContactView contView;
+    private PictureView picView;
     
     private JTextField urlTf;
     
@@ -195,16 +196,8 @@ public class EditWindow
         websiteCard.add(urlTf);
         cards.add(websiteCard, Quasar.entryTypeStrings[Quasar.WEBSITE]);
         
-        JPanel pictureCard = new JPanel();
-        picPathTf = new JTextField();
-        JTextField photographerTf = new JTextField();
-        JTextField imageWidthTf = new JTextField();
-        JTextField imageHeightTf = new JTextField();
-        pictureCard.add(picPathTf);
-        pictureCard.add(photographerTf);
-        pictureCard.add(imageWidthTf);
-        pictureCard.add(imageHeightTf);
-        cards.add(pictureCard, Quasar.entryTypeStrings[Quasar.PICTURE]);
+        picView = new PictureView(); // TODO possibly add to Jpanel, then to card
+        cards.add(picView.getComponent(), Quasar.entryTypeStrings[Quasar.PICTURE]);
         
         contView = new ContactView();
         cards.add(contView.getComponent(), Quasar.entryTypeStrings[Quasar.CONTACT]);
@@ -305,6 +298,8 @@ public class EditWindow
         //  node specific data
         docDisplay.setEditable(enable);
         contView.setEditable(enable);
+        picView.setEditable(enable);
+        
     }
     
     /**
@@ -375,6 +370,10 @@ public class EditWindow
         {
             contView.update();
         }
+        else if(this.dataReference instanceof Picture)
+        {
+            picView.update();
+        }
     }
     
     /**
@@ -417,11 +416,9 @@ public class EditWindow
                 }
                 break;
             case Quasar.PICTURE:
-                // TODO populate UI components
                 if(this.dataReference instanceof Picture)
                 {
-                    Picture pic = (Picture) this.dataReference;
-                    picPathTf.setText(pic.getPath());
+                    picView.display((Picture) this.dataReference);
                 }
                 break;
             case Quasar.CONTACT:
