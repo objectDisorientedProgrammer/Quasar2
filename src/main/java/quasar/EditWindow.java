@@ -74,8 +74,10 @@ public class EditWindow
     
     JComboBox<String> typeSelector;
     private JPanel cards;
-    private DocumentDisplay docDisplay;
+    private DocumentView docView;
     private ContactView contView;
+    private PictureView picView;
+    private WebsiteView webView;
     
     private JTextField urlTf;
     
@@ -187,24 +189,14 @@ public class EditWindow
         cards.add(allCard, Quasar.entryTypeStrings[Quasar.ALL]);
         // TODO add content for entries of type "all"?
         
-        docDisplay = new DocumentDisplay();
-        cards.add(docDisplay, Quasar.entryTypeStrings[Quasar.DOCUMENT]);
+        docView = new DocumentView();
+        cards.add(docView.getComponent(), Quasar.entryTypeStrings[Quasar.DOCUMENT]);
         
-        JPanel websiteCard = new JPanel();
-        urlTf = new JTextField();
-        websiteCard.add(urlTf);
-        cards.add(websiteCard, Quasar.entryTypeStrings[Quasar.WEBSITE]);
+        webView = new WebsiteView();
+        cards.add(webView.getComponent(), Quasar.entryTypeStrings[Quasar.WEBSITE]);
         
-        JPanel pictureCard = new JPanel();
-        picPathTf = new JTextField();
-        JTextField photographerTf = new JTextField();
-        JTextField imageWidthTf = new JTextField();
-        JTextField imageHeightTf = new JTextField();
-        pictureCard.add(picPathTf);
-        pictureCard.add(photographerTf);
-        pictureCard.add(imageWidthTf);
-        pictureCard.add(imageHeightTf);
-        cards.add(pictureCard, Quasar.entryTypeStrings[Quasar.PICTURE]);
+        picView = new PictureView(); // TODO possibly add to Jpanel, then to card
+        cards.add(picView.getComponent(), Quasar.entryTypeStrings[Quasar.PICTURE]);
         
         contView = new ContactView();
         cards.add(contView.getComponent(), Quasar.entryTypeStrings[Quasar.CONTACT]);
@@ -303,8 +295,10 @@ public class EditWindow
         typeSelector.setEnabled(enable); // show the correct card depending on the data type
         
         //  node specific data
-        docDisplay.setEditable(enable);
+        docView.setEditable(enable);
         contView.setEditable(enable);
+        picView.setEditable(enable);
+        webView.setEditable(enable);
     }
     
     /**
@@ -368,12 +362,19 @@ public class EditWindow
         
         if(this.dataReference instanceof Document)
         {
-            Document d = (Document) this.dataReference;
-            docDisplay.updateDocument(d);
+            docView.update();
         }
         else if(this.dataReference instanceof Contact)
         {
             contView.update();
+        }
+        else if(this.dataReference instanceof Picture)
+        {
+            picView.update();
+        }
+        else if(this.dataReference instanceof Website)
+        {
+            webView.update();
         }
     }
     
@@ -405,23 +406,19 @@ public class EditWindow
             case Quasar.DOCUMENT:
                 if(this.dataReference instanceof Document)
                 {
-                    Document doc = (Document) this.dataReference;
-                    docDisplay.displayDocument(doc);
+                    docView.display((Document) this.dataReference);
                 }
                 break;
             case Quasar.WEBSITE:
                 if(this.dataReference instanceof Website)
                 {
-                    Website web = (Website) this.dataReference;
-                    urlTf.setText(web.getUrl());
+                    webView.display((Website) this.dataReference);
                 }
                 break;
             case Quasar.PICTURE:
-                // TODO populate UI components
                 if(this.dataReference instanceof Picture)
                 {
-                    Picture pic = (Picture) this.dataReference;
-                    picPathTf.setText(pic.getPath());
+                    picView.display((Picture) this.dataReference);
                 }
                 break;
             case Quasar.CONTACT:

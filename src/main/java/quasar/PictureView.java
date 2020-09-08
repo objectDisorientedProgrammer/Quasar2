@@ -1,5 +1,5 @@
 /**
-   Created: August 23, 2020
+   Created: September 7, 2020
 
     The MIT License (MIT)
     
@@ -29,72 +29,53 @@ package quasar;
 import java.util.EnumMap;
 import java.util.HashMap;
 
-import javax.swing.JPanel;
-
 /**
- * @author doug
- *
+ * @author Doug
  */
-public class DocumentDisplay extends JPanel
+public class PictureView extends ViewService
 {
-    private GenericDisplay gd;
-    private enum Fields { PATH, PAGE, AUTHOR, PUBLISH_DATE };
+    private enum Fields { PATH, PHOTOGRAPHER, WIDTH, HEIGHT };
     private EnumMap<Fields, String> fieldLookup = new EnumMap<Fields, String>(Fields.class);
-    private HashMap<String, String> uiData = new HashMap<String, String>(5);
+    private Picture data;
     
-    public DocumentDisplay()
+    public PictureView()
     {
         // map enums to strings
         fieldLookup.put(Fields.PATH, "Path");
-        fieldLookup.put(Fields.PAGE, "Page Number");
-        fieldLookup.put(Fields.AUTHOR, "Author");
-        fieldLookup.put(Fields.PUBLISH_DATE, "Publish Date");
+        fieldLookup.put(Fields.PHOTOGRAPHER, "Photographer");
+        fieldLookup.put(Fields.WIDTH, "Width");
+        fieldLookup.put(Fields.HEIGHT, "Height");
         
-        // create keys for ui data based on mapped strings
+        // initialize UI data object and create keys based on mapped strings
+        uiData = new HashMap<String, String>(fieldLookup.size());
+        
         for(String s : fieldLookup.values())
             uiData.put(s, "");
         
         gd = new GenericDisplay(uiData);
         gd.setEditable(false);
-        this.add(gd);
     }
-    
-    public JPanel getComponent()
+
+    void display(Picture p)
     {
-        return gd;
-    }
-    
-    /**
-     * Display each field that is specific to a document.
-     * @param d
-     */
-    public void displayDocument(Document d)
-    {
-        uiData.put(fieldLookup.get(Fields.PATH), d.getPath());
-        uiData.put(fieldLookup.get(Fields.PAGE), d.getPageNumber());
-        uiData.put(fieldLookup.get(Fields.AUTHOR), d.getAuthor());
-        uiData.put(fieldLookup.get(Fields.PUBLISH_DATE), d.getPublishDate());
+        data = p;
+        uiData.put(fieldLookup.get(Fields.PATH), data.getPath());
+        uiData.put(fieldLookup.get(Fields.PHOTOGRAPHER), data.getPublisher());
+        uiData.put(fieldLookup.get(Fields.WIDTH), Integer.toString(data.getWidth()));
+        uiData.put(fieldLookup.get(Fields.HEIGHT), Integer.toString(data.getHeight()));
         
         gd.writeTo(uiData);
     }
     
-    /**
-     * Update each field that is specific to a document.
-     * @param d The document to update
-     */
-    public void updateDocument(Document d)
+    @Override
+    void update()
     {
         gd.readFrom(uiData);
         
-        d.setPath(uiData.get(fieldLookup.get(Fields.PATH)));
-        d.setPageNumber(uiData.get(fieldLookup.get(Fields.PAGE)));
-        d.setAuthor(uiData.get(fieldLookup.get(Fields.AUTHOR)));
-        d.setPublishDate(uiData.get(fieldLookup.get(Fields.PUBLISH_DATE)));
+        data.setPath(uiData.get(fieldLookup.get(Fields.PATH)));
+        data.setPublisher(uiData.get(fieldLookup.get(Fields.PHOTOGRAPHER)));
+        data.setWidth(Integer.parseInt(uiData.get(fieldLookup.get(Fields.WIDTH))));
+        data.setHeight(Integer.parseInt(uiData.get(fieldLookup.get(Fields.HEIGHT))));
     }
 
-    public void setEditable(boolean editable)
-    {
-        if(gd != null)
-            gd.setEditable(editable);
-    }
 }
