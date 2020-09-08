@@ -77,6 +77,7 @@ public class EditWindow
     private DocumentDisplay docDisplay;
     private ContactView contView;
     private PictureView picView;
+    private WebsiteView webView;
     
     private JTextField urlTf;
     
@@ -191,10 +192,8 @@ public class EditWindow
         docDisplay = new DocumentDisplay();
         cards.add(docDisplay, Quasar.entryTypeStrings[Quasar.DOCUMENT]);
         
-        JPanel websiteCard = new JPanel();
-        urlTf = new JTextField();
-        websiteCard.add(urlTf);
-        cards.add(websiteCard, Quasar.entryTypeStrings[Quasar.WEBSITE]);
+        webView = new WebsiteView();
+        cards.add(webView.getComponent(), Quasar.entryTypeStrings[Quasar.WEBSITE]);
         
         picView = new PictureView(); // TODO possibly add to Jpanel, then to card
         cards.add(picView.getComponent(), Quasar.entryTypeStrings[Quasar.PICTURE]);
@@ -299,7 +298,7 @@ public class EditWindow
         docDisplay.setEditable(enable);
         contView.setEditable(enable);
         picView.setEditable(enable);
-        
+        webView.setEditable(enable);
     }
     
     /**
@@ -374,6 +373,10 @@ public class EditWindow
         {
             picView.update();
         }
+        else if(this.dataReference instanceof Website)
+        {
+            webView.update();
+        }
     }
     
     /**
@@ -411,8 +414,7 @@ public class EditWindow
             case Quasar.WEBSITE:
                 if(this.dataReference instanceof Website)
                 {
-                    Website web = (Website) this.dataReference;
-                    urlTf.setText(web.getUrl());
+                    webView.display((Website) this.dataReference);
                 }
                 break;
             case Quasar.PICTURE:
