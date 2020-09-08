@@ -74,7 +74,7 @@ public class EditWindow
     
     JComboBox<String> typeSelector;
     private JPanel cards;
-    private DocumentDisplay docDisplay;
+    private DocumentView docView;
     private ContactView contView;
     private PictureView picView;
     private WebsiteView webView;
@@ -189,8 +189,8 @@ public class EditWindow
         cards.add(allCard, Quasar.entryTypeStrings[Quasar.ALL]);
         // TODO add content for entries of type "all"?
         
-        docDisplay = new DocumentDisplay();
-        cards.add(docDisplay, Quasar.entryTypeStrings[Quasar.DOCUMENT]);
+        docView = new DocumentView();
+        cards.add(docView.getComponent(), Quasar.entryTypeStrings[Quasar.DOCUMENT]);
         
         webView = new WebsiteView();
         cards.add(webView.getComponent(), Quasar.entryTypeStrings[Quasar.WEBSITE]);
@@ -295,7 +295,7 @@ public class EditWindow
         typeSelector.setEnabled(enable); // show the correct card depending on the data type
         
         //  node specific data
-        docDisplay.setEditable(enable);
+        docView.setEditable(enable);
         contView.setEditable(enable);
         picView.setEditable(enable);
         webView.setEditable(enable);
@@ -362,8 +362,7 @@ public class EditWindow
         
         if(this.dataReference instanceof Document)
         {
-            Document d = (Document) this.dataReference;
-            docDisplay.updateDocument(d);
+            docView.update();
         }
         else if(this.dataReference instanceof Contact)
         {
@@ -407,8 +406,7 @@ public class EditWindow
             case Quasar.DOCUMENT:
                 if(this.dataReference instanceof Document)
                 {
-                    Document doc = (Document) this.dataReference;
-                    docDisplay.displayDocument(doc);
+                    docView.display((Document) this.dataReference);
                 }
                 break;
             case Quasar.WEBSITE:
