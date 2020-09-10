@@ -68,5 +68,10 @@ public class WebsiteView extends ViewService
         
         data.setUrl(uiData.get(fieldLookup.get(Fields.URL)));
     }
+    
+    void setWebsite(Website w)
+    {
+        data = w;
+    }
 
 }

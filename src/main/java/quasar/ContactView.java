@@ -55,7 +55,7 @@ public class ContactView extends ViewService
         gd = new GenericDisplay(uiData);
         gd.setEditable(false);
     }
-
+    
     void display(Contact c)
     {
         data = c;
@@ -76,6 +76,11 @@ public class ContactView extends ViewService
         data.setLastName(uiData.get(fieldLookup.get(Fields.LASTNAME)));
         data.setPhoneNumber(uiData.get(fieldLookup.get(Fields.PHONE)));
         data.setEmail(uiData.get(fieldLookup.get(Fields.EMAIL)));
+    }
+    
+    void setContact(Contact c)
+    {
+        data = c;
     }
 
 }

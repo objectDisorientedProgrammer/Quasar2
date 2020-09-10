@@ -74,8 +74,19 @@ public class PictureView extends ViewService
         
         data.setPath(uiData.get(fieldLookup.get(Fields.PATH)));
         data.setPublisher(uiData.get(fieldLookup.get(Fields.PHOTOGRAPHER)));
-        data.setWidth(Integer.parseInt(uiData.get(fieldLookup.get(Fields.WIDTH))));
-        data.setHeight(Integer.parseInt(uiData.get(fieldLookup.get(Fields.HEIGHT))));
+        
+        String temp = uiData.get(fieldLookup.get(Fields.WIDTH));
+        if(!temp.isEmpty())
+            data.setWidth(Integer.parseInt(temp));
+        
+        temp = uiData.get(fieldLookup.get(Fields.HEIGHT));
+        if(!temp.isEmpty())
+            data.setHeight(Integer.parseInt(temp));
+    }
+    
+    void setPicture(Picture p)
+    {
+        data = p;
     }
 
 }

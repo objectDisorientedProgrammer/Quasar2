@@ -29,7 +29,7 @@ package quasar;
 public class Data
 {
     protected String title = "";
-    private static String defaultTitle = "no title";
+    private static String defaultTitle = ">no title<";
     protected String description = "";
     protected String date = "";
     protected String keywords = "";

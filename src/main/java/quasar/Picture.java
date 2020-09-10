@@ -33,6 +33,11 @@ public class Picture extends Data
     private int imageWidth = 0;
     private int imageHeight = 0;
     
+    public Picture()
+    {
+        this("", "", 0, 0);
+    }
+    
     /**
      * Width and height set to 0 to indicate absence.
      * @param path - location of file
@@ -101,7 +106,7 @@ public class Picture extends Data
     }
 
     public void setWidth(int w) {
-        if(w > 0)
+        if(w >= 0)
             this.imageWidth = w;
     }
 
@@ -110,7 +115,7 @@ public class Picture extends Data
     }
 
     public void setHeight(int h) {
-        if(h > 0)
+        if(h >= 0)
             this.imageHeight = h;
     }
     

@@ -55,7 +55,7 @@ public class DocumentView extends ViewService
         gd = new GenericDisplay(uiData);
         gd.setEditable(false);
     }
-
+    
     void display(Document d)
     {
         data = d;
@@ -76,6 +76,11 @@ public class DocumentView extends ViewService
         data.setPageNumber(uiData.get(fieldLookup.get(Fields.PAGE)));
         data.setAuthor(uiData.get(fieldLookup.get(Fields.AUTHOR)));
         data.setPublishDate(uiData.get(fieldLookup.get(Fields.PUBLISH_DATE)));
+    }
+    
+    void setDocument(Document d)
+    {
+        data = d;
     }
 
 }

@@ -30,6 +30,11 @@ public class Website extends Data
 {
     private String url = "";
 
+    public Website()
+    {
+        this("");
+    }
+    
     public Website(String url) {
         super();
         this.type = Quasar.WEBSITE;

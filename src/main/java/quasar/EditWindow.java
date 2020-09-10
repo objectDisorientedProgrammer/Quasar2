@@ -79,10 +79,6 @@ public class EditWindow
     private PictureView picView;
     private WebsiteView webView;
     
-    private JTextField urlTf;
-    
-    private JTextField picPathTf;
-    
     public EditWindow(Data entry)
     {
         super();
@@ -292,8 +288,6 @@ public class EditWindow
         dateDisplay.setEditable(enable);
         keywordsTextField.setEditable(enable);
         
-        typeSelector.setEnabled(enable); // show the correct card depending on the data type
-        
         //  node specific data
         docView.setEditable(enable);
         contView.setEditable(enable);
@@ -316,15 +310,19 @@ public class EditWindow
                     break;
                 case Quasar.DOCUMENT:
                     this.dataReference = new Document();
+                    docView.setDocument((Document) this.dataReference);
                     break;
                 case Quasar.WEBSITE:
-                    this.dataReference = new Website(urlTf.getText());
+                    this.dataReference = new Website();
+                    webView.setWebsite((Website) this.dataReference);
                     break;
                 case Quasar.PICTURE:
-                    this.dataReference = new Picture(picPathTf.getText());
+                    this.dataReference = new Picture();
+                    picView.setPicture((Picture) this.dataReference);
                     break;
                 case Quasar.CONTACT:
                     this.dataReference = new Contact();
+                    contView.setContact((Contact) this.dataReference);
                     break;
             }
             Quasar.addNewEntry(dataReference);
@@ -397,6 +395,7 @@ public class EditWindow
         
         // display type specific info
         typeSelector.setSelectedIndex(this.dataReference.getType());
+        
         switch(this.dataReference.getType())
         {
             default:
@@ -433,6 +432,7 @@ public class EditWindow
     public void triggerNewEntry()
     {
         toggleEditButton(true);
+        typeSelector.setEnabled(true);
         frame.setTitle("New");
     }
 
