@@ -75,7 +75,7 @@ class WebsiteTests
         Website w = new Website(s);
         assertNotNull(w);
         assertEquals(s, w.getUrl());
-        assertEquals("no title", w.getTitle());
+        assertEquals(">no title<", w.getTitle());
         assertEquals(Quasar.WEBSITE, w.getType());
     }
 

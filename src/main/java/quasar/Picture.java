@@ -106,7 +106,7 @@ public class Picture extends Data
     }
 
     public void setWidth(int w) {
-        if(w >= 0)
+        if(w > 0)
             this.imageWidth = w;
     }
 
@@ -115,7 +115,7 @@ public class Picture extends Data
     }
 
     public void setHeight(int h) {
-        if(h >= 0)
+        if(h > 0)
             this.imageHeight = h;
     }
     

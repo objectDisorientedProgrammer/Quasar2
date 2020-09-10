@@ -39,7 +39,7 @@ class DataTests
     {
         Data d = new Data();
         assertNotNull(d);
-        assertEquals("no title", d.getTitle());
+        assertEquals(">no title<", d.getTitle());
         assertEquals(Quasar.ALL, d.getType());
     }
 
@@ -88,7 +88,7 @@ class DataTests
     void testToString()
     {
         Data d = new Data();
-        assertEquals("no title", d.toString());
+        assertEquals(">no title<", d.toString());
         
         d.setTitle("a different title");
         assertEquals("a different title", d.toString());
