@@ -231,6 +231,7 @@ public class MainWindow
     
     public void requestListDisplayUpdate()
     {
+        filterComboBox.setSelectedIndex(Quasar.ALL);
         updateListDisplay();
     }
 

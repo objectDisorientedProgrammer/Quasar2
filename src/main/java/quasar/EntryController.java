@@ -198,14 +198,18 @@ public class EntryController
         return dataContainer.isEmpty();
     }
     
+    /**
+     * Get an array of all entry objects from newest (index 0) to oldest.
+     * @return array of all entries
+     */
     public Data[] getAllData()
     {
         Data ary[] = new Data[dataContainer.size()];
-        int i = 0;
+        int i = dataContainer.size() - 1;
         for(Data d : dataContainer)
         {
             ary[i] = d;
-            ++i;
+            --i;
         }
         return ary;
     }
