@@ -267,7 +267,7 @@ public class MainWindow
             editBtn.setEnabled(true);
             deleteBtn.setEnabled(true);
             // select the top item
-            dataList.setSelectedIndex(0);
+            dataList.setSelectedIndex(0); // TODO should select next highest element when deleting...
         }
     }
 
