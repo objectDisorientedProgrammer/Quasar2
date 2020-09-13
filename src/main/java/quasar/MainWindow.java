@@ -76,8 +76,8 @@ public class MainWindow
     private Data previouslySelected;
     
     private JComboBox<String> filterComboBox;
-    private JButton newNodeBtn;
-    private JButton editBtn;
+    private JButton newBtn;
+    private JButton viewBtn;
     private JButton deleteBtn;
     private String licenseMenuText = "Licenses";
     private String databaseFilePath;
@@ -111,8 +111,8 @@ public class MainWindow
         mainPanel.add(scrollPane);
         mainPanel.add(filterLbl);
         mainPanel.add(filterComboBox);
-        mainPanel.add(newNodeBtn);
-        mainPanel.add(editBtn);
+        mainPanel.add(newBtn);
+        mainPanel.add(viewBtn);
         mainPanel.add(deleteBtn);
     }
 
@@ -205,22 +205,22 @@ public class MainWindow
             }
         });
 
-        newNodeBtn = new JButton("New");
-        newNodeBtn.setToolTipText("Create a new entry");
-        newNodeBtn.addActionListener(new ActionListener() {
+        newBtn = new JButton("New");
+        newBtn.setToolTipText("Create a new entry");
+        newBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
             	// TODO activate the edit window with no Data object
                 Quasar.createNewEntry();
             }
         });
-        newNodeBtn.setBounds(341, 77, 91, 23);
+        newBtn.setBounds(341, 77, 91, 23);
 
-        editBtn = new JButton("View");
-        editBtn.setToolTipText("View or edit the selected entry");
-        editBtn.setBounds(341, 111, 91, 23);
-        editBtn.setEnabled(false);
-        editBtn.addActionListener(new ActionListener()
+        viewBtn = new JButton("View");
+        viewBtn.setToolTipText("View or edit the selected entry");
+        viewBtn.setBounds(341, 111, 91, 23);
+        viewBtn.setEnabled(false);
+        viewBtn.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent ae)
@@ -258,13 +258,13 @@ public class MainWindow
         if(Quasar.isEmpty())
         {
             // disable buttons
-            editBtn.setEnabled(false);
+            viewBtn.setEnabled(false);
             deleteBtn.setEnabled(false);
         }
         else
         {
             // enable buttons
-            editBtn.setEnabled(true);
+            viewBtn.setEnabled(true);
             deleteBtn.setEnabled(true);
             // select the top item
             dataList.setSelectedIndex(0); // TODO should select next highest element when deleting...
