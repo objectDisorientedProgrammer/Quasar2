@@ -232,15 +232,15 @@ public class MainWindow
         
         deleteBtn = new JButton("Delete");
         deleteBtn.setBounds(341, 244, 91, 23);
+        deleteBtn.setEnabled(false);
         deleteBtn.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                // call Quasar.delete() (or similar)
-                
-                // Update list
-                //updateListDisplay();
+                // remove the selected entry and refresh the UI
+                Quasar.removeEntry(dataList.getSelectedValue());
+                updateListDisplay();
             }
         });
     }
@@ -253,15 +253,20 @@ public class MainWindow
 
     private void updateListDisplay()
     {
+        // update the list data
+        dataList.setListData(Quasar.getAllData());
         if(Quasar.isEmpty())
-        {   
+        {
+            // disable buttons
             editBtn.setEnabled(false);
+            deleteBtn.setEnabled(false);
         }
         else
         {
-            dataList.setListData(Quasar.getAllData());
+            // enable buttons
             editBtn.setEnabled(true);
-            // select the first item
+            deleteBtn.setEnabled(true);
+            // select the top item
             dataList.setSelectedIndex(0);
         }
     }

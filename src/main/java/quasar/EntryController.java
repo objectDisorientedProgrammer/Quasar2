@@ -192,6 +192,11 @@ public class EntryController
     {
         dataContainer.add(d);
     }
+    
+    public void removeEntry(Data d)
+    {
+        dataContainer.remove(d);
+    }
 
     public boolean isEmpty()
     {
