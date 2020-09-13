@@ -78,6 +78,7 @@ public class MainWindow
     private JComboBox<String> filterComboBox;
     private JButton newNodeBtn;
     private JButton editBtn;
+    private JButton deleteBtn;
     private String licenseMenuText = "Licenses";
     private String databaseFilePath;
 
@@ -112,6 +113,7 @@ public class MainWindow
         mainPanel.add(filterComboBox);
         mainPanel.add(newNodeBtn);
         mainPanel.add(editBtn);
+        mainPanel.add(deleteBtn);
     }
 
     private void createGUIElements()
@@ -225,6 +227,20 @@ public class MainWindow
             {
                 // Display selected entry in an edit window
                 Quasar.displayEntry(dataList.getSelectedValue());
+            }
+        });
+        
+        deleteBtn = new JButton("Delete");
+        deleteBtn.setBounds(341, 244, 91, 23);
+        deleteBtn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                // call Quasar.delete() (or similar)
+                
+                // Update list
+                //updateListDisplay();
             }
         });
     }
