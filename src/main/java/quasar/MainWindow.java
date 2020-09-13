@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -275,8 +276,9 @@ public class MainWindow
     {
         mainWindow = new JFrame(windowTitle);
         mainWindow.setSize(frameWidth, frameHeight);
+        mainWindow.setMinimumSize(new Dimension(frameWidth >> 1, frameHeight >> 1)); // enough to access the File->Quit menu
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainWindow.setLocationRelativeTo(null);
+        mainWindow.setLocationRelativeTo(null); // center the frame relative to the desktop
         
         mainPanel = new JPanel(null); // TODO change layout manager; also no need to create a JPanel here.. use .getContentPane()
         

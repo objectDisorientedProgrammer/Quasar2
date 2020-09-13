@@ -28,6 +28,7 @@ package quasar;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -84,6 +85,7 @@ public class EditWindow
         super();
         frame = new JFrame(windowTitle);
         frame.setSize(frameWidth, frameHeight);
+        frame.setMinimumSize(new Dimension(frameWidth >> 1, frameHeight >> 1));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
