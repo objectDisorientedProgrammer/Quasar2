@@ -87,7 +87,7 @@ public class EditWindow
         frame.setSize(frameWidth, frameHeight);
         frame.setMinimumSize(new Dimension(frameWidth >> 1, frameHeight >> 1));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(Quasar.getMainWindowReference().getComponent());
         frame.setLayout(null);
         
         cards = new JPanel(new CardLayout());

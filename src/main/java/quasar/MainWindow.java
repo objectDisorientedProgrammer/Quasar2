@@ -514,4 +514,9 @@ public class MainWindow
         Quasar.saveToFile(databaseFilePath);
         mainWindow.dispose();
     }
+    
+    public JFrame getComponent()
+    {
+        return this.mainWindow;
+    }
 }
