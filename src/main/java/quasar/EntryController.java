@@ -41,7 +41,7 @@ public class EntryController
     private int websiteCount;
     private int pictureCount;
     private int contactCount;
-    private int totalCount;
+    private int allCount;
     private String dataFile;
     private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
     private String[] items;
@@ -53,7 +53,7 @@ public class EntryController
     public EntryController(String dataFile) {
         super();
         this.dataFile = dataFile;
-        initializeVariables();
+        initializeCounts();
         
         if(this.dataFile != null && !this.dataFile.isEmpty())
         {
@@ -73,18 +73,32 @@ public class EntryController
     /**
      * Reset counts and set up head/tail nodes.
      */
-    private void initializeVariables()
+    private void initializeCounts()
     {
         this.documentCount = 0;
         this.websiteCount = 0;
         this.pictureCount = 0;
         this.contactCount = 0;
-        this.totalCount = 0;
+        this.allCount = 0;
     }
     
-    public int getTotalEntryCount()
-    {
-        return this.totalCount;
+    public int getTotalEntryCount() {
+        return allCount + contactCount + documentCount + pictureCount + websiteCount;
+    }
+    public int getTypeAllCount() {
+        return allCount;
+    }
+    public int getTypeContactCount() {
+        return contactCount;
+    }
+    public int getTypeDocumentCount() {
+        return documentCount;
+    }
+    public int getTypePictureCount() {
+        return pictureCount;
+    }
+    public int getTypeWebsiteCount() {
+        return websiteCount;
     }
 
     /**
@@ -111,23 +125,18 @@ public class EntryController
             default:
             case Quasar.ALL:
                 d = new Data(tokens[1], tokens[2], tokens[3], tokens[4], type);
-            	++totalCount;
                 break;
             case Quasar.DOCUMENT:
                 d = new Document(tokens[5], tokens[6], tokens[7], tokens[8]);
-                ++documentCount;
                 break;
             case Quasar.WEBSITE:
                 d = new Website(tokens[5]);
-                ++websiteCount;
                 break;
             case Quasar.PICTURE:
                 d = new Picture(tokens[5]);
-                ++pictureCount;
                 break;
             case Quasar.CONTACT:
                 d = new Contact(tokens[5], tokens[6], tokens[7], tokens[8]);
-                ++contactCount;
                 break;
             }
             // populate common fields (duplicate work for the Quasar.ALL case, but meh)
@@ -135,6 +144,7 @@ public class EntryController
             d.setDescription(tokens[2]);
             d.setDate(tokens[3]);
             d.setKeywords(tokens[4]);
+            d.setType(type);
             addEntry(d);
             
             if(DEBUG_PRINT)
@@ -178,7 +188,6 @@ public class EntryController
                 // regular Data
                 b.append(d.toSaveString());
             }
-            
             b.append('\n');
         }
         
@@ -190,11 +199,29 @@ public class EntryController
     
     public void addEntry(Data d)
     {
+        switch(d.getType())
+        {
+            default:
+            case Quasar.ALL: ++this.allCount; break;
+            case Quasar.CONTACT: ++this.contactCount; break;
+            case Quasar.DOCUMENT: ++this.documentCount; break;
+            case Quasar.PICTURE: ++this.pictureCount; break;
+            case Quasar.WEBSITE: ++this.websiteCount; break;
+        }
         dataContainer.add(d);
     }
     
     public void removeEntry(Data d)
     {
+        switch(d.getType())
+        {
+            default:
+            case Quasar.ALL: --this.allCount; break;
+            case Quasar.CONTACT: --this.contactCount; break;
+            case Quasar.DOCUMENT: --this.documentCount; break;
+            case Quasar.PICTURE: --this.pictureCount; break;
+            case Quasar.WEBSITE: --this.websiteCount; break;
+        }
         dataContainer.remove(d);
     }
 
