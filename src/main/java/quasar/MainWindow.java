@@ -383,8 +383,8 @@ public class MainWindow
         
         JMenuItem loadMenuItem = new JMenuItem("Load...");
         loadMenuItem.setMnemonic(KeyEvent.VK_L);
-        loadMenuItem.addActionListener(new ActionListener() {
-            
+        loadMenuItem.addActionListener(new ActionListener()
+        {    
             @Override
             public void actionPerformed(ActionEvent e) {
                 // open a directory navigation window
@@ -458,7 +458,6 @@ public class MainWindow
         });
         fileMenu.add(saveAs);
         
-        
         JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(imagePath+"exit.png")));
         quitMenuItem.setMnemonic(KeyEvent.VK_Q);
         quitMenuItem.addActionListener(new ActionListener()
@@ -470,6 +469,29 @@ public class MainWindow
         });
         fileMenu.addSeparator();
         fileMenu.add(quitMenuItem);
+        
+        JMenu viewMenu = new JMenu("View");
+        viewMenu.setMnemonic(KeyEvent.VK_V);
+        menuBar.add(viewMenu);
+        
+        JMenuItem statsMenuItem = new JMenuItem("Statistics");
+        statsMenuItem.setMnemonic(KeyEvent.VK_S);
+        statsMenuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                String msg = "Total entries: " + Quasar.getEntryCount(-1) + "\n"
+                        + "Contacts: " + Quasar.getEntryCount(Quasar.CONTACT) + "\n"
+                        + "Documents: " + Quasar.getEntryCount(Quasar.DOCUMENT) + "\n"
+                        + "Pictures: " + Quasar.getEntryCount(Quasar.PICTURE) + "\n"
+                        + "Websites: " + Quasar.getEntryCount(Quasar.WEBSITE) + "\n"
+                        + "Other: " + Quasar.getEntryCount(Quasar.ALL);
+                
+                JOptionPane.showMessageDialog(null, msg, "Stats", JOptionPane.PLAIN_MESSAGE, null);
+            }
+        });
+        viewMenu.add(statsMenuItem);
         
         JMenu helpMenu = new JMenu("Help");
         helpMenu.setMnemonic(KeyEvent.VK_H);

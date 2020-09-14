@@ -33,7 +33,7 @@ import java.util.Vector;
 
 public class Quasar
 {
-    public static final String applicationVersion = " 0.7.19";
+    public static final String applicationVersion = " 0.7.20";
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
@@ -145,5 +145,30 @@ public class Quasar
     public static MainWindow getMainWindowReference()
     {
         return mainWindow;
+    }
+    
+    /**
+     * Get the number of entries based on entry type.
+     * @param type One of the valid Quasar entry types or -1 for total count.
+     * @return
+     */
+    public static int getEntryCount(int type)
+    {
+        int count = 0;
+        
+        switch(type)
+        {
+            case ALL: count = controller.getTypeAllCount(); break;
+            case CONTACT: count = controller.getTypeContactCount(); break;
+            case DOCUMENT: count = controller.getTypeDocumentCount(); break;
+            case PICTURE: count = controller.getTypePictureCount(); break;
+            case WEBSITE: count = controller.getTypeWebsiteCount(); break;
+            default:
+                // return count of total entries
+                count = controller.getTotalEntryCount();
+                break;
+        }
+        
+        return count;
     }
 }

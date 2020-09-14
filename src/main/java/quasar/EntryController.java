@@ -41,7 +41,7 @@ public class EntryController
     private int websiteCount;
     private int pictureCount;
     private int contactCount;
-    private int totalCount;
+    private int allCount;
     private String dataFile;
     private ArrayList<Data> dataContainer = new ArrayList<Data>(20);
     private String[] items;
@@ -79,12 +79,26 @@ public class EntryController
         this.websiteCount = 0;
         this.pictureCount = 0;
         this.contactCount = 0;
-        this.totalCount = 0;
+        this.allCount = 0;
     }
     
-    public int getTotalEntryCount()
-    {
-        return this.totalCount;
+    public int getTotalEntryCount() {
+        return allCount + contactCount + documentCount + pictureCount + websiteCount;
+    }
+    public int getTypeAllCount() {
+        return allCount;
+    }
+    public int getTypeContactCount() {
+        return contactCount;
+    }
+    public int getTypeDocumentCount() {
+        return documentCount;
+    }
+    public int getTypePictureCount() {
+        return pictureCount;
+    }
+    public int getTypeWebsiteCount() {
+        return websiteCount;
     }
 
     /**
@@ -111,7 +125,7 @@ public class EntryController
             default:
             case Quasar.ALL:
                 d = new Data(tokens[1], tokens[2], tokens[3], tokens[4], type);
-            	++totalCount;
+            	++allCount;
                 break;
             case Quasar.DOCUMENT:
                 d = new Document(tokens[5], tokens[6], tokens[7], tokens[8]);
@@ -195,6 +209,15 @@ public class EntryController
     
     public void removeEntry(Data d)
     {
+        switch(d.getType())
+        {
+            default:
+            case Quasar.ALL: --this.allCount; break;
+            case Quasar.CONTACT: --this.contactCount; break;
+            case Quasar.DOCUMENT: --this.documentCount; break;
+            case Quasar.PICTURE: --this.pictureCount; break;
+            case Quasar.WEBSITE: --this.websiteCount; break;
+        }
         dataContainer.remove(d);
     }
 
