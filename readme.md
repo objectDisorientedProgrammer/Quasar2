@@ -4,7 +4,7 @@ of this version is to be cross platform and more user friendly.
 
 ## Dependencies
 * Java 11
-* gradle 7.0+
+* gradle 6.0+
 
 ## Building
 This project uses Gradle as a build system.
