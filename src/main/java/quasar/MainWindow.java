@@ -211,7 +211,6 @@ public class MainWindow
         newBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arrrrg) {
-            	// TODO activate the edit window with no Data object
                 Quasar.createNewEntry();
             }
         });
