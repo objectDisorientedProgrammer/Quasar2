@@ -381,7 +381,7 @@ public class MainWindow
         menuBar.add(fileMenu);
         
         JMenuItem loadMenuItem = new JMenuItem("Load...");
-        loadMenuItem.setMnemonic(KeyEvent.VK_L);
+        loadMenuItem.setMnemonic(KeyEvent.VK_D);
         loadMenuItem.addActionListener(new ActionListener()
         {    
             @Override
@@ -469,12 +469,12 @@ public class MainWindow
         fileMenu.addSeparator();
         fileMenu.add(quitMenuItem);
         
-        JMenu viewMenu = new JMenu("View");
-        viewMenu.setMnemonic(KeyEvent.VK_V);
+        JMenu viewMenu = new JMenu("System");
+        viewMenu.setMnemonic(KeyEvent.VK_S);
         menuBar.add(viewMenu);
         
         JMenuItem statsMenuItem = new JMenuItem("Statistics");
-        statsMenuItem.setMnemonic(KeyEvent.VK_S);
+        statsMenuItem.setMnemonic(KeyEvent.VK_A);
         statsMenuItem.addActionListener(new ActionListener()
         {
             @Override
@@ -487,7 +487,7 @@ public class MainWindow
                         + "Websites: " + Quasar.getEntryCount(Quasar.WEBSITE) + "\n"
                         + "Other: " + Quasar.getEntryCount(Quasar.ALL);
                 
-                JOptionPane.showMessageDialog(null, msg, "Stats", JOptionPane.PLAIN_MESSAGE, null);
+                JOptionPane.showMessageDialog(null, msg, "Entry Stats", JOptionPane.PLAIN_MESSAGE, null);
             }
         });
         viewMenu.add(statsMenuItem);
@@ -512,7 +512,7 @@ public class MainWindow
         helpMenu.add(helpMenuItem);
         
         JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
-        aboutMenuItem.setMnemonic(KeyEvent.VK_A);
+        aboutMenuItem.setMnemonic(KeyEvent.VK_B);
         aboutMenuItem.addActionListener(new ActionListener()
         {
             @Override
