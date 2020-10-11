@@ -35,7 +35,6 @@ import org.apache.commons.io.FileUtils;
 
 public class EntryController
 {
-    private boolean DEBUG_PRINT = false;
     private String encoding = "UTF-8";
     private int documentCount;
     private int websiteCount;
@@ -65,7 +64,7 @@ public class EntryController
             }
             catch (ArrayIndexOutOfBoundsException oob)
             {
-                System.err.println("EntryController():: Save file corrupt - creating new file...");
+                System.err.println("Save file corrupt - creating a new file...");
             }
         }
     }
@@ -146,9 +145,6 @@ public class EntryController
             d.setKeywords(tokens[4]);
             d.setType(type);
             addEntry(d);
-            
-            if(DEBUG_PRINT)
-                System.out.println("Adding " + d.toString());
         }
     }
 
@@ -185,20 +181,18 @@ public class EntryController
             }
             else
             {
-                // regular Data
+                // "all" type Data
                 b.append(d.toSaveString());
             }
             b.append('\n');
         }
-        
-        if(DEBUG_PRINT)
-            System.out.println("Saving: '" + b.toString() + "' to file...");
         
         FileUtils.writeStringToFile(new File(filePath), b.toString(), encoding, false);
     }
     
     public void addEntry(Data d)
     {
+        // update count for specific type
         switch(d.getType())
         {
             default:
@@ -208,11 +202,13 @@ public class EntryController
             case Quasar.PICTURE: ++this.pictureCount; break;
             case Quasar.WEBSITE: ++this.websiteCount; break;
         }
+        // add
         dataContainer.add(d);
     }
     
     public void removeEntry(Data d)
     {
+        // update count for specific type
         switch(d.getType())
         {
             default:
@@ -222,6 +218,7 @@ public class EntryController
             case Quasar.PICTURE: --this.pictureCount; break;
             case Quasar.WEBSITE: --this.websiteCount; break;
         }
+        // remove
         dataContainer.remove(d);
     }
 
