@@ -255,6 +255,7 @@ public class EditWindow
         dateLabel.setFont(defaultLabelFont);
         dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
+        // TODO replace this code during issue #52 https://github.com/objectDisorientedProgrammer/Quasar2/issues/52
         dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
         dateDisplay.setToolTipText("YYYY-MM-DD");
 
@@ -268,6 +269,7 @@ public class EditWindow
         keywordsTextField.setColumns(10);
     }
     
+    // TODO replace this code during issue #52 https://github.com/objectDisorientedProgrammer/Quasar2/issues/52
     // stolen from https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
     protected MaskFormatter createFormatter(String s) {
         MaskFormatter formatter = null;
