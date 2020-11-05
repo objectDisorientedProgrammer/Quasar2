@@ -37,9 +37,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -510,6 +514,54 @@ public class MainWindow
             }
         });
         helpMenu.add(helpMenuItem);
+        
+        JMenuItem updatesMenuItem = new JMenuItem("Check for updates");
+        updatesMenuItem.setMnemonic(KeyEvent.VK_C);
+        updatesMenuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    URL tags = new URL("https://api.github.com/repos/objectDisorientedProgrammer/Quasar2/tags");
+                    HttpURLConnection conn = (HttpURLConnection) tags.openConnection();
+                    conn.setRequestMethod("GET");
+                    
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+                    {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuffer response = new StringBuffer();
+                        String line = null;
+                        while((line = in.readLine()) != null)
+                        {
+                            response.append(line);
+                        }
+                        in.close();
+                        
+                        int ver = response.toString().indexOf(':');
+                        String sub = response.substring(ver+2);
+                        ver = sub.indexOf('"');
+                        String latest = sub.substring(1, ver);
+                        System.out.println(latest + " " + Quasar.applicationVersion);
+                        
+                        // TODO need to parse each string to compare X.Y.Z in order to determine "up to date-ness"
+                        if(latest.trim().equalsIgnoreCase(Quasar.applicationVersion.trim()))
+                            JOptionPane.showMessageDialog(null, "Up to date\nversion: "+ Quasar.applicationVersion);
+                        else
+                            JOptionPane.showMessageDialog(null, "Download from ...");
+                    }
+                    else
+                    {
+                        System.out.println("REST GET error...");
+                    }
+                } catch(IOException e1)
+                {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        helpMenu.add(updatesMenuItem);
         
         JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
         aboutMenuItem.setMnemonic(KeyEvent.VK_B);
