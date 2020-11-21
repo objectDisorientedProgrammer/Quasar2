@@ -543,13 +543,30 @@ public class MainWindow
                         String sub = response.substring(ver+2);
                         ver = sub.indexOf('"');
                         String latest = sub.substring(1, ver);
-                        System.out.println(latest + " " + Quasar.applicationVersion);
+                        latest = latest.trim();
                         
-                        // TODO need to parse each string to compare X.Y.Z in order to determine "up to date-ness"
-                        if(latest.trim().equalsIgnoreCase(Quasar.applicationVersion.trim()))
-                            JOptionPane.showMessageDialog(null, "Up to date\nversion: "+ Quasar.applicationVersion);
+                        // was thinking this contains the new .jar file, but it may not... need further testing
+                        /*
+                        int zipIndex = response.toString().indexOf("zipball_url");
+                        String zipUrl = response.toString().substring(zipIndex);
+                        System.out.println("\n" + zipUrl);
+                        String temp = zipUrl.substring(zipUrl.indexOf(':') + 2, zipUrl.indexOf(',') - 2);
+                        System.out.println("\n"+ temp);
+                        */
+                        
+                        // parse each string to compare X.Y.Z in order to determine "up to date-ness"
+                        String[] currentVersion = Quasar.applicationVersion.trim().split("\\.");
+                        String[] latestVersion = latest.split("\\.");
+                        
+                        // if the queried latest version is larger than the current application version, prompt the user to update
+                        if(Integer.parseInt(latestVersion[0]) > Integer.parseInt(currentVersion[0])
+                                || Integer.parseInt(latestVersion[1]) > Integer.parseInt(currentVersion[1])
+                                || Integer.parseInt(latestVersion[2]) > Integer.parseInt(currentVersion[2]))
+                            JOptionPane.showMessageDialog(null, "Out of date\ncurrent: " + Quasar.applicationVersion +
+                                    "\nnew: " + latest + "\nDownload from https://github.com/objectDisorientedProgrammer/Quasar2/releases");
                         else
-                            JOptionPane.showMessageDialog(null, "Download from ...");
+                            JOptionPane.showMessageDialog(null, "Version: "+ Quasar.applicationVersion, "Up to date",
+                                    JOptionPane.INFORMATION_MESSAGE);
                     }
                     else
                     {
