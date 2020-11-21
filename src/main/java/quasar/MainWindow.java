@@ -37,9 +37,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -510,6 +514,109 @@ public class MainWindow
             }
         });
         helpMenu.add(helpMenuItem);
+        
+        JMenuItem updatesMenuItem = new JMenuItem("Check for updates");
+        updatesMenuItem.setMnemonic(KeyEvent.VK_C);
+        updatesMenuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    // Set up a REST GET query to the github API
+                    URL tags = new URL("https://api.github.com/repos/objectDisorientedProgrammer/Quasar2/tags");
+                    HttpURLConnection conn = (HttpURLConnection) tags.openConnection();
+                    conn.setRequestMethod("GET");
+                    
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+                    {
+                        // Collect the response
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuffer response = new StringBuffer();
+                        String line = null;
+                        while((line = in.readLine()) != null)
+                        {
+                            response.append(line);
+                        }
+                        in.close();
+                        
+                        // Parse the json blob to find the most recent release version
+                        int ver = response.toString().indexOf(':');
+                        String sub = response.substring(ver+2);
+                        ver = sub.indexOf('"');
+                        String latest = sub.substring(1, ver);
+                        latest = latest.trim();
+                        
+                        // was thinking this contains the new .jar file, but it may not... need further testing
+                        /*
+                        int zipIndex = response.toString().indexOf("zipball_url");
+                        String zipUrl = response.toString().substring(zipIndex);
+                        System.out.println("\n" + zipUrl);
+                        String temp = zipUrl.substring(zipUrl.indexOf(':') + 2, zipUrl.indexOf(',') - 2);
+                        System.out.println("\n"+ temp);
+                        */
+                        
+                        // parse each version string to compare X.Y.Z in order to determine "up to date-ness"
+                        String[] currentVersion = Quasar.applicationVersion.trim().split("\\.");
+                        String[] latestVersion = latest.split("\\.");
+                        
+                        // if the queried latest version is larger than the current application version, prompt the user to update
+                        if(Integer.parseInt(latestVersion[0]) > Integer.parseInt(currentVersion[0])
+                                || Integer.parseInt(latestVersion[1]) > Integer.parseInt(currentVersion[1])
+                                || Integer.parseInt(latestVersion[2]) > Integer.parseInt(currentVersion[2]))
+                        {
+                            // Create a fancy panel to show current and new versions along with a
+                            // button to take the user to the download page
+                            JPanel update = new JPanel();
+                            update.setLayout(new BoxLayout(update, BoxLayout.Y_AXIS));
+                            JLabel curver = new JLabel("Current version: " + Quasar.applicationVersion);
+                            curver.setAlignmentX(Component.CENTER_ALIGNMENT);
+                            update.add(curver);
+                            JLabel newver = new JLabel("New version: " + latest);
+                            newver.setAlignmentX(Component.CENTER_ALIGNMENT);
+                            update.add(newver);
+                            JButton download = new JButton("Download");
+                            download.setAlignmentX(Component.CENTER_ALIGNMENT);
+                            download.addActionListener(new ActionListener()
+                            {
+                                @Override
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    try {
+                                        Desktop.getDesktop().browse(new URI("https://github.com/objectDisorientedProgrammer/Quasar2/releases"));
+                                    } catch (IOException | URISyntaxException e1) {
+                                        JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+                                                JOptionPane.ERROR_MESSAGE, null);
+                                    }
+                                }
+                            });
+                            update.add(download);
+                            
+                            // Display the update message window
+                            Object[] options = { "Cancel" };
+                            JOptionPane.showOptionDialog(null, update, "Update Available", JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+                        }
+                        else
+                        {
+                            // Program is up to date - inform the user
+                            Object[] opt = { "Great" };
+                            JOptionPane.showOptionDialog(null, "Version: "+ Quasar.applicationVersion, "Up to date",
+                                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opt, opt[0]);
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("REST GET error...");
+                    }
+                } catch(IOException e1)
+                {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        helpMenu.add(updatesMenuItem);
         
         JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
         aboutMenuItem.setMnemonic(KeyEvent.VK_B);
