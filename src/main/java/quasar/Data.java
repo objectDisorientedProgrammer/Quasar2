@@ -91,7 +91,7 @@ public class Data
     }
     
     public void setDate(String date) {
-        // TODO enforce date format
+        // TODO enforce date format; will be done with https://github.com/objectDisorientedProgrammer/Quasar2/issues/52
         this.date = date;
     }
     
