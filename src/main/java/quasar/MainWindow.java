@@ -525,7 +525,8 @@ public class MainWindow
                 try
                 {
                     // Set up a REST GET query to the github API
-                    URL tags = new URL("https://api.github.com/repos/objectDisorientedProgrammer/Quasar2/tags");
+                    final String urlBase = "https://api.github.com/repos/objectDisorientedProgrammer/Quasar2/";
+                    URL tags = new URL(urlBase + "tags");
                     HttpURLConnection conn = (HttpURLConnection) tags.openConnection();
                     conn.setRequestMethod("GET");
                     
@@ -541,12 +542,13 @@ public class MainWindow
                         }
                         in.close();
                         
-                        // Parse the json blob to find the most recent release version
-                        int ver = response.toString().indexOf(':');
-                        String sub = response.substring(ver+2);
+                        // Parse the json blob to find the most recent release version (appears as the final entry)
+                        int ver = response.toString().lastIndexOf("name");
+                        String sub = response.substring(ver+7);
                         ver = sub.indexOf('"');
-                        String latest = sub.substring(1, ver);
+                        String latest = sub.substring(0, ver);
                         latest = latest.trim();
+                        final String urlVersion = latest;
                         
                         // was thinking this contains the new .jar file, but it may not... need further testing
                         /*
@@ -560,7 +562,7 @@ public class MainWindow
                         // parse each version string to compare X.Y.Z in order to determine "up to date-ness"
                         String[] currentVersion = Quasar.applicationVersion.trim().split("\\.");
                         String[] latestVersion = latest.split("\\.");
-                        
+
                         // if the queried latest version is larger than the current application version, prompt the user to update
                         if(Integer.parseInt(latestVersion[0]) > Integer.parseInt(currentVersion[0])
                                 || Integer.parseInt(latestVersion[1]) > Integer.parseInt(currentVersion[1])
@@ -584,7 +586,7 @@ public class MainWindow
                                 public void actionPerformed(ActionEvent e)
                                 {
                                     try {
-                                        Desktop.getDesktop().browse(new URI("https://github.com/objectDisorientedProgrammer/Quasar2/releases"));
+                                        Desktop.getDesktop().browse(new URI(urlBase + "releases/download/" + urlVersion + "/Quasar-beta.jar"));
                                     } catch (IOException | URISyntaxException e1) {
                                         JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
                                                 JOptionPane.ERROR_MESSAGE, null);
