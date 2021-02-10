@@ -10,7 +10,23 @@ on:
     branches: [ mainline ]
 
 jobs:
-  job_linux:
+  job_linux_java8:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 8
+    - name: Clean with Gradle
+      run: gradle clean
+    - name: Unit test
+      run: gradle test
+    - name: Build with Gradle
+      run: gradle build
+  
+  job_linux_java11:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +42,23 @@ jobs:
     - name: Build with Gradle
       run: gradle build
   
-  job_windows:
+  job_windows_java8:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 8
+    - name: Clean with Gradle
+      run: gradle clean
+    - name: Unit test
+      run: gradle test
+    - name: Build with Gradle
+      run: gradle build
+
+  job_windows_java11:
     runs-on: windows-latest
 
     steps:
@@ -41,8 +73,24 @@ jobs:
       run: gradle test
     - name: Build with Gradle
       run: gradle build
+
+  job_mac_java8:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 8
+    - name: Clean with Gradle
+      run: gradle clean
+    - name: Unit test
+      run: gradle test
+    - name: Build with Gradle
+      run: gradle build
   
-  job_mac:
+  job_mac_java11:
     runs-on: macos-latest
 
     steps:
