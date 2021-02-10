@@ -51,7 +51,7 @@ import javax.swing.*;
 public class MainWindow
 {
     private final String author = "Douglas Chidester";
-    private final String windowTitle = "Quasar";
+    private final String windowTitle = Quasar.applicationName;
     private final int frameWidth = 450;
     private final int frameHeight = 400;
     
@@ -525,7 +525,8 @@ public class MainWindow
                 try
                 {
                     // Set up a REST GET query to the github API
-                    final String urlBase = "https://api.github.com/repos/objectDisorientedProgrammer/Quasar2/";
+                    final String urlCommon = "objectDisorientedProgrammer/Quasar2/";
+                    final String urlBase = "https://api.github.com/repos/" + urlCommon;
                     URL tags = new URL(urlBase + "tags");
                     HttpURLConnection conn = (HttpURLConnection) tags.openConnection();
                     conn.setRequestMethod("GET");
@@ -591,7 +592,8 @@ public class MainWindow
                                 public void actionPerformed(ActionEvent e)
                                 {
                                     try {
-                                        Desktop.getDesktop().browse(new URI(urlBase + "releases/download/" + urlVersion + "/Quasar-beta.jar"));
+                                        final String dl = "https://www.github.com/" + urlCommon + "releases/download/" + urlVersion + "/" + Quasar.applicationName + ".jar";
+                                        Desktop.getDesktop().browse(new URI(dl));
                                     } catch (IOException | URISyntaxException e1) {
                                         JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
                                                 JOptionPane.ERROR_MESSAGE, null);
