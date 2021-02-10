@@ -105,46 +105,50 @@ public class EntryController
      * @param String
      * @throws IOException
      */
-    public void loadFile(String filename) throws IOException {
+    public void loadFile(String filename) throws IOException
+    {
         String file = FileUtils.readFileToString(new File(filename), encoding);
         String[] fileLines = file.split("\n");
-        
-        for(String line : fileLines)
+
+        if(!fileLines[0].isEmpty()) // don't attempt to load an empty file
         {
-            // Use custom parser to ensure all fields are collected and morph into array
-            ArrayList<String> fields = Parser.splitLine(line, Quasar.sep);
-            String[] tokens = new String[fields.size()];
-            tokens = fields.toArray(tokens);
-            Data d;
-            int type = Integer.parseInt(tokens[0]);
-            
-            // create a new object based on type and populate its fields
-            switch(type)
+            for(String line : fileLines)
             {
-            default:
-            case Quasar.ALL:
-                d = new Data(tokens[1], tokens[2], tokens[3], tokens[4], type);
-                break;
-            case Quasar.DOCUMENT:
-                d = new Document(tokens[5], tokens[6], tokens[7], tokens[8]);
-                break;
-            case Quasar.WEBSITE:
-                d = new Website(tokens[5]);
-                break;
-            case Quasar.PICTURE:
-                d = new Picture(tokens[5]);
-                break;
-            case Quasar.CONTACT:
-                d = new Contact(tokens[5], tokens[6], tokens[7], tokens[8]);
-                break;
+                // Use custom parser to ensure all fields are collected and morph into array
+                ArrayList<String> fields = Parser.splitLine(line, Quasar.sep);
+                String[] tokens = new String[fields.size()];
+                tokens = fields.toArray(tokens);
+                Data d;
+                int type = Integer.parseInt(tokens[0]);
+
+                // create a new object based on type and populate its fields
+                switch(type)
+                {
+                default:
+                case Quasar.ALL:
+                    d = new Data(tokens[1], tokens[2], tokens[3], tokens[4], type);
+                    break;
+                case Quasar.DOCUMENT:
+                    d = new Document(tokens[5], tokens[6], tokens[7], tokens[8]);
+                    break;
+                case Quasar.WEBSITE:
+                    d = new Website(tokens[5]);
+                    break;
+                case Quasar.PICTURE:
+                    d = new Picture(tokens[5]);
+                    break;
+                case Quasar.CONTACT:
+                    d = new Contact(tokens[5], tokens[6], tokens[7], tokens[8]);
+                    break;
+                }
+                // populate common fields (duplicate work for the Quasar.ALL case, but meh)
+                d.setTitle(tokens[1]);
+                d.setDescription(tokens[2]);
+                d.setDate(tokens[3]);
+                d.setKeywords(tokens[4]);
+                d.setType(type);
+                addEntry(d);
             }
-            // populate common fields (duplicate work for the Quasar.ALL case, but meh)
-            d.setTitle(tokens[1]);
-            d.setDescription(tokens[2]);
-            d.setDate(tokens[3]);
-            d.setKeywords(tokens[4]);
-            d.setType(type);
-            addEntry(d);
         }
     }
 
@@ -155,39 +159,44 @@ public class EntryController
      */
     public void saveToFile(String filePath) throws IOException
     {
-        StringBuilder b = new StringBuilder(dataContainer.size() * 4); // * 4 for the four default fields
-        
-        for(Data d : dataContainer)
+        String contents = ""; // erase any existing data if no entries are present
+        if(dataContainer.size() > 0)
         {
-            if(d instanceof Contact)
+            StringBuilder b = new StringBuilder(dataContainer.size() * 4); // * 4 for the four default fields
+
+            for(Data d : dataContainer)
             {
-                Contact c = (Contact) d;
-                b.append(c.toSaveString());
+                if(d instanceof Contact)
+                {
+                    Contact c = (Contact) d;
+                    b.append(c.toSaveString());
+                }
+                else if(d instanceof Document)
+                {
+                    Document doc = (Document) d;
+                    b.append(doc.toSaveString());
+                }
+                else if(d instanceof Picture)
+                {
+                    Picture p = (Picture) d;
+                    b.append(p.toSaveString());
+                }
+                else if(d instanceof Website)
+                {
+                    Website w = (Website) d;
+                    b.append(w.toSaveString());
+                }
+                else
+                {
+                    // "all" type Data
+                    b.append(d.toSaveString());
+                }
+                b.append('\n');
             }
-            else if(d instanceof Document)
-            {
-                Document doc = (Document) d;
-                b.append(doc.toSaveString());
-            }
-            else if(d instanceof Picture)
-            {
-                Picture p = (Picture) d;
-                b.append(p.toSaveString());
-            }
-            else if(d instanceof Website)
-            {
-                Website w = (Website) d;
-                b.append(w.toSaveString());
-            }
-            else
-            {
-                // "all" type Data
-                b.append(d.toSaveString());
-            }
-            b.append('\n');
+            contents = b.toString();
         }
-        
-        FileUtils.writeStringToFile(new File(filePath), b.toString(), encoding, false);
+        // write contents to file
+        FileUtils.writeStringToFile(new File(filePath), contents, encoding, false);
     }
     
     public void addEntry(Data d)

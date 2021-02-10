@@ -33,7 +33,7 @@ import java.util.Vector;
 
 public class Quasar
 {
-    public static final String applicationVersion = "0.7.26";
+    public static final String applicationVersion = "0.7.27";
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
@@ -52,7 +52,7 @@ public class Quasar
     
     private static EntryController controller;
     private static MainWindow mainWindow;
-    private static EditWindow editWindow;
+    private static EditWindow editWindow = null;
     
     public static void main(String[] args)
     {
@@ -138,7 +138,8 @@ public class Quasar
     public static void quitApplication()
     {
         mainWindow.quit();
-        editWindow.quit();
+        if(editWindow != null)
+            editWindow.quit();
     }
     
     public static MainWindow getMainWindowReference()
