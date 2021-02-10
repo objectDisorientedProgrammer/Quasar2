@@ -542,9 +542,14 @@ public class MainWindow
                         }
                         in.close();
                         
-                        // Parse the json blob to find the most recent release version (appears as the final entry)
-                        int ver = response.toString().lastIndexOf("name");
-                        String sub = response.substring(ver+7);
+                        // Parse the json blob to find the most recent release version
+                        /* Currently need to skip over the first entry because
+                           I changed tag naming convention from vX.Y.Z to X.Y.Z...
+                        */
+                        int ver = response.toString().indexOf("name");
+                        String sub = response.substring(ver+1); // skip tag "vX.Y.Z"
+                        ver = sub.indexOf("name");
+                        sub = sub.substring(ver+7);
                         ver = sub.indexOf('"');
                         String latest = sub.substring(0, ver);
                         latest = latest.trim();
