@@ -4,7 +4,7 @@ of this version is to be cross platform and more user friendly.
 
 ## Dependencies
 * Java 11
-* gradle 6.0+
+* gradle 4.4.1
 
 ## Building
 This project uses Gradle as a build system.
@@ -20,6 +20,7 @@ To clean:
 To build and run the application:
 
     gradle run
+
 
 
 Author: Doug Chidester (aka objectDisorientedProgrammer)
