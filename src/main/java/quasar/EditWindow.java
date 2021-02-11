@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -47,6 +48,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
+
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 
 public class EditWindow
 {
@@ -65,6 +69,7 @@ public class EditWindow
     private JTextField descriptionTextField;
     private JLabel dateLabel;
     private JFormattedTextField dateDisplay;
+    private DatePicker datePicker;
     private JLabel keywordsLabel;
     private JTextField keywordsTextField;
     
@@ -148,7 +153,8 @@ public class EditWindow
         c.gridy = 3;
         topPane.add(dateLabel, c);
         c.gridx = 1;
-        topPane.add(dateDisplay, c);
+        //topPane.add(dateDisplay, c);
+        topPane.add(datePicker, c);
         
         c.gridx = 0;
         c.gridy = 4;
@@ -259,6 +265,16 @@ public class EditWindow
         dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
         dateDisplay.setToolTipText("YYYY-MM-DD");
 
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd");
+        dateSettings.setFormatForDatesBeforeCommonEra("uuuu-MM-dd");
+        
+        datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
+        // TODO add calendar icon
+        //ImageIcon dateIcon = new ImageIcon(this.getClass().getResource("/images/calendar22.png"));
+        //datePicker.setIcon(dateIcon); 
+
         keywordsLabel = new JLabel("Keywords:");
         keywordsLabel.setLabelFor(keywordsTextField);
         keywordsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -289,7 +305,9 @@ public class EditWindow
     {
         titleTextField.setEditable(enable);
         descriptionTextField.setEditable(enable);
-        dateDisplay.setEditable(enable);
+        // TODO
+        //datePicker.getComponentToggleCalendarButton().setEditable(enable);
+        //datePicker.getComponentDateTextField().setEditable(enable);
         keywordsTextField.setEditable(enable);
         
         //  node specific data
@@ -351,6 +369,7 @@ public class EditWindow
         this.dataReference.description = newValue;
         
         newValue = dateDisplay.getText();
+        // TODO datePicker.getDateStringOrSuppliedString(String emptyDateString)
         //if(verifyDate(newValue))
         dateDisplay.setText(newValue);
         this.dataReference.date = newValue;
