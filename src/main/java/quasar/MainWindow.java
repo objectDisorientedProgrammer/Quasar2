@@ -581,10 +581,16 @@ public class MainWindow
                             JLabel curver = new JLabel("Current version: " + Quasar.applicationVersion);
                             curver.setAlignmentX(Component.CENTER_ALIGNMENT);
                             update.add(curver);
+
                             JLabel newver = new JLabel("New version: " + latest);
                             newver.setAlignmentX(Component.CENTER_ALIGNMENT);
                             update.add(newver);
-                            JButton download = new JButton("Download");
+
+                            //Dimension d = new Dimension(40, 40);
+                            //update.add(Box.Filler(d, d, d));
+                            update.add(new JLabel(" ")); // poor man's padding
+
+                            JButton download = new JButton(new ImageIcon(this.getClass().getResource(imagePath+"download24.png")));
                             download.setAlignmentX(Component.CENTER_ALIGNMENT);
                             download.addActionListener(new ActionListener()
                             {
@@ -601,7 +607,9 @@ public class MainWindow
                                 }
                             });
                             update.add(download);
-                            
+
+                            update.add(new JLabel(" ")); // poor man's padding
+
                             // Display the update message window
                             Object[] options = { "Cancel" };
                             JOptionPane.showOptionDialog(null, update, "Update Available", JOptionPane.DEFAULT_OPTION,

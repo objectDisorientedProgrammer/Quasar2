@@ -272,8 +272,9 @@ public class EditWindow
         datePicker = new DatePicker(dateSettings);
         datePicker.setDateToToday();
         // TODO add calendar icon
-        //ImageIcon dateIcon = new ImageIcon(this.getClass().getResource("/images/calendar22.png"));
-        //datePicker.setIcon(dateIcon); 
+        ImageIcon dateIcon = new ImageIcon(this.getClass().getResource("/images/calendar22.png"));
+        datePicker.getComponentToggleCalendarButton().setIcon(dateIcon);
+        datePicker.getComponentToggleCalendarButton().setText(""); // clear the default text
 
         keywordsLabel = new JLabel("Keywords:");
         keywordsLabel.setLabelFor(keywordsTextField);
