@@ -31,7 +31,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -55,8 +54,6 @@ public class MainWindow
     private final int frameWidth = 450;
     private final int frameHeight = 400;
     
-    private final String imagePath = "/images/";    // path in jar file
-    
     private JFrame mainWindow;
     private JPanel mainPanel;
     private JPanel aboutPane;
@@ -68,6 +65,8 @@ public class MainWindow
     private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
     private String commonsIoLicenseText = "commons-io";
     private String commonsIoLicenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt";
+    private String LGoodDatePickerLicenseText = "LGoodDatePicker";
+    private String LGoodDatePickerLicenseUrl = "https://github.com/LGoodDatePicker/LGoodDatePicker/blob/v11.1.0-Standard/LICENSE";
     private String urlErrorWindowTitle = "Error openning URL";
     
     // GUI
@@ -307,7 +306,6 @@ public class MainWindow
         quasarLicense.setForeground(Color.blue.darker());
         quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         quasarLicense.addMouseListener(new MouseListener() {
-            
             @Override
             public void mouseReleased(MouseEvent e) {}
             
@@ -331,12 +329,11 @@ public class MainWindow
             }
         });
     
-        // create a hyperlink to the Quasar License (TODO the license might need to be embedded into the application)
+        // create a hyperlink to the commons-io License (TODO the license might need to be embedded into the application)
         JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
         commons_ioLicense.setForeground(Color.blue.darker());
         commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         commons_ioLicense.addMouseListener(new MouseListener() {
-            
             @Override
             public void mouseReleased(MouseEvent e) {}
             
@@ -359,12 +356,44 @@ public class MainWindow
                 }
             }
         });
-        
+
+        // create a hyperlink to the LGoodDatePicker License (TODO the license might need to be embedded into the application)
+        JLabel LGoodDatePickerLicense = new JLabel(LGoodDatePickerLicenseText);
+        LGoodDatePickerLicense.setForeground(Color.blue.darker());
+        LGoodDatePickerLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        LGoodDatePickerLicense.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI(LGoodDatePickerLicenseUrl));
+                } catch (IOException | URISyntaxException e1) {
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+                            JOptionPane.ERROR_MESSAGE, null);
+                }
+            }
+        });
+
+
+        // Add all UI components
         aboutPane.add(licensesText);
         // put the license links side by side
-        JPanel licenseLinks = new JPanel(new FlowLayout());
+        JPanel licenseLinks = new JPanel();
+        licenseLinks.setLayout(new BoxLayout(licenseLinks, BoxLayout.PAGE_AXIS));
         licenseLinks.add(quasarLicense);
         licenseLinks.add(commons_ioLicense);
+        licenseLinks.add(LGoodDatePickerLicense);
         aboutPane.add(licenseLinks);
         
         // add a space to start a new section of application info
@@ -412,7 +441,7 @@ public class MainWindow
         
         JMenuItem saveMenuItem = new JMenuItem("Save");
         saveMenuItem.setMnemonic(KeyEvent.VK_S);
-        saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(imagePath + "save.png")));
+        saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(Quasar.imagePath + "save.png")));
         saveMenuItem.addActionListener(new ActionListener()
         {
             @Override
@@ -461,7 +490,7 @@ public class MainWindow
         });
         fileMenu.add(saveAs);
         
-        JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(imagePath+"exit.png")));
+        JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(Quasar.imagePath+"exit.png")));
         quitMenuItem.setMnemonic(KeyEvent.VK_Q);
         quitMenuItem.addActionListener(new ActionListener()
         {
@@ -500,7 +529,8 @@ public class MainWindow
         helpMenu.setMnemonic(KeyEvent.VK_H);
         menuBar.add(helpMenu);
         
-        JMenuItem helpMenuItem = new JMenuItem("Getting Started", new ImageIcon(this.getClass().getResource(imagePath+"help.png")));
+        JMenuItem helpMenuItem = new JMenuItem("Getting Started",
+        		new ImageIcon(this.getClass().getResource(Quasar.imagePath+"help.png")));
         helpMenuItem.setMnemonic(KeyEvent.VK_G);
         helpMenuItem.addActionListener(new ActionListener()
         {
@@ -510,7 +540,7 @@ public class MainWindow
                 // show basic use instructions if user clicks: Help -> Getting Started
                 JOptionPane.showMessageDialog(null, "Welcome to Quasar.\nQuasar enables you to categorize data in a way\n"
                         + "that makes sense to you. Enjoy this organization\nand memory aid tool.", "Usage",
-                        JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
+                        JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(Quasar.imagePath+"help64.png")));
             }
         });
         helpMenu.add(helpMenuItem);
@@ -581,10 +611,15 @@ public class MainWindow
                             JLabel curver = new JLabel("Current version: " + Quasar.applicationVersion);
                             curver.setAlignmentX(Component.CENTER_ALIGNMENT);
                             update.add(curver);
+
                             JLabel newver = new JLabel("New version: " + latest);
                             newver.setAlignmentX(Component.CENTER_ALIGNMENT);
                             update.add(newver);
-                            JButton download = new JButton("Download");
+
+                            update.add(new JLabel(" ")); // poor man's padding
+
+                            JButton download = new JButton(
+                            		new ImageIcon(this.getClass().getResource(Quasar.imagePath+"download24.png")));
                             download.setAlignmentX(Component.CENTER_ALIGNMENT);
                             download.addActionListener(new ActionListener()
                             {
@@ -601,7 +636,9 @@ public class MainWindow
                                 }
                             });
                             update.add(download);
-                            
+
+                            update.add(new JLabel(" ")); // poor man's padding
+
                             // Display the update message window
                             Object[] options = { "Cancel" };
                             JOptionPane.showOptionDialog(null, update, "Update Available", JOptionPane.DEFAULT_OPTION,
@@ -627,7 +664,8 @@ public class MainWindow
         });
         helpMenu.add(updatesMenuItem);
         
-        JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
+        JMenuItem aboutMenuItem = new JMenuItem("About",
+        		new ImageIcon(this.getClass().getResource(Quasar.imagePath+"about.png")));
         aboutMenuItem.setMnemonic(KeyEvent.VK_B);
         aboutMenuItem.addActionListener(new ActionListener()
         {
@@ -636,7 +674,8 @@ public class MainWindow
             {
                 // show author and version if user clicks: Help -> About
                 JOptionPane.showMessageDialog(null, aboutPane, "About",
-                        JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"person.png")));
+                        JOptionPane.INFORMATION_MESSAGE,
+                        new ImageIcon(this.getClass().getResource(Quasar.imagePath+"person.png")));
             }
         });
         helpMenu.add(aboutMenuItem);
