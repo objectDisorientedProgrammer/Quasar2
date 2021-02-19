@@ -23,7 +23,7 @@ configurations {
 
 dependencies {
     // local jar dependencies
-    implementation files('lib/LGoodDatePicker-11.1.0.jar')
+    deps files('lib/LGoodDatePicker-11.1.0.jar')
     // remote dependency of apache commons-io
     deps group:'commons-io', name:'commons-io',version:'2.6'
     configurations.compile.extendsFrom(configurations.deps)
