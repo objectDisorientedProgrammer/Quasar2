@@ -41,14 +41,11 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.text.MaskFormatter;
-
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
@@ -68,8 +65,8 @@ public class EditWindow
     private JLabel descriptionLabel;
     private JTextField descriptionTextField;
     private JLabel dateLabel;
-    private JFormattedTextField dateDisplay;
     private DatePicker datePicker;
+    private final String defaultDate = "    -  -  ";
     private JLabel keywordsLabel;
     private JTextField keywordsTextField;
     
@@ -257,13 +254,9 @@ public class EditWindow
         descriptionTextField.setColumns(10);
         
         dateLabel = new JLabel("Date:");
-        dateLabel.setLabelFor(dateDisplay);
+        dateLabel.setLabelFor(datePicker);
         dateLabel.setFont(defaultLabelFont);
         dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-
-        // TODO replace this code during issue #52 https://github.com/objectDisorientedProgrammer/Quasar2/issues/52
-        dateDisplay = new JFormattedTextField(createFormatter("####-##-##"));
-        dateDisplay.setToolTipText("YYYY-MM-DD");
 
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd");
@@ -285,19 +278,7 @@ public class EditWindow
         keywordsTextField.setToolTipText("Keywords");
         keywordsTextField.setColumns(10);
     }
-    
-    // TODO replace this code during issue #52 https://github.com/objectDisorientedProgrammer/Quasar2/issues/52
-    // stolen from https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
-    protected MaskFormatter createFormatter(String s) {
-        MaskFormatter formatter = null;
-        try {
-            formatter = new MaskFormatter(s);
-        } catch (java.text.ParseException exc) {
-            System.err.println("formatter is bad: " + exc.getMessage());
-        }
-        return formatter;
-    }
-    
+
     /**
      * Enable or disable editing a node.
      * @param enable - set true to enable editing, set false to disable editing
@@ -306,9 +287,7 @@ public class EditWindow
     {
         titleTextField.setEditable(enable);
         descriptionTextField.setEditable(enable);
-        // TODO
-        //datePicker.getComponentToggleCalendarButton().setEditable(enable);
-        //datePicker.getComponentDateTextField().setEditable(enable);
+        datePicker.setEnabled(enable);
         keywordsTextField.setEditable(enable);
         
         //  node specific data
@@ -369,12 +348,9 @@ public class EditWindow
         descriptionTextField.setText(newValue);
         this.dataReference.description = newValue;
         
-        newValue = dateDisplay.getText();
-        // TODO datePicker.getDateStringOrSuppliedString(String emptyDateString)
-        //if(verifyDate(newValue))
-        dateDisplay.setText(newValue);
+        // copy the date string into the entry
+        newValue = datePicker.getDateStringOrSuppliedString(defaultDate);
         this.dataReference.date = newValue;
-        //else -> create error message window
         
         newValue = keywordsTextField.getText();
         keywordsTextField.setText(newValue);
@@ -414,7 +390,7 @@ public class EditWindow
         // fill in fields
         titleTextField.setText(this.dataReference.getTitle());
         descriptionTextField.setText(this.dataReference.getDescription());
-        dateDisplay.setText(this.dataReference.getDate());
+        datePicker.setText(this.dataReference.getDate());
         keywordsTextField.setText(this.dataReference.getKeywords());
         
         // display type specific info
