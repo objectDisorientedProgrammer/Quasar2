@@ -68,6 +68,8 @@ public class MainWindow
     private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
     private String commonsIoLicenseText = "commons-io";
     private String commonsIoLicenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt";
+    private String LGoodDatePickerLicenseText = "LGoodDatePicker";
+    private String LGoodDatePickerLicenseUrl = "https://github.com/LGoodDatePicker/LGoodDatePicker/blob/v11.1.0-Standard/LICENSE";
     private String urlErrorWindowTitle = "Error openning URL";
     
     // GUI
@@ -307,7 +309,6 @@ public class MainWindow
         quasarLicense.setForeground(Color.blue.darker());
         quasarLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         quasarLicense.addMouseListener(new MouseListener() {
-            
             @Override
             public void mouseReleased(MouseEvent e) {}
             
@@ -331,12 +332,11 @@ public class MainWindow
             }
         });
     
-        // create a hyperlink to the Quasar License (TODO the license might need to be embedded into the application)
+        // create a hyperlink to the commons-io License (TODO the license might need to be embedded into the application)
         JLabel commons_ioLicense = new JLabel(commonsIoLicenseText);
         commons_ioLicense.setForeground(Color.blue.darker());
         commons_ioLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         commons_ioLicense.addMouseListener(new MouseListener() {
-            
             @Override
             public void mouseReleased(MouseEvent e) {}
             
@@ -359,12 +359,44 @@ public class MainWindow
                 }
             }
         });
-        
+
+        // create a hyperlink to the commons-io License (TODO the license might need to be embedded into the application)
+        JLabel LGoodDatePickerLicense = new JLabel(LGoodDatePickerLicenseText);
+        LGoodDatePickerLicense.setForeground(Color.blue.darker());
+        LGoodDatePickerLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        LGoodDatePickerLicense.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI(LGoodDatePickerLicenseUrl));
+                } catch (IOException | URISyntaxException e1) {
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+                            JOptionPane.ERROR_MESSAGE, null);
+                }
+            }
+        });
+
+
+        // Add all UI components
         aboutPane.add(licensesText);
         // put the license links side by side
-        JPanel licenseLinks = new JPanel(new FlowLayout());
+        JPanel licenseLinks = new JPanel();
+        licenseLinks.setLayout(new BoxLayout(licenseLinks, BoxLayout.PAGE_AXIS));
         licenseLinks.add(quasarLicense);
         licenseLinks.add(commons_ioLicense);
+        licenseLinks.add(LGoodDatePickerLicense);
         aboutPane.add(licenseLinks);
         
         // add a space to start a new section of application info
