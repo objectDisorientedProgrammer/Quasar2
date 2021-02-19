@@ -40,6 +40,8 @@ public class Quasar
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
     public static final String sep = "\u00B6"; // ¶, but use unicode for cross-platform compatibility
     
+    public static final String imagePath = "/images/"; // resource path images
+
     public static final int ALL = 0;
     public static final int CONTACT = 1;
     public static final int DOCUMENT = 2;

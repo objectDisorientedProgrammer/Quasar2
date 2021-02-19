@@ -150,7 +150,6 @@ public class EditWindow
         c.gridy = 3;
         topPane.add(dateLabel, c);
         c.gridx = 1;
-        //topPane.add(dateDisplay, c);
         topPane.add(datePicker, c);
         
         c.gridx = 0;
@@ -264,9 +263,8 @@ public class EditWindow
         
         datePicker = new DatePicker(dateSettings);
         datePicker.setDateToToday();
-        // TODO add calendar icon
-        ImageIcon dateIcon = new ImageIcon(this.getClass().getResource("/images/calendar22.png"));
-        datePicker.getComponentToggleCalendarButton().setIcon(dateIcon);
+        datePicker.getComponentToggleCalendarButton().setIcon(
+        		new ImageIcon(this.getClass().getResource(Quasar.imagePath + "calendar22.png")));
         datePicker.getComponentToggleCalendarButton().setText(""); // clear the default text
 
         keywordsLabel = new JLabel("Keywords:");

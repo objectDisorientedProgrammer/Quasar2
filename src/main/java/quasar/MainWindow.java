@@ -31,7 +31,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -54,8 +53,6 @@ public class MainWindow
     private final String windowTitle = Quasar.applicationName;
     private final int frameWidth = 450;
     private final int frameHeight = 400;
-    
-    private final String imagePath = "/images/";    // path in jar file
     
     private JFrame mainWindow;
     private JPanel mainPanel;
@@ -360,7 +357,7 @@ public class MainWindow
             }
         });
 
-        // create a hyperlink to the commons-io License (TODO the license might need to be embedded into the application)
+        // create a hyperlink to the LGoodDatePicker License (TODO the license might need to be embedded into the application)
         JLabel LGoodDatePickerLicense = new JLabel(LGoodDatePickerLicenseText);
         LGoodDatePickerLicense.setForeground(Color.blue.darker());
         LGoodDatePickerLicense.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -444,7 +441,7 @@ public class MainWindow
         
         JMenuItem saveMenuItem = new JMenuItem("Save");
         saveMenuItem.setMnemonic(KeyEvent.VK_S);
-        saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(imagePath + "save.png")));
+        saveMenuItem.setIcon(new ImageIcon(this.getClass().getResource(Quasar.imagePath + "save.png")));
         saveMenuItem.addActionListener(new ActionListener()
         {
             @Override
@@ -493,7 +490,7 @@ public class MainWindow
         });
         fileMenu.add(saveAs);
         
-        JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(imagePath+"exit.png")));
+        JMenuItem quitMenuItem = new JMenuItem("Quit", new ImageIcon(this.getClass().getResource(Quasar.imagePath+"exit.png")));
         quitMenuItem.setMnemonic(KeyEvent.VK_Q);
         quitMenuItem.addActionListener(new ActionListener()
         {
@@ -532,7 +529,8 @@ public class MainWindow
         helpMenu.setMnemonic(KeyEvent.VK_H);
         menuBar.add(helpMenu);
         
-        JMenuItem helpMenuItem = new JMenuItem("Getting Started", new ImageIcon(this.getClass().getResource(imagePath+"help.png")));
+        JMenuItem helpMenuItem = new JMenuItem("Getting Started",
+        		new ImageIcon(this.getClass().getResource(Quasar.imagePath+"help.png")));
         helpMenuItem.setMnemonic(KeyEvent.VK_G);
         helpMenuItem.addActionListener(new ActionListener()
         {
@@ -542,7 +540,7 @@ public class MainWindow
                 // show basic use instructions if user clicks: Help -> Getting Started
                 JOptionPane.showMessageDialog(null, "Welcome to Quasar.\nQuasar enables you to categorize data in a way\n"
                         + "that makes sense to you. Enjoy this organization\nand memory aid tool.", "Usage",
-                        JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"help64.png")));
+                        JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(Quasar.imagePath+"help64.png")));
             }
         });
         helpMenu.add(helpMenuItem);
@@ -618,11 +616,10 @@ public class MainWindow
                             newver.setAlignmentX(Component.CENTER_ALIGNMENT);
                             update.add(newver);
 
-                            //Dimension d = new Dimension(40, 40);
-                            //update.add(Box.Filler(d, d, d));
                             update.add(new JLabel(" ")); // poor man's padding
 
-                            JButton download = new JButton(new ImageIcon(this.getClass().getResource(imagePath+"download24.png")));
+                            JButton download = new JButton(
+                            		new ImageIcon(this.getClass().getResource(Quasar.imagePath+"download24.png")));
                             download.setAlignmentX(Component.CENTER_ALIGNMENT);
                             download.addActionListener(new ActionListener()
                             {
@@ -667,7 +664,8 @@ public class MainWindow
         });
         helpMenu.add(updatesMenuItem);
         
-        JMenuItem aboutMenuItem = new JMenuItem("About", new ImageIcon(this.getClass().getResource(imagePath+"about.png")));
+        JMenuItem aboutMenuItem = new JMenuItem("About",
+        		new ImageIcon(this.getClass().getResource(Quasar.imagePath+"about.png")));
         aboutMenuItem.setMnemonic(KeyEvent.VK_B);
         aboutMenuItem.addActionListener(new ActionListener()
         {
@@ -676,7 +674,8 @@ public class MainWindow
             {
                 // show author and version if user clicks: Help -> About
                 JOptionPane.showMessageDialog(null, aboutPane, "About",
-                        JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource(imagePath+"person.png")));
+                        JOptionPane.INFORMATION_MESSAGE,
+                        new ImageIcon(this.getClass().getResource(Quasar.imagePath+"person.png")));
             }
         });
         helpMenu.add(aboutMenuItem);
