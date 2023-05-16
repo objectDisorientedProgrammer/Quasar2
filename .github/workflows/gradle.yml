@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 8.0.192, 9.0.x, 10, 11.0.x, 11.0.3, 12, 13 ]
+        java: [ 11.0.x, 11.0.11, 17 ]
     name: Java ${{ matrix.java }}
     steps:
     - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        java: [ 8, 8.0.192, 9.0.x, 10, 11.0.x, 11.0.3, 12, 13 ]
+        java: [ 11.0.x, 11.0.11, 17 ]
     name: Java ${{ matrix.java }}
     steps:
     - uses: actions/checkout@v2
@@ -52,7 +52,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        java: [ 8, 8.0.192, 9.0.x, 10, 11.0.x, 11.0.3, 12, 13 ]
+        java: [ 11.0.x, 11.0.11, 17 ]
     name: Java ${{ matrix.java }}
     steps:
     - uses: actions/checkout@v2
