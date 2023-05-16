@@ -142,7 +142,7 @@ public class MainWindow
                 }
                 else
                     // tell the user there are no matches
-                    JOptionPane.showMessageDialog(null, "No results.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(getComponent(), "No results.", "Search",  JOptionPane.INFORMATION_MESSAGE, null);
             }
         };
         
@@ -323,7 +323,7 @@ public class MainWindow
                 try {
                     Desktop.getDesktop().browse(new URI(quasarLicenseUrl));
                 } catch (IOException | URISyntaxException e1) {
-                    JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+                    JOptionPane.showMessageDialog(getComponent(), e1.getMessage(), urlErrorWindowTitle,
                             JOptionPane.ERROR_MESSAGE, null);
                 }
             }
@@ -351,7 +351,7 @@ public class MainWindow
                 try {
                     Desktop.getDesktop().browse(new URI(commonsIoLicenseUrl));
                 } catch (IOException | URISyntaxException e1) {
-                    JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+                    JOptionPane.showMessageDialog(getComponent(), e1.getMessage(), urlErrorWindowTitle,
                             JOptionPane.ERROR_MESSAGE, null);
                 }
             }
@@ -379,7 +379,7 @@ public class MainWindow
                 try {
                     Desktop.getDesktop().browse(new URI(LGoodDatePickerLicenseUrl));
                 } catch (IOException | URISyntaxException e1) {
-                    JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+                    JOptionPane.showMessageDialog(getComponent(), e1.getMessage(), urlErrorWindowTitle,
                             JOptionPane.ERROR_MESSAGE, null);
                 }
             }
@@ -454,7 +454,7 @@ public class MainWindow
                     Quasar.saveToFile(databaseFilePath);
                 } catch(UnsupportedOperationException ex)
                 {
-                    JOptionPane.showMessageDialog(null, "Save failed.", "Save error!",
+                    JOptionPane.showMessageDialog(getComponent(), "Save failed.", "Save error!",
                             JOptionPane.ERROR_MESSAGE, null);
                 }
             }
@@ -483,7 +483,7 @@ public class MainWindow
                     Quasar.saveToFile(savePath);
                 } catch(UnsupportedOperationException ex)
                 {
-                    JOptionPane.showMessageDialog(null, "Save as failed.", "Save as error!",
+                    JOptionPane.showMessageDialog(getComponent(), "Save as failed.", "Save as error!",
                             JOptionPane.ERROR_MESSAGE, null);
                 }
             }
@@ -520,7 +520,7 @@ public class MainWindow
                         + "Websites: " + Quasar.getEntryCount(Quasar.WEBSITE) + "\n"
                         + "Other: " + Quasar.getEntryCount(Quasar.ALL);
                 
-                JOptionPane.showMessageDialog(null, msg, "Entry Stats", JOptionPane.PLAIN_MESSAGE, null);
+                JOptionPane.showMessageDialog(getComponent(), msg, "Entry Stats", JOptionPane.PLAIN_MESSAGE, null);
             }
         });
         viewMenu.add(statsMenuItem);
@@ -538,7 +538,7 @@ public class MainWindow
             public void actionPerformed(ActionEvent e)
             {
                 // show basic use instructions if user clicks: Help -> Getting Started
-                JOptionPane.showMessageDialog(null, "Welcome to Quasar.\nQuasar enables you to categorize data in a way\n"
+                JOptionPane.showMessageDialog(getComponent(), "Welcome to Quasar.\nQuasar enables you to categorize data in a way\n"
                         + "that makes sense to you. Enjoy this organization\nand memory aid tool.", "Usage",
                         JOptionPane.PLAIN_MESSAGE, new ImageIcon(this.getClass().getResource(Quasar.imagePath+"help64.png")));
             }
@@ -630,7 +630,7 @@ public class MainWindow
                                         final String dl = "https://www.github.com/" + urlCommon + "releases/download/" + urlVersion + "/" + Quasar.applicationName + ".jar";
                                         Desktop.getDesktop().browse(new URI(dl));
                                     } catch (IOException | URISyntaxException e1) {
-                                        JOptionPane.showMessageDialog(null, e1.getMessage(), urlErrorWindowTitle,
+                                        JOptionPane.showMessageDialog(getComponent(), e1.getMessage(), urlErrorWindowTitle,
                                                 JOptionPane.ERROR_MESSAGE, null);
                                     }
                                 }
@@ -641,14 +641,14 @@ public class MainWindow
 
                             // Display the update message window
                             Object[] options = { "Cancel" };
-                            JOptionPane.showOptionDialog(null, update, "Update Available", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.showOptionDialog(getComponent(), update, "Update Available", JOptionPane.DEFAULT_OPTION,
                                     JOptionPane.WARNING_MESSAGE, null, options, options[0]);
                         }
                         else
                         {
                             // Program is up to date - inform the user
                             Object[] opt = { "Great" };
-                            JOptionPane.showOptionDialog(null, "Version: "+ Quasar.applicationVersion, "Up to date",
+                            JOptionPane.showOptionDialog(getComponent(), "Version: "+ Quasar.applicationVersion, "Up to date",
                                     JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opt, opt[0]);
                         }
                     }
@@ -673,7 +673,7 @@ public class MainWindow
             public void actionPerformed(ActionEvent e)
             {
                 // show author and version if user clicks: Help -> About
-                JOptionPane.showMessageDialog(null, aboutPane, "About",
+                JOptionPane.showMessageDialog(getComponent(), aboutPane, "About",
                         JOptionPane.INFORMATION_MESSAGE,
                         new ImageIcon(this.getClass().getResource(Quasar.imagePath+"person.png")));
             }
