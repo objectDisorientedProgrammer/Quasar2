@@ -23,4 +23,4 @@ To build and run the application:
 
 
 
-Author: Doug Chidester (aka objectDisorientedProgrammer)
+Author: objectDisorientedProgrammer
