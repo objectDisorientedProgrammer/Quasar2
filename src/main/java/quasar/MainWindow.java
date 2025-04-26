@@ -62,7 +62,7 @@ public class MainWindow
     private Data entry;
     
     private String quasarLicenseText = "Quasar";
-    private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/master/license.txt";
+    private String quasarLicenseUrl = "https://github.com/objectDisorientedProgrammer/Quasar2/blob/mainline/license.txt";
     private String commonsIoLicenseText = "commons-io";
     private String commonsIoLicenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.txt";
     private String LGoodDatePickerLicenseText = "LGoodDatePicker";
