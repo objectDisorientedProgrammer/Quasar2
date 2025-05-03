@@ -26,7 +26,6 @@
 package quasar;
 
 import java.awt.Font;
-//import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
@@ -34,7 +33,7 @@ import java.util.Vector;
 public class Quasar
 {
     public static final String applicationName = "Quasar-zeta";
-    public static final String applicationVersion = "0.7.30";
+    public static final String applicationVersion = "0.7.31";
     
     private static final String defaultFilename = "quasar.dat";
     private static final String defaultFilepath = System.getProperty("user.home") + File.separator + defaultFilename;
